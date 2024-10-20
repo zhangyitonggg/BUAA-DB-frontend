@@ -65,21 +65,28 @@
       </v-container>
       <v-container>
   
+<!-- todo:这里只写了一个静态卡片，感觉接口最好改一下 -->
         <v-row>
           <v-col>
             <v-card outlined>
               <v-row no-gutters class="picture"> <!-- 给整个 v-row 添加 padding -->
                 <v-col cols="auto" class="d-flex align-center"> <!-- 确保图片在垂直方向上居中 -->
-                  <v-img src="@/assets/images/blogDefault.png" aspect-ratio="1" height="100px" width="100px"
+                  <v-img src="@/assets/images/blogDefault.png" aspect-ratio="1" height="110px" width="110px"
                     contain></v-img>
                 </v-col>
                 <v-col>
                   <v-card-title>
                     计算机组成考试题（2023-2024学年）
+                    <v-icon color="#F8CC00"> mdi-bitcoin </v-icon>
                   </v-card-title>
                   <v-card-subtitle>
                     这是一份计算机组成考试题，希望对大家有所帮助。目前正确答案正在整理中...
                   </v-card-subtitle>
+                  <div style="margin-left: 1.8%;"> <!-- 添加左边距 -->
+                    <v-chip color="aqua" label small class="me-3">计算机组成</v-chip>
+                    <v-chip color="aqua" label small class="me-3">考试题</v-chip>
+                    <v-chip color="aqua" label small class="me-3">2023-2024</v-chip>
+                  </div>
                   <v-card-actions style="margin-left: 0.8%;">
                     <div>
                       <span>

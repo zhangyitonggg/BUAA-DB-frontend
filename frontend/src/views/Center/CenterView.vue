@@ -2,16 +2,20 @@
     <v-container class="spacing-playground pa-16" fluid>
       <component :is="currentComponent" />
       <v-bottom-navigation app fixed color="primary" v-model="activeBtn">
-        <v-btn value="ShareHub">
-          <span>共享资源站</span>
+        <v-btn value="UserInfo">
+          <span>基本信息</span>
           <v-icon>mdi-message-alert-outline</v-icon>
         </v-btn>
         <v-btn value="SharingResource">
-          <span>分享资源</span>
+          <span>数据统计</span>
           <v-icon>mdi-chat-processing</v-icon>
         </v-btn>
         <v-btn value="GiveMeMoney">
-          <span>我的资源</span>
+          <span>我的关注</span>
+          <v-icon>mdi-hand-coin</v-icon>
+        </v-btn>
+        <v-btn value="GiveMeMoney">
+          <span>我的收藏</span>
           <v-icon>mdi-hand-coin</v-icon>
         </v-btn>
       </v-bottom-navigation>
@@ -19,20 +23,20 @@
   </template>
   
   <script>
-  import ShareHub from '../../components/Share/ShareHub.vue'
+  import UserInfo from '../../components/Center/UserInfo.vue'
   import SharingResource from '../../components/Share/ShareResource.vue'
   import GiveMeMoney from '../../components/Home/GiveMeMoney.vue'
-  
+    
   export default {
-    name: 'ShareView',
+    name: 'CenterView',
     components: {
-      ShareHub,
+      UserInfo,
       SharingResource,
       GiveMeMoney,
     },
     data() {
       return {
-        activeBtn: 'ShareHub',
+        activeBtn: 'UserInfo',
         loading: true,
       }
     },

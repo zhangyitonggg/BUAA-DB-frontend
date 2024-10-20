@@ -48,8 +48,16 @@ const routes = [
       requiresAuth: true,
       title: '共享资源'
     }
+  },
+  {
+    path: '/center/',
+    name: 'center',
+    component: () => import('../views/Center/CenterView.vue'),
+    meta: {
+      requiresAuth: true,
+      title: '个人中心'
+    }
   }
-  
 ];
 
 const router = new VueRouter({
