@@ -28,7 +28,7 @@
           <div class="filters">
             <v-row class="align-center">
               <v-col cols="auto">
-                <span style="color:black;">排序:</span>
+                <span><strong>排序</strong>:</span>
               </v-col>
               <v-col>
                 <span @click="setFilter('sort_by', 0)" :class="{ active: filters.sort_by === 0 }">综合</span>
@@ -41,7 +41,7 @@
   
             <v-row class="align-center">
               <v-col cols="auto">
-                <span style="color:black;">收费:</span>
+                <span><strong>收费</strong>:</span>
               </v-col>
               <v-col>
                 <v-radio-group v-model="filters.pay" row>
