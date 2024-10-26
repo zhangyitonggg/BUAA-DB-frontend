@@ -26,7 +26,6 @@
                         item-value="name"
                         multiple
                         hide-selected
-                        @change="clearInput"
                     >
                         <template v-slot:selection="data">
                             <v-chip
@@ -95,7 +94,7 @@
                 { name: '1234'},
                 { name: '11'},
             ],
-            description: null,
+            description: "Input your description here.",
         }),
         components: {
             VMdPreview
@@ -109,6 +108,9 @@
                 const index = this.tags.indexOf(item.name)
                 if (index >= 0) this.tags.splice(index, 1)
             },
+            publish() {
+                console.log(this.title, this.coin, this.tags, this.description);
+            }
         },
         mounted() {
             this.$store.commit("setAppTitle", "发布悬赏");

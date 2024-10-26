@@ -12,8 +12,6 @@
     name: 'TasksView',
     components: {
     },
-    data() {
-    },
     computed: {
     },
     methods: {
