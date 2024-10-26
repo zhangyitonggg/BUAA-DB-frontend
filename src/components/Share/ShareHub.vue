@@ -15,7 +15,7 @@
               潮平两岸阔，风正一帆悬。
             </h3>
             <h4>
-              欢迎回到 航U邦。
+              欢迎回到航U邦。
             </h4>
             <span>正在获取资源站。</span>
           </v-col>
@@ -38,7 +38,6 @@
                 <span @click="setFilter('sort_by', 3)" :class="{ active: filters.sort_by === 3 }">最近评论</span>
               </v-col>
             </v-row>
-  
             <v-row class="align-center">
               <v-col cols="auto">
                 <span><strong>收费</strong>:</span>
@@ -52,7 +51,6 @@
               </v-col>
             </v-row>
           </div>
-  
           <!-- 底部的搜索栏 -->
           <v-divider></v-divider>
           <v-row class="mt-4">
@@ -64,7 +62,7 @@
         </v-card>
       </v-container>
       <v-container>
-  
+
 <!-- todo:这里只写了一个静态卡片，感觉接口最好改一下 -->
         <v-row>
           <v-col>
@@ -169,7 +167,6 @@ export default {
           this.loading = false;
         });
     },
-  
   },
   mounted() {
       this.$store.commit("setAppTitle", "共享资源站");

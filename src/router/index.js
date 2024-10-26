@@ -80,7 +80,7 @@ router.beforeEach((to, from, next) => {
     sessionStorage.removeItem('__user_name__');
     store.commit("hidePlatformFrame");
     if (to.matched.some(record => record.meta.requiresAuth)) {
-      next({ name: 'login' });
+      next({ name: 'auth' });
     } else {
       document.title = title + default_title;
       next();

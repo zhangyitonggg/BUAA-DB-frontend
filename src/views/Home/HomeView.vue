@@ -10,25 +10,17 @@
           <span>页面设置</span>
           <v-icon>mdi-chat-processing</v-icon>
         </v-btn>
-        <v-btn value="GiveMeMoney">
-          <span>支持我们</span>
-          <v-icon>mdi-hand-coin</v-icon>
-        </v-btn>
       </v-bottom-navigation>
     </v-container>
   </template>
-  
   <script>
   import NewsList from '../../components/Home/News.vue'
   import FrontConfig from '../../components/Home/FrontConfig.vue'
-  import GiveMeMoney from '../../components/Home/GiveMeMoney.vue'
-  
   export default {
     name: 'HomeView',
     components: {
       NewsList,
       FrontConfig,
-      GiveMeMoney,
     },
     data() {
       return {
