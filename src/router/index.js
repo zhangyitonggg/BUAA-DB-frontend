@@ -22,7 +22,7 @@ const routes = [
   },
   {
     // 登录 + 注册
-    path: '/auth/',
+    path: '/auth',
     name: 'auth',
     component: () => import('../views/Auth/AuthView.vue'),
     meta: {
@@ -32,7 +32,7 @@ const routes = [
   },
   {
     // 首页
-    path: '/home/',
+    path: '/home',
     name: 'home',
     component: () => import('../views/Home/HomeView.vue'),
     meta: {
@@ -41,16 +41,34 @@ const routes = [
     }
   },
   {
-    path: '/share/',
-    name: 'share',
-    component: () => import('../views/Share/ShareView.vue'),
+    path: '/resources',
+    name: 'resources',
+    component: () => import('../views/Resources/ResourcesView.vue'),
     meta: {
       requiresAuth: true,
       title: '共享资源'
     }
   },
   {
-    path: '/center/',
+    path: '/tasks',
+    name: 'tasks',
+    component: () => import('../views/Tasks/TasksView.vue'),
+    meta: {
+      requiresAuth: true,
+      title: '悬赏'
+    },
+  },
+  {
+    path: '/tasks/add',
+    name: 'task-add',
+    component: () => import('../views/Tasks/Add/AddTaskView.vue'),
+    meta: {
+      requiresAuth: true,
+      title: '添加悬赏'
+    }
+  },
+  {
+    path: '/center',
     name: 'center',
     component: () => import('../views/Center/CenterView.vue'),
     meta: {

@@ -19,10 +19,6 @@
     >
     </vue-particles>
 
-
-    <!-- <v-app-bar app v-if="$store.state._show_platform_frame_">
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-    </v-app-bar> -->
     <v-app-bar app v-if="$store.state._show_platform_frame_">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ $store.state._app_title_ }}</v-toolbar-title>
@@ -77,14 +73,13 @@
         </v-list>
       </div>
     </v-navigation-drawer>
-    
     <v-main>
       <router-view />
     </v-main>
 
-    <v-alert 
-      elevation="11" 
-      v-show="$store.state._alert_.show" 
+    <v-alert
+      elevation="11"
+      v-show="$store.state._alert_.show"
       :type="['success', 'info', 'warning', 'error'].includes($store.state._alert_.type) ? $store.state._alert_.type : 'info'"
       transition="scroll-y-transition">
       {{ $store.state._alert_.message }}
@@ -92,7 +87,7 @@
   </v-app>
 </template>
 
-<script>  
+<script>
 
 export default {
   name: 'App',
@@ -104,11 +99,10 @@ export default {
     return {
       drawer: false,
       links: [
-        ['mdi-home', '管理首页', '/'],
-        ['mdi-book-open-variant-outline', '管理题库', '/exercises'],
-        ['mdi-account-group', '管理团队', '/groups'],
-        ['mdi-account-wrench', '管理用户', '/users'],
-        ['mdi-account', '个人中心', '/me'],
+        ['mdi-home', '首页', '/'],
+        ['mdi-book-open-variant-outline', '共享资源', '/resources'],
+        ['mdi-account-group', '悬赏', '/tasks'],
+        ['mdi-account', '个人中心', '/center'],
       ],
     };
   },
@@ -121,7 +115,7 @@ export default {
         }
       });
     },
-    handleAboutClick() { 
+    handleAboutClick() {
       this.navigateTo('/about');
     },
     getCurrentTimeGreetings() {
