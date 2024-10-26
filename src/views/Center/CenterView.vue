@@ -7,11 +7,7 @@
           <span>基本信息</span>
           <v-icon>mdi-message-alert-outline</v-icon>
         </v-btn>
-        <v-btn value="SharingResource">
-          <span>数据统计</span>
-          <v-icon>mdi-chat-processing</v-icon>
-        </v-btn>
-        <v-btn value="GiveMeMoney">
+        <v-btn value="MyFollow">
           <span>我的关注</span>
           <v-icon>mdi-hand-coin</v-icon>
         </v-btn>
@@ -29,6 +25,7 @@
   import UserInfo from '../../components/Center/UserInfo.vue'
   import SharingResource from '../../components/Share/ShareResource.vue'
   import GiveMeMoney from '../../components/Home/GiveMeMoney.vue'
+  import MyFollow from '../../components/Center/MyFollow.vue'
     
   export default {
     name: 'CenterView',
@@ -36,6 +33,7 @@
       UserInfo,
       SharingResource,
       GiveMeMoney,
+      MyFollow,
     },
     data() {
       return {
