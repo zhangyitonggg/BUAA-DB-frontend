@@ -1,4 +1,5 @@
 <template>
+  <div style="margin-top: -50px;">
     <v-container class="spacing-playground pa-16" fluid>
       <component :is="currentComponent" />
       <v-bottom-navigation app fixed color="primary" v-model="activeBtn">
@@ -20,6 +21,8 @@
         </v-btn>
       </v-bottom-navigation>
     </v-container>
+  </div>
+
   </template>
   
   <script>

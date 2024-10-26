@@ -1,78 +1,72 @@
 <template>
-    <v-card max-width="600px">
-      <v-card-title>
-        <v-icon left class="mr-2">mdi-account-circle</v-icon>
-        个人信息
-      </v-card-title>
-      <v-divider></v-divider>
-      <v-row no-gutters class="my-4" align="center" justify="center">
-        <!-- 左边头像和名字 -->
-        <v-col cols="4">
-          <v-row justify="center">
-            <!-- <v-avatar src="@/assets/images/blogDefault.png" size="x-large" rounded /> -->
-            <v-img src="@/assets/images/blogDefault.png" aspect-ratio="1" height="110px" width="110px"
-            contain></v-img>
-          </v-row>
-          <v-row class="py-2" justify="center">
-            <v-divider></v-divider>
-          </v-row>
-          <v-row justify="center" class="mb-2">
-            <div class="text-h5">{{ username }}</div>
-          </v-row>
-          <v-row justify="center">
-            <v-btn
-              ref="change_avatar_button"
-              icon="mdi-pencil"
-              variant="text"
-              color="primary"
-              size="small"
-            >
-              修改头像
-            </v-btn>
-          </v-row>
+  <v-container style="max-width: 700px;">
+    <v-card class="pa-4">
+      <v-row>
+        <v-col cols="12">
+          <h3>用户基本信息</h3>
         </v-col>
-  
-        <!-- 垂直分隔线 -->
-        <v-divider vertical></v-divider>
-  
-        <!-- 右边个人信息 -->
-        <v-col>
-          <v-list>
-            <v-list-item prepend-icon="mdi-account">
-              <v-list-item-title>
-                用户名 <span class="mx-1"></span> {{ username }}
-              </v-list-item-title>
-            </v-list-item>
-            <v-list-item prepend-icon="mdi-card-account-details">
-              <v-list-item-title>
-                学号 <span class="mx-1"></span> {{ studentId || '未填写' }}
-              </v-list-item-title>
-              <template v-slot:append>
-                <v-btn variant="text" color="primary" ref="change_studentid_button">修改学号</v-btn>
-              </template>
-            </v-list-item>
-          </v-list>
+        <v-col style="padding: 0;" cols="12">
+          <v-divider></v-divider>
+        </v-col>
+        <v-col cols="8">
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>用户名</v-list-item-title>
+              <v-list-item-subtitle>zhangyitong</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>身份</v-list-item-title>
+              <v-list-item-subtitle>普通用户</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>电子邮件地址</v-list-item-title>
+              <v-list-item-subtitle>22373337@buaa.edu.cn</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>个性标签</v-list-item-title>
+              <v-list-item-subtitle>热爱编程，喜欢挑战</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-col>
+        <v-col cols="4" style="margin-top: 20px;">
+          <v-img
+            src="@/assets/images/blogDefault.png"
+            aspect-ratio="1"
+            height="130px"
+            width="130px"
+            contain
+            style="transform: translateX(-9%);"
+          ></v-img>
+          <v-btn text color="primary">选择新头像</v-btn>
+        </v-col>
+        <v-col style="padding: 0;" cols="12">
+          <v-divider></v-divider>
+        </v-col>
+        <v-col style="padding: 0.1px;" class="text-right">
+          <v-btn text color="red">修改密码</v-btn>
+          <v-btn text color="red">修改电子邮件地址</v-btn>
+          <v-btn text color="red">修改个性标签</v-btn>
+          <v-btn text color="red">退出登录</v-btn>
         </v-col>
       </v-row>
     </v-card>
-  </template>
+  </v-container>
+</template>
+
 <script>
 export default {
-  name: 'UserInfo',
-  data() {
-    return {
-        username: 'hugo', // 可以修改成动态的
-        studentId: '' // 学号，如果为空显示“未填写”
-    };
-  },
-  watch: {
-
-  },
-  methods: {
-
-  },
-  mounted() {
-      this.$store.commit("setAppTitle", "个人信息");
-  },
+  name: "UserCenter",
 };
 </script>
+
+<style scoped>
+h3 {
+  font-weight: bold;
+}
+</style>
