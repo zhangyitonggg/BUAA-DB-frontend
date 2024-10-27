@@ -6,6 +6,8 @@
                     <v-text-field
                         v-model="title"
                         label="标题"
+                        :rules="[v => !!v || '标题不能为空']"
+                        aria-required=""
                     ></v-text-field>
                 </v-col>
             </v-row>
@@ -14,6 +16,11 @@
                   <v-text-field
                     v-model="coin"
                     label="报酬"
+                    :rules="[
+                        v => !!v || '报酬不能为空',
+                        v => /^\d+$/.test(v) || '报酬必须是非负整数'
+                    ]"
+                    required
                   ></v-text-field>
                 </v-col>
                 <v-col cols="6">
@@ -60,7 +67,7 @@
                     ></v-textarea>
                 </v-col>
                 <v-col>
-                    <v-md-preview :text="description"></v-md-preview>
+                    <v-md-preview :text="description" default-show-toc="True"></v-md-preview>
                 </v-col>
             </v-row>
         </v-col>
@@ -110,6 +117,7 @@
             },
             publish() {
                 console.log(this.title, this.coin, this.tags, this.description);
+                this.$router.push('/tasks');
             }
         },
         mounted() {

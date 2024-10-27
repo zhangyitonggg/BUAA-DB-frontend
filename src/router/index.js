@@ -21,7 +21,6 @@ const routes = [
     redirect: '/home/'
   },
   {
-    // 登录 + 注册
     path: '/auth',
     name: 'auth',
     component: () => import('../views/Auth/AuthView.vue'),
@@ -31,7 +30,6 @@ const routes = [
     }
   },
   {
-    // 首页
     path: '/home',
     name: 'home',
     component: () => import('../views/Home/HomeView.vue'),
@@ -50,6 +48,15 @@ const routes = [
     }
   },
   {
+    path: '/resources/add',
+    name: 'add-resource',
+    component: () => import('../views/Resources/ResourcesView.vue'),
+    meta: {
+      requiresAuth: true,
+      title: '共享资源'
+    }
+  },
+  {
     path: '/tasks',
     name: 'tasks',
     component: () => import('../views/Tasks/TasksView.vue'),
@@ -60,7 +67,7 @@ const routes = [
   },
   {
     path: '/tasks/add',
-    name: 'task-add',
+    name: 'add-task',
     component: () => import('../views/Tasks/Add/AddTaskView.vue'),
     meta: {
       requiresAuth: true,

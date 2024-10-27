@@ -36,21 +36,17 @@ export default {
     setParticles(state, payload) {
       state.hasParticles = payload;
     },
-    // 取消警告
-    cancelAlert(state) {
-      state._alert_.show = false;
-    },
     // 显示警告
     setAlert(state, alert) {
       state._alert_.message = alert.message;
       if (alert.type) {
         state._alert_.type = alert.type;
-        state._alert_.show = true;
+        state._alert_.show = state._alert_.show + 1;
         setTimeout(() => {
-          state._alert_.show = false;
+          state._alert_.show = state._alert_.show - 1;
         }, 2000);
       } else {
-        state._alert_.show = false;
+        state._alert_.show = state._alert_.show - 1;
       }
     },
     // 显示导航栏

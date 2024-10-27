@@ -13,17 +13,17 @@ export default new Vuex.Store({
     count: 0,
     _show_platform_frame_: true,
     _alert_: {
-      show: false,
+      show: 0,
       message: "default message",
       type: "susscss",
     },
     _role_: 0, // 0: 普通用户, 1: 管理员
     _token_: null,
-    _app_title_: "default app title",
+    _app_title_: "",
     hasParticles: true,
   },
 
-  mutations, 
+  mutations,
   actions,
   getters,
 });
