@@ -1,239 +1,115 @@
-/* eslint-disable */
 <template>
-    <div class="homepageWrapper">
-        <!-- <Header></Header> -->
-        <div class="contentSidebar">
-            <!-- <sidebar id="sidebar"></sidebar> -->
-            <div class="contentWrapper">
-                <!-- <recommend-top :list="recommendTopList"></recommend-top> -->
-                <div class="contentMain">
-                    <div class="mainAdv">
-                        <!-- <main-adv></main-adv> -->
-                        <!-- <new-info></new-info> -->
-                        <ShareMain></ShareMain>
-                    </div>
-                    <!-- <recommend-right id="recommendRight" :fromLink="fromLink"></recommend-right> -->
+  <div>
+    <template v-if="loading">
+      <v-container fluid class="d-flex align-center justify-center">
+        <v-row class="text-center">
+          <v-col>
+            <v-progress-circular indeterminate color="primary" size="64"></v-progress-circular>
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-container fluid class="d-flex align-center justify-center">
+        <v-row class="text-center">
+          <v-col>
+            <h3>
+              潮平两岸阔，风正一帆悬。
+            </h3>
+            <h4>
+              欢迎回到 ASEPT。
+            </h4>
+            <span>正在获取公告。</span>
+          </v-col>
+        </v-row>
+      </v-container>
+    </template>
+    <template v-else>
+      <v-row justify="center">
+        <v-expansion-panels inset v-model="activePanel">
+          <v-expansion-panel
+            v-for="(item,i) in news"
+            :key="i"
+          >
+            <v-expansion-panel-header>
+              <div style="display: flex; justify-content: space-between; width: 100%;">
+                <div>{{ item.title }}</div>
+                <div style="color: grey; text-align: right; margin-right: 16px;">
+                  <span>{{ formatDate(item.notified_at) }}</span>
                 </div>
-            </div>
-        </div>
-        <!-- <go-top-icon id="goTop"></go-top-icon> -->
-        <!-- <free-vip-icon id="freeVip"></free-vip-icon> -->
-        <!-- <adv-popup></adv-popup> -->
-    </div>
+              </div>
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <v-md-preview :text="item.content"></v-md-preview>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </v-row>
+    </template>
+    <v-banner v-if="news.length === 0">
+      好吧，看起来现在还没有公告。
+    </v-banner>
+  </div>
 </template>
 
 <script>
-import ShareMain from '../../components/Share/ShareMain.vue';
+import { format } from 'date-fns';
+
+import VMdPreview from '@kangc/v-md-editor/lib/preview';
+import '@kangc/v-md-editor/lib/style/preview.css';
+import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
+import '@kangc/v-md-editor/lib/theme/style/github.css';
+import hljs from 'highlight.js';
+
+VMdPreview.use(githubTheme, {
+  Hljs: hljs,
+});
 
 export default {
-    name: 'ShareView',
-    components: {
-        ShareMain
+  name: "NewsList",
+  components: {
+    VMdPreview
+  },
+  data() {
+    return {
+      news: [],
+      loading: true,
+      activePanel: [0], // 默认展开第一个面板
     }
+  },
+  mounted() {
+    this.$store.commit("setAppTitle", "公告");
+    this.$store.dispatch("getNews", { page: 1 })
+      .then(res => {
+        this.news = res.messages;
+      })
+      .catch(_ => {
+        this.news = [];
+        this.$store.commit("setAlert", { type: "error", message: "无法获取公告。请检查你的网络设置。" })
+      })
+      .finally(() => {
+        this.loading = false;
+      });
+  },
+  methods: {
+    formatDate(dateString) {
+      return format(new Date(dateString), 'yyyy-MM-dd HH:mm:ss');
+    },
+  }
 }
 </script>
 
+<style scoped>
+.v-expansion-panel-header {
+  font-size: large;
+}
 
-<style lang="stylus" scoped>
-.homepageWrapper
-  position relative
-  top 0
-  left 0
-  .contentSidebar
-    width 1184px
-    padding-left 22px
-    padding-right 22px
-    padding-top 10px
-    margin 0 auto
-    display flex
-    position relative
-    top 0
-    right 0
-    .contentWrapper
-      width 1074px
-      position relative
-      .contentMain
-        display flex
-        .mainAdv
-          width 760px
-          margin-right 14px
-        #recommendRight
-          top 148px
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.panel-content {
+  margin-top: 30px;
+}
 </style>
-
-
-
-<template>
-    <div class="tile is-ancestor">
-      <div class="tile is-parent is-8">
-        <article class="tile is-child box">
-          <p align="right">
-            <button class="button is-info" @click="getAll">全部帖子</button>
-          </p>
-  
-          <ul
-            v-infinite-scroll="loadMore"
-            infinite-scroll-disabled="busy"
-            infinite-scroll-distance="limit"
-            style="height: 100vh;
-      overflow-y: auto;"
-          >
-            <div class="box" v-for="(content,index) in contents" :key="index">
-              <article class="media">
-                <figure class="media-left">
-                  <p class="image is-64x64">
-                    <!-- <img :src="require(`../../assets/${content.user.userImg}`)" class="size" /> -->
-                    <img :src="require(`../../assets/images/blogDefault.png`)" class="size" />
-                  </p>
-                </figure>
-                <div class="media-content">
-                  <div class="content">
-                    <p>
-                      <strong>发帖人用户名:{{content.created_by.username}}</strong>
-  
-                      <br />
-                      发帖标题:{{content.title}}
-                    </p>
-                  </div>
-                  <nav class="level is-mobile">
-                    <div class="level-left">
-                      <a class="level-item">
-                        <span class="icon is-small">
-                          <i class="fab fa-hotjar"></i>
-                        </span>
-                        {{content.favorites}}
-                      </a>
-  
-                      <a class="level-item">
-                        <span class="icon is-small">
-                          <i class="fas fa-comment-dots"></i>
-                        </span>
-                        {{content.dislikes}}
-                      </a>
-  
-                      <a class="level-item">
-                        <span class="icon is-small">
-                          <i class="fas fa-heart"></i>
-                        </span>
-                        {{content.likes}}
-                      </a>
-                    </div>
-                  </nav>
-                </div>
-                <div class="media-right">
-                  <a class="navbar-item" slot="trigger" role="button">
-                    <b-button type="is-info" outlined @click="detail(index)">查看详情</b-button>
-                  </a>
-                </div>
-              </article>
-            </div>
-            <div>没有更多了</div>
-          </ul>
-        </article>
-      </div>
-
-
-      <div class="tile is-parent">
-        <article class="tile is-child box">
-          <p class="subtitle">所有板块</p>
-  
-          <div class="card">
-            <header class="card-header">
-              <p class="card-header-title">板块名</p>
-              <a href="#" class="card-header-icon" aria-label="more options">
-                <span class="icon">
-                  <i class="fas fa-angle-down" aria-hidden="true"></i>
-                </span>
-              </a>
-            </header>
-            <div class="card-content">
-              <div class="content">
-                <!-- <section>
-                  <b-tooltip
-                    v-for="(ArticleType,index) in ArticleTypes"
-                    :key="index"
-                    :label="ArticleType.typeDesc"
-                    class="is-info"
-                  >
-                    <button
-                      class="button is-info is-outlined"
-                      @click="getTypeArticle(ArticleType.typeId)"
-                    >{{ArticleType.typeName}}</button>
-                  </b-tooltip>
-                </section> -->
-                <br />
-              </div>
-            </div>
-            <footer class="card-footer">
-              <a href="#" class="card-footer-item">点击你感兴趣的板块</a>
-            </footer>
-          </div>
-        </article>
-      </div>
-    </div>
-  </template>
-  
-  
-  <script>
-  export default {
-    data() {
-      return {
-        contents: [],
-        loading: true,
-      };
-    },
-    mounted() {
-        console.log("mounted");
-        this.$store.dispatch("searchResources", {tags:null, pay:0, sory_by:0, key_word:null})
-            .then(res => {
-                this.contents = res;
-                console.log(res);
-            })
-            .catch(_ => {
-                this.$store.commit("setAlert", { type: "error", message: "无法获取资源。请检查你的网络设置。" })
-            })
-            .finally(() => {
-                this.loading = false;
-            });
-    },
-  
-    methods: {
-        getAll() {
-            console.log("getAll");
-        },
-        // searchResource() {
-        //     this.$store.dispatch("searchResource", {tags:null, pay:0, sory_by:0, key_word:null});
-        // }
-    
-      detail(index) {
-        console.log(index);
-        
-        // const detaildata = this.contents[index];
-        // this.$router.push({
-        //   path: "/details",
-        //   query: {
-        //     detaildata: JSON.stringify(detaildata)
-        //   }
-        // });
-      }
-    },
-    created() {
-
-    }
-  };
-  </script>
-  
-  <style scoped>
-  .size {
-    width: 64px;
-    height: 64px;
-  }
-  .fuck {
-    text-align: center;
-  }
-  .tile.is-ancestor {
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-  }
-  </style>

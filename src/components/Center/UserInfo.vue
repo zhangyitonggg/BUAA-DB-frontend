@@ -48,12 +48,12 @@
         </v-col>
         <v-col cols="4" style="margin-top: 20px;">
           <v-img
-            src="@/assets/images/blogDefault.png"
-            aspect-ratio="1"
-            height="130px"
-            width="130px"
-            contain
-            style="transform: translateX(-9%);"
+          src="@/assets/images/zyt.png"
+          aspect-ratio="1"
+          height="130px"
+          width="130px"
+          contain
+          style="transform: translateX(-9%); border-radius: 50%; overflow: hidden;"
           ></v-img>
           <v-btn text color="primary">选择新头像</v-btn>
         </v-col>

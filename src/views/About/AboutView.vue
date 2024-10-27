@@ -1,5 +1,5 @@
 <template>
-  <v-container style="margin-top:50px">
+  <v-container style="margin-top:45px">
     <v-card class="mb-10">
       <v-card-title>
         <h2 style="font-size: 24px;" @click="showImage = true">
@@ -7,12 +7,12 @@
           <img src="@/assets/images/logo.png" alt="our logo" class="welcome-image" style="cursor: pointer;">
         </h2>
       </v-card-title>
+      <v-divider class="my-0"></v-divider>
       <v-card-text>
         <div style="font-weight: bold; font-size: 18px;">
           这是 航U邦，一个用于分享资源和获取资源的平台。
         </div>
-        <v-divider class="my-3"></v-divider>
-        <div style="font-size: 16px;">
+        <div style="font-size: 16px; margin-top:8px;">
           随着互联网的发展，学生和教师对在线学习资源的需求日益增长。然而，现有的一些平台并未完全满足学习者多样化的需求，尤其是在资料共享、悬赏任务等方面。因此，建立一个专门的学习资料分享网站，不仅可以弥补这些不足，还能为学生提供一个高效、灵活的学习环境。
         </div>
       </v-card-text>
@@ -27,6 +27,7 @@
           <!-- <img src="@/assets/images/blogDefault.png" alt="our logo" class="welcome-image2" style="cursor: pointer;"> -->
         </h2>
       </v-card-title>
+      <v-divider class="my-0"></v-divider>
       <v-card-text>
         <div style="font-size: 16px;">
           这是一个基于 Vue2 和 Django 的开源项目。
@@ -46,6 +47,7 @@
           本项目的诞生离不开包括 Vue 和 Node.js 在内的众多开源项目。
         </div>
         <br>
+        <v-divider class="my-0"></v-divider>  
         <div style="font-size: 16px;">
           感谢所有人对该项目提供的帮助。以下是项目的主要贡献者：
         </div>

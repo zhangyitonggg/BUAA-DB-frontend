@@ -19,7 +19,7 @@ export default new Vuex.Store({
     },
     _role_: 0, // 0: 普通用户, 1: 管理员
     _token_: null,
-    _app_title_: "",
+    _app_title_: "航U邦",
     hasParticles: true,
   },
 
