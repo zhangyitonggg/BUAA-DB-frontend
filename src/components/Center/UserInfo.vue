@@ -1,5 +1,5 @@
 <template>
-  <v-container style="max-width: 700px;">
+  <v-container style="max-width: 45%;">
     <v-card class="card pa-4">
       <v-row>
         <v-col cols="12">
