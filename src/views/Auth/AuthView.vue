@@ -1,9 +1,11 @@
 <template>
-    <v-card flat>
-      <v-progress-linear :indeterminate="true" v-show="loading" id="loginPanelProgressBar" color="success" />
+  <v-card flat class="back">
+    <v-progress-linear :indeterminate="true" v-show="loading" id="loginPanelProgressBar" color="success" />
+    <v-card class="white-card"> <!-- 新增的白色卡片 -->
       <div class="ma-6">
         <h2 class="mb-4">
-          欢迎<span v-if="showRegister">新朋友！</span><span v-else>回来。</span>
+          欢迎<span v-if="showRegister">新朋友！</span><span v-else>回来呀！</span>
+          <img src="@/assets/images/logo.png" alt="our logo" class="welcome-image">
         </h2>
         <v-subheader id="loginPanelSubheader">
           <template v-if="loading">
@@ -20,16 +22,14 @@
         <v-form v-if="showRegister" class="loginPanelForm" @submit.prevent="handleRegister">
           <v-text-field class="dense" outlined label="用户名" :rules="[v => !!v || '必填']" autofocus required
             prepend-inner-icon="mdi-account-box" v-model="username" :disabled="loading" />
-          <v-text-field class="dense" outlined label="密码" :rules="[
+          <v-text-field class="dense" outlined label="密码" :rules="[ 
             v => !!v || '',
             v => v.length > 3 || '至少3字符',
             v => v.length < 21 || '至多20字符',
             v => {
-              const pattern = /^.*[0-9].*$/
-              const pattern_w = /^.*[a-zA-Z].*$/
-              return (
-                (pattern.test(v) && pattern_w.test(v)) || '必须包含数字和字母'
-              )
+              const pattern = /^.*[0-9].*$/;
+              const pattern_w = /^.*[a-zA-Z].*$/;
+              return (pattern.test(v) && pattern_w.test(v)) || '必须包含数字和字母';
             }
           ]" type="password" prepend-inner-icon="mdi-fingerprint" required v-model="password" :disabled="loading" />
           <div class="d-flex">
@@ -60,134 +60,148 @@
         </v-btn>
       </div>
     </v-card>
-  </template>
-  
-  <script>  
-  export default {
-    name: "AuthPanel",
-    data() {
-      return {
-        username: "",
-        password: "",
-        remember: false,
-        showRegister: false,
-        loading: false,
-        robot: true,
-      };
+  </v-card>
+</template>
+
+<script>
+export default {
+  name: "AuthPanel",
+  data() {
+    return {
+      username: "",
+      password: "",
+      remember: false,
+      showRegister: false,
+      loading: false,
+      robot: true,
+    };
+  },
+  methods: {
+    async handleLogin() {
+      this.loading = true;
+      try {
+        await this.$store.dispatch("login", {
+          username: this.username,
+          password: this.password,
+          remember: this.remember,
+        });
+        this.$store.commit("getUserName");
+        this.$store.commit('setAlert', {
+          type: "success",
+          message: "欢迎回来，" + this.$store.getters.username + "。",
+        });
+        
+        this.$router.push("/");
+      } catch (error) {
+        this.$store.commit("setAlert", {
+          type: "error",
+          message: error,
+        });
+      } finally {
+        this.loading = false;
+      }
     },
-    methods: {
-      async handleLogin() {
-        this.loading = true;
-        try {
-          await this.$store.dispatch("login", {
-            username: this.username,
-            password: this.password,
-            remember: this.remember,
-          });
-          this.$store.commit("getUserName");
-          this.$store.commit('setAlert', {
+    handleRegister() {
+      this.loading = true;
+      this.$store
+        .dispatch("register", {
+          username: this.username,
+          password: this.password,
+        })
+        .then(() => {
+          this.$store.commit("setAlert", {
             type: "success",
-            message: "欢迎回来，" + this.$store.getters.username + "。",
+            message: "注册成功，欢迎你！",
           });
-          
-          this.$router.push("/");
-        } catch (error) {
+          this.username = "";
+          this.password = "";
+          this.switchRegisterPage();
+        })
+        .catch((e) => {
           this.$store.commit("setAlert", {
             type: "error",
-            message: error,
+            message: e,
           });
-        } finally {
+        })
+        .finally(() => {
           this.loading = false;
-        }
-      },
-      handleRegister() {
-        this.loading = true;
-        this.$store
-          .dispatch("register", {
-            username: this.username,
-            password: this.password,
-          })
-          .then(() => {
-            this.$store.commit("setAlert", {
-              type: "success",
-              message: "注册成功，欢迎你！",
-            });
-            this.username = "";
-            this.password = "";
-            this.switchRegisterPage();
-          })
-          .catch((e) => {
-            this.$store.commit("setAlert", {
-              type: "error",
-              message: e,
-            });
-          })
-          .finally(() => {
-            this.loading = false;
-          });
-      },
-      switchRegisterPage() {
-        this.showRegister = !this.showRegister;
-      },
-      warnAboutRememberingLogin() {
-        if (this.remember) {
-          this.$store.commit("setAlert", {
-            type: "warning",
-            message: "请不要在公共设备上勾选此选项。",
-          });
-        }
-      },
-      checkIfIsRobot() {
-        if (!this.robot) {
-          this.$store.commit("setAlert", {
-            type: "warning",
-            message: "你最好不是。",
-          });
-        }
-      },
+        });
     },
-  };
-  </script>
-  
-  <style scoped lang="scss">
-  .dense {
-    margin: -5px 0 -10px 0 !important;
-  }
-  
-  .topmost {
-    z-index: 1001;
-  }
-  
-  .v-card {
-    display: flex;
-    justify-content: center;
-    /* 水平居中 */
-    align-items: center;
-    /* 垂直居中 */
-    height: 100vh;
-    /* 设置容器高度为视窗高度，实现垂直居中 */
-  }
-  
-  #loginPanelProgressBar {
-    position: absolute;
-    top: -30px;
-    margin: 0 0 0 0;
-  }
-  
-  .loginPanelForm {
-    width: 100%;
-    z-index: 2;
-    position: relative;
-  }
-  .buttonyt {
-    z-index: 2;
-    position: relative;
-  }
-  
-  #loginPanelSubheader {
-    clear: both;
-    padding-bottom: 20px;
-    padding-left: 0;
-  }
-  </style>
-  
+    switchRegisterPage() {
+      this.showRegister = !this.showRegister;
+    },
+    warnAboutRememberingLogin() {
+      if (this.remember) {
+        this.$store.commit("setAlert", {
+          type: "warning",
+          message: "请不要在公共设备上勾选此选项。",
+        });
+      }
+    },
+    checkIfIsRobot() {
+      if (!this.robot) {
+        this.$store.commit("setAlert", {
+          type: "warning",
+          message: "你最好不是。",
+        });
+      }
+    },
+  },
+};
+</script>
+
+<style scoped lang="scss">
+.back {
+  background-image: url('@/assets/images/back.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.dense {
+  margin: -5px 0 -10px 0 !important;
+}
+.topmost {
+  z-index: 1001;
+}
+.v-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+#loginPanelProgressBar {
+  position: absolute;
+  top: -30px;
+  margin: 0 0 0 0;
+}
+.white-card {
+  background-color: white; /* 设置卡片为白色 */
+  width: 21%; /* 确保与外层卡片同宽 */
+  height: 48%; 
+  opacity: 0.95; /* 增加透明度 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* 增大阴影效果 */
+  border-radius: 12px; /* 增加圆角效果 */
+  overflow: hidden; /* 确保内容不溢出 */
+}
+
+.loginPanelForm {
+  width: 100%;
+  z-index: 2;
+  position: relative;
+}
+.buttonyt {
+  z-index: 2;
+  position: relative;
+}
+#welcomePanelSubheader {
+  clear: both;
+  padding-bottom: 20px;
+  padding-left: 0;
+}
+.welcome-image {
+  vertical-align: middle;
+  margin-left: 45px;
+  width: 70px;
+  height: auto;
+}
+</style>

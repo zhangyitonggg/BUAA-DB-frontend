@@ -37,7 +37,7 @@
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
             <v-avatar size="36">
-              <img src="https://cravatar.cn/avatar/5ed20f2960c5e87468dee55bfd3ec4ab?d=mp">
+              <img src="@/assets/images/zyt.png">
             </v-avatar>
           </v-btn>
         </template>

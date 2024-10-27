@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container style="margin-top: 90px;">
         <v-card class="mb-10">
             <v-card-title class="centered-title"> 
               <h1 style="color: gray;">我很可爱，请给我钱！</h1>

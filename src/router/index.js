@@ -82,6 +82,24 @@ const routes = [
       requiresAuth: true,
       title: '个人中心'
     }
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: () => import('../views/About/AboutView.vue'),
+    meta: {
+      requiresAuth: false,
+      title: '关于我们'
+    }
+  },
+  {
+    path: '/giveMeMoney',
+    name: 'giveMeMoney',
+    component: () => import('../components/Home/GiveMeMoney.vue'),
+    meta: {
+      requiresAuth: false,
+      title: '关于我们'
+    }
   }
 ];
 
