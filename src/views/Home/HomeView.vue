@@ -1,16 +1,6 @@
 <template>
   <v-container class="spacing-playground pa-16" fluid>
-    <component :is="currentComponent" />
-    <v-bottom-navigation app fixed color="primary" v-model="activeBtn">
-      <v-btn value="NewsList">
-        <span>公告</span>
-        <v-icon>mdi-message-alert-outline</v-icon>
-      </v-btn>
-      <v-btn value="FrontConfig">
-        <span>页面设置</span>
-        <v-icon>mdi-chat-processing</v-icon>
-      </v-btn>
-    </v-bottom-navigation>
+    <news-list />
   </v-container>
 </template>
 <script>
@@ -20,7 +10,6 @@
     name: 'HomeView',
     components: {
       NewsList,
-      FrontConfig,
     },
     data() {
       return {
@@ -34,8 +23,22 @@
       }
     },
     methods: {
+      getCurrentTimeGreetings() {
+        const h = new Date().getHours()
+        if (h < 2) return '夜深了'
+        if (h < 6) return '别卷了'
+        if (h < 12) return '上午好'
+        if (h < 13) return '中午好'
+        if (h < 18) return '下午好'
+        if (h < 23) return '晚上好'
+        return '夜深了'
+      },
     },
     watch: {
+    },
+    mounted() {
+      var title = this.getCurrentTimeGreetings() + "，" + this.$store.getters.username;
+      this.$store.commit("setAppTitle", title);
     }
   }
 </script>

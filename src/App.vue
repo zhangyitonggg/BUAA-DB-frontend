@@ -23,8 +23,18 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ $store.state._app_title_ }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <div class="pr-3">{{ getCurrentTimeGreetings() }}，{{ $store.getters.username }}</div>
-      <v-menu bottom min-width="130px" rounded offset-y> <template v-slot:activator="{ on }">
+      <v-btn icon @click="toggleParticles" :color="$store.getters.hasParticles ? 'primary' : 'grey'">
+        <v-icon>
+          mdi-apache-kafka
+        </v-icon>
+      </v-btn>
+      <v-btn icon @click="changeMode">
+        <v-icon transition="scale-transition">
+          {{ this.$vuetify.theme.dark ? 'mdi-weather-night' : 'mdi-white-balance-sunny' }}
+        </v-icon>
+      </v-btn>
+      <v-menu bottom min-width="130px" rounded offset-y>
+        <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
             <v-avatar size="36">
               <img src="https://cravatar.cn/avatar/5ed20f2960c5e87468dee55bfd3ec4ab?d=mp">
@@ -34,7 +44,7 @@
         <v-card>
           <v-list-item-content class="justify-center">
             <div class="mx-auto text-center">
-              <v-btn depressed rounded text @click="navigateTo('/me')">
+              <v-btn depressed rounded text @click="navigateTo('/center')">
                 个人中心
               </v-btn>
               <v-divider class="my-3"></v-divider>
@@ -79,7 +89,7 @@
 
     <v-alert
       elevation="11"
-      v-show="$store.state._alert_.show"
+      v-show="$store.state._alert_.show != 0"
       :type="['success', 'info', 'warning', 'error'].includes($store.state._alert_.type) ? $store.state._alert_.type : 'info'"
       transition="scroll-y-transition">
       {{ $store.state._alert_.message }}
@@ -118,19 +128,17 @@ export default {
     handleAboutClick() {
       this.navigateTo('/about');
     },
-    getCurrentTimeGreetings() {
-      const h = new Date().getHours()
-      if (h < 2) return '夜深了'
-      if (h < 6) return '别卷了'
-      if (h < 12) return '上午好'
-      if (h < 13) return '中午好'
-      if (h < 18) return '下午好'
-      if (h < 23) return '晚上好'
-      return '夜深了'
-    },
     logout() {
       this.$store.commit("clearPersonalInfo");
       this.$router.push({ name: 'login' });
+    },
+    changeMode() {
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+      this.$store.commit("setAlert", this.$vuetify.theme.dark ? { "type": "success", "message": "黑暗模式已启用。" } : { "type": "success", "message": "黑暗模式已关闭。" });
+    },
+    toggleParticles() {
+      this.$store.commit("setParticles", !this.$store.getters.hasParticles);
+      this.$store.commit("setAlert", this.$store.getters.hasParticles ? { "type": "success", "message": "背景颗粒已启用。" } : { "type": "success", "message": "背景颗粒已关闭。" });
     }
   },
   created() {
@@ -163,8 +171,8 @@ export default {
   z-index: 1001;
   position: fixed;
   bottom: 0;
-  width: 100%;
-  left: 0;
+  width: 105%;
+  height: fit-content;
 }
 
 .slide-y-enter-active,
@@ -176,5 +184,15 @@ export default {
 .slide-y-leave-to {
   transform: translateY(100%);
   opacity: 0;
+}
+
+.scale-transition {
+  transition: transform 0.3s ease;
+}
+.scale-transition-enter-active {
+  transform: scale(1.2);
+}
+.scale-transition-leave-active {
+  transform: scale(0.8);
 }
 </style>
