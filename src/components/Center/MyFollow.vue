@@ -1,5 +1,5 @@
 <template>
-    <v-container style="max-width: 920px;">
+    <v-container style="max-width: 70%;">
       <div class="follow-list">
         <div v-for="(user, index) in users" :key="index" class="user-card">
           <img :src="user.avatar" class="avatar" />
