@@ -222,7 +222,6 @@ export default {
   },
   mounted() {
       this.$store.commit("setAppTitle", "用户信息");
-      this.getPosts();
   },
   methods: {
     showTagDialog() {

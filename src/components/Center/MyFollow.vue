@@ -50,6 +50,9 @@
         this.users = this.users.filter(u => u !== user);
       },
     },
+    mounted() {
+      this.$store.commit("setAppTitle", "我的关注");
+  },
   };
   </script>
   

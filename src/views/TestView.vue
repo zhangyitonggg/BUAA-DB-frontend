@@ -1,84 +1,100 @@
 <template>
-  <v-container fluid>
-    <v-row justify="center">
-      <v-col cols="12" md="8" lg="6">
-        <v-card max-width="600px">
-          <v-card-title>
-            <v-icon left class="mr-2">mdi-account-circle</v-icon>
-            个人信息
+  <v-app>
+    <v-container>
+      <!-- 帖子标题部分 -->
+      <v-card class="mt-5 pa-5">
+        <v-avatar size="40">
+          <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="Author" />
+        </v-avatar>
+        <v-card-title class="d-flex align-center">
+          <span class="title font-weight-bold">关于HttpClient的访问 带参数的get访问</span>
+          <v-chip class="ml-3" color="blue" dark small>#C#</v-chip>
+          <v-chip class="ml-1" color="blue" dark small>.NET</v-chip>
+        </v-card-title>
+        <v-card-subtitle class="grey--text text--darken-1">发表于 2024-10-17 15:55 采纳率: 85.7%</v-card-subtitle>
+        <v-divider></v-divider>
+        
+        <!-- 帖子内容部分 -->
+        <v-card-text>
+          <p>cpu该怎么搭建啊啊啊啊啊啊，有没有大佬能帮帮我</p>
+          
+          <!-- 示例代码 -->
+          <v-card class="pa-3 my-3" outlined>
+            <v-code style="background-color: #f5f5f5;">
+                Int a = 1；<br>
+                int b = 2; <br>
+                int sum = a + b; <br>
+                Console.WriteLine(sum);
+            </v-code>
+          </v-card>
+          <p>喜欢飞爷嘿嘿嘿嘿嘿嘿</p>
+        </v-card-text>
+        
+        <!-- 按钮操作 -->
+        <v-card-actions>
+          <v-btn color="red" outlined>写回答</v-btn>
+          <v-btn text>邀请回答</v-btn>
+          <v-btn text>关注问题</v-btn>
+          <v-btn text>分享</v-btn>
+          <v-btn text>通知我</v-btn>
+          <v-btn text>收藏</v-btn>
+        </v-card-actions>
+      </v-card>
+
+      <!-- 回答部分 -->
+      <v-card class="mt-5 pa-5">
+        <v-card-title>2 条回答</v-card-title>
+        <v-divider></v-divider>
+        
+        <v-card class="pa-3 my-3" outlined>
+          <v-card-title class="d-flex align-center">
+            <v-avatar size="30" class="mr-2">
+              <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="User" />
+            </v-avatar>
+            <span>michits - 发表于 2024-10-17 16:07</span>
           </v-card-title>
-          <v-divider></v-divider>
-          <v-row no-gutters class="my-4" align="center" justify="center">
-            <!-- 左边头像和名字 -->
-            <v-col cols="4">
-              <v-row justify="center">
-                <v-img src="@/assets/images/blogDefault.png" aspect-ratio="1" height="110px" width="110px" contain></v-img>
-              </v-row>
-              <v-row class="py-2" justify="center">
-                <v-divider></v-divider>
-              </v-row>
-              <v-row justify="center" class="mb-2">
-                <div class="text-h5">{{ username }}</div>
-              </v-row>
-              <v-row justify="center">
-                <v-btn
-                  ref="change_avatar_button"
-                  icon="mdi-pencil"
-                  variant="text"
-                  color="primary"
-                  size="small"
-                >
-                  修改头像
-                </v-btn>
-              </v-row>
-            </v-col>
-
-            <!-- 垂直分隔线 -->
-            <v-divider vertical></v-divider>
-
-            <!-- 右边个人信息 -->
-            <v-col>
-              <v-list>
-                <v-list-item prepend-icon="mdi-account">
-                  <v-list-item-title>
-                    用户名 <span class="mx-1"></span> {{ username }}
-                  </v-list-item-title>
-                </v-list-item>
-                <v-list-item prepend-icon="mdi-card-account-details">
-                  <v-list-item-title>
-                    学号 <span class="mx-1"></span> {{ studentId || '未填写' }}
-                  </v-list-item-title>
-                  <template v-slot:append>
-                    <v-btn variant="text" color="primary" ref="change_studentid_button">修改学号</v-btn>
-                  </template>
-                </v-list-item>
-              </v-list>
-            </v-col>
-          </v-row>
+          <v-card-text>
+            <p>有bug，应该这么写：</p>
+            <v-card class="pa-3 my-3" outlined>
+              <v-code style="background-color: #f5f5f5;">
+                我十三是吧;<br>
+                string pa阿斯顿撒打算geSize = "0";<br>
+                string category = "1大叔大婶";<br>
+                string url = $"{ip}:{port}/v1/users?pageIndex={pageIndex}&pageSize={pageSize}...";
+              </v-code>
+            </v-card>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn icon>
+              <v-icon>mdi-thumb-up</v-icon>
+            </v-btn>
+            <v-btn icon>
+              <v-icon>mdi-thumb-down</v-icon>
+            </v-btn>
+            <v-btn text>评论</v-btn>
+            <v-btn text>分享</v-btn>
+          </v-card-actions>
         </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+      </v-card>
+    </v-container>
+  </v-app>
 </template>
 
 <script>
 export default {
-  name: 'UserInfo',
-  data() {
-    return {
-        username: 'hugo', // 可以修改成动态的
-        studentId: '' // 学号，如果为空显示“未填写”
-    };
-  },
-  watch: {
-
-  },
-  methods: {
-
-  },
-  mounted() {
-      this.$store.commit("setAppTitle", "个人信息");
-  },
+  name: "PostPage",
 };
 </script>
-  
+
+<style scoped>
+.title {
+  font-size: 24px;
+}
+.v-code {
+  font-family: 'Courier New', monospace;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #333;
+}
+</style>
