@@ -1,5 +1,5 @@
 <template>
-  <v-container style="margin-top:20px">
+  <v-container style="margin-top:50px">
     <v-card class="mb-10">
       <v-card-title>
         <h2 style="font-size: 24px;" @click="showImage = true">
