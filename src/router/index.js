@@ -57,6 +57,15 @@ const routes = [
     }
   },
   {
+    path: '/resources/testPost', // 测试用,后面换成/resources/:id
+    name: 'get-resource',
+    component: () => import('../components/Share/SharePost.vue'),
+    meta: {
+      requiresAuth: true,
+      title: '共享资源'
+    }
+  },
+  {
     path: '/tasks',
     name: 'tasks',
     component: () => import('../views/Tasks/TasksView.vue'),

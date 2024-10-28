@@ -62,11 +62,10 @@
         </v-card>
       </v-container>
       <v-container>
-
-<!-- todo:这里只写了一个静态卡片，感觉接口最好改一下 -->
+      <!-- todo:这里只写了一个静态卡片，感觉接口最好改一下 -->
         <v-row>
           <v-col>
-            <v-card outlined>
+            <v-card outlined  @click="goToPage('/resources/testPost')" style="cursor: pointer;">
               <v-row no-gutters class="picture"> <!-- 给整个 v-row 添加 padding -->
                 <v-col cols="auto" class="d-flex align-center"> <!-- 确保图片在垂直方向上居中 -->
                   <v-img src="@/assets/images/blogDefault.png" aspect-ratio="1" height="110px" width="110px"
@@ -76,6 +75,7 @@
                   <v-card-title>
                     计算机组成考试题（2023-2024学年）
                     <v-icon color="#F8CC00"> mdi-bitcoin </v-icon>
+                    <v-text style="font-size: 12px; color: #666666; margin-left:0.2%">5菜币</v-text>
                   </v-card-title>
                   <v-card-subtitle>
                     这是一份计算机组成考试题，希望对大家有所帮助。目前正确答案正在整理中...
@@ -114,6 +114,56 @@
             </v-card>
           </v-col>
         </v-row>
+        <v-row>
+          <v-col>
+            <v-card outlined>
+              <v-row no-gutters class="picture">
+                <v-col cols="auto" class="d-flex align-center">
+                  <v-img src="@/assets/images/logo.png" aspect-ratio="1" height="110px" width="110px"
+                    contain></v-img>
+                </v-col>
+                <v-col>
+                  <v-card-title>
+                    数据结构期末复习资料（2024-2025学年）
+                  </v-card-title>
+                  <v-card-subtitle>
+                    这是一份数据结构的复习资料，涵盖了本学年考试的重点知识点。希望对大家有所帮助。
+                  </v-card-subtitle>
+                  <div style="margin-left: 1.8%;">
+                    <v-chip color="aqua" label small class="me-3">数据结构</v-chip>
+                    <v-chip color="aqua" label small class="me-3">复习资料</v-chip>
+                    <v-chip color="aqua" label small class="me-3">2024-2025</v-chip>
+                  </div>
+                  <v-card-actions style="margin-left: 0.8%;">
+                    <div>
+                      <span>
+                        <v-icon style="display: inline-block; margin-top: -7px;">mdi-thumb-up</v-icon>
+                        <span class="ml-2">5289</span>
+                      </span>
+                      <span>
+                        <v-icon>mdi-thumb-down</v-icon>
+                        <span class="ml-2">143</span>
+                      </span>
+                      <span>
+                        <v-icon>mdi-heart-box</v-icon>
+                        <span class="ml-2">305</span>
+                      </span>
+                      <span>
+                        <v-icon>mdi-comment-multiple</v-icon>
+                        <span class="ml-2">25</span>
+                      </span>
+                    </div>
+                    <div class="ml-auto">
+                      <span>李四</span>
+                      <span>2024-05-10</span>
+                    </div>
+                  </v-card-actions>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+        </v-row>
+        
       </v-container>
     </template>
   </div>
@@ -166,6 +216,9 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+    },
+    goToPage(page) {
+      this.$router.push(page);
     },
   },
   mounted() {
