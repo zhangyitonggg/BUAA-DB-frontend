@@ -48,14 +48,22 @@
         </v-col>
         <v-col cols="4" style="margin-top: 20px;">
           <v-img
-          src="@/assets/images/zyt.png"
+          :src="avatarUrl"
           aspect-ratio="1"
           height="130px"
           width="130px"
           contain
           style="transform: translateX(-9%); border-radius: 50%; overflow: hidden;"
           ></v-img>
-          <v-btn text color="primary">选择新头像</v-btn>
+          <v-btn text color="primary" @click="onSelectNewAvatar">选择新头像</v-btn>
+          <!-- 隐藏的文件输入框 -->
+          <input
+            ref="fileInput"
+            type="file"
+            accept="image/*"
+            style="display: none;"
+            @change="onFileSelected"
+          />
         </v-col>
         <v-col style="padding: 0;" cols="12">
           <v-divider></v-divider>
@@ -218,6 +226,7 @@ export default {
       fansNumber: 78,
       postNumber: 21,
       answerNumber: 11,
+      avatarUrl: require("@/assets/images/zyt.png"), // 当前头像路径
     };
   },
   mounted() {
@@ -259,7 +268,51 @@ export default {
       this.showGiveMeMoneyDialog = false;
       alert('警惕虚拟货币的非法交易！！！'); // 弹出提示
       window.location.href = 'https://www.cac.gov.cn/2020-06/07/c_1593081473364231.htm'; // 替换为你的目标网址
-    }
+    },
+    // 点击按钮，触发文件选择器打开
+    onSelectNewAvatar() {
+      this.$refs.fileInput.click();
+    },
+    // 文件选择完成后处理
+    onFileSelected(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      // 检查文件是否为图片类型
+      if (!file.type.startsWith("image/")) {
+        this.$emit("error", "请选择图片文件");
+        return;
+      }
+
+      // todo 调用更新头像的接口
+      // 模拟文件上传功能
+      // this.uploadFile(file)
+      //   .then((uploadedUrl) => {
+      //     // 上传成功后更新头像
+      //     // this.avatarUrl = uploadedUrl;
+          
+      //     this.$emit("success", "头像上传成功");
+      //   })
+      //   .catch(() => {
+      //     this.$emit("error", "头像上传失败");
+      //   });
+    },
+
+    // // 模拟文件上传请求
+    // uploadFile(file) {
+    //   // 使用 FormData 模拟表单上传
+    //   const formData = new FormData();
+    //   formData.append("avatar", file);
+
+    //   // 发起 POST 请求上传文件
+    //   return new Promise((resolve, reject) => {
+    //     setTimeout(() => {
+    //       // 模拟服务器返回的头像URL
+    //       const uploadedUrl = URL.createObjectURL(file);
+    //       resolve(uploadedUrl);
+    //     }, 1000); // 模拟延迟
+    //   });
+    // },
   },
 };
 </script>
