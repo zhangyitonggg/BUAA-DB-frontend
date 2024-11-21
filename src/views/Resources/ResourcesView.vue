@@ -6,15 +6,15 @@
         mdi-invoice-plus
       </v-icon>
     </v-btn>
-    <v-btn class="fixed-button2" fab dark color="indigo" @click="add">
+    <v-btn class="fixed-button2" fab dark color="#8B4513" @click="own">
       <v-icon dark>
-        mdi-invoice-plus
+        mdi-home-edit
       </v-icon>
     </v-btn>
   </v-container>
 </template>
 <script>
-  import ShareHub from '../../components/Share/ShareHub.vue'
+import ShareHub from '../../components/Share/ShareHub.vue'
 
   export default {
     name: 'ShareView',
@@ -35,6 +35,9 @@
     methods: {
       add() {
         this.$router.push('/resources/share');
+      },
+      own() {
+        this.$router.push('/resources/own');
       }
     },
     watch: {

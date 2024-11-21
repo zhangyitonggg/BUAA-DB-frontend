@@ -72,15 +72,12 @@
                     contain></v-img>
                 </v-col>
                 <v-col>
-                  <v-card-title>
+                  <v-card-title style="margin-top:-5px;">
                     计算机组成考试题（2023-2024学年）
                     <v-icon color="#F8CC00"> mdi-bitcoin </v-icon>
-                    <span style="font-size: 13px; color: #666666; margin-left:0.2%">5菜币</span>
+                    <span style="font-size: 13px; color: #666666; margin-left:0.2%;">5菜币</span>
                   </v-card-title>
-                  <v-card-subtitle>
-                    这是一份计算机组成考试题，希望对大家有所帮助。目前正确答案正在整理中...
-                  </v-card-subtitle>
-                  <div style="margin-left: 1.8%;"> <!-- 添加左边距 -->
+                  <div style="margin-left: 1.8%; margin-top: -10px;"> <!-- 添加左边距 -->
                     <v-chip color="aqua" label small class="me-3">计算机组成</v-chip>
                     <v-chip color="aqua" label small class="me-3">考试题</v-chip>
                     <v-chip color="aqua" label small class="me-3">2023-2024</v-chip>

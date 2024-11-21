@@ -57,6 +57,15 @@ const routes = [
     }
   },
   {
+    path: '/resources/own',
+    name: 'own-resource',
+    component: () => import('../views/Resources/Own/OwnResourceView.vue'),
+    meta: {
+      requiresAuth: true,
+      title: '共享资源'
+    }
+  },
+  {
     path: '/resources/testPost', // 测试用,后面换成/resources/:id
     name: 'get-resource',
     component: () => import('../components/Share/SharePost.vue'),
