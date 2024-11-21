@@ -14,8 +14,8 @@
             <v-row>
                 <v-col cols="6">
                   <v-text-field
-                    v-model="coin"
-                    label="报酬"
+                    v-model="cost"
+                    label="收费金额"
                     :rules="[
                         v => !!v || '报酬不能为空',
                         v => /^\d+$/.test(v) || '报酬必须是非负整数'
@@ -60,14 +60,24 @@
             </v-row>
             <v-row>
                 <v-col>
+                    <v-text-field
+                        v-model="link" 
+                        :label="labelText"
+                        :rules="[rules.required, rules.isValidUrl]"
+                        aria-required=""
+                    ></v-text-field>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
                     <v-textarea
-                        v-model="description"
+                        v-model="content"
                         label="描述"
-                        rows="18"
+                        rows="16"
                     ></v-textarea>
                 </v-col>
                 <v-col>
-                    <v-md-preview :text="description" default-show-toc="True"></v-md-preview>
+                    <v-md-preview :text="content" default-show-toc="True"></v-md-preview>
                 </v-col>
             </v-row>
         </v-col>
@@ -100,7 +110,7 @@
     export default {
         data: () => ({
             title: null,
-            coin: 0,
+            cost: 0,
             tags: [],
             tags_to_select: [
                 { name: '计算机组成'},
@@ -108,12 +118,37 @@
                 { name: '1234'},
                 { name: '11'},
             ],
-            description: "Input your description here.",
+            content: "Input your description here. We support **Markdown format**.",
+            link: null,
+            rules: {
+                // 必填校验
+                required: v => !!v || '链接不能为空',
+                // 链接格式校验
+                isValidUrl: v => {
+                const urlPattern = new RegExp(
+                    "^(https?:\\/\\/)?" + // 支持 http 和 https
+                    "((([a-zA-Z\\d]([a-zA-Z\\d-]*[a-zA-Z\\d])*)\\.)+[a-zA-Z]{2,}|" + // 域名
+                    "((\\d{1,3}\\.){3}\\d{1,3}))" + // 或 IP 地址
+                    "(\\:\\d+)?(\\/[-a-zA-Z\\d%_.~+]*)*" + // 端口和路径
+                    "(\\?[;&a-zA-Z\\d%_.~+=-]*)?" + // 查询参数
+                    "(\\#[-a-zA-Z\\d_]*)?$", // 锚点
+                    "i" // 忽略大小写
+                );
+                return urlPattern.test(v) || '链接格式不正确';
+                },
+            },
         }),
         components: {
             VMdPreview
         },
         computed: {
+            labelText() {
+                // 如果链接格式正确，则显示合法的提示
+                if (this.rules.isValidUrl(this.link) === true) {
+                    return '您上传的bhpan链接是合法的';
+                }
+                return '请上传资源的bhpan链接';
+            },
         },
         watch: {
         },
@@ -123,12 +158,12 @@
                 if (index >= 0) this.tags.splice(index, 1)
             },
             publish() {
-                console.log(this.title, this.coin, this.tags, this.description);
-                this.$router.push('/tasks');
+                console.log(this.title, this.cost, this.tags, this.content);
+                this.$router.push('/resources');
                 // todo 调用创建任务的接口
             },
             back() {
-                this.$router.push('/tasks');
+                this.$router.push('/resources');
                 this.$store.commit("setAlert", {
                     type: "success",
                     message: "已取消发布任务。",

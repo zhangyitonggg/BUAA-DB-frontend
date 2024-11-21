@@ -57,7 +57,7 @@
             <!-- 操作按钮 -->
             <div class="d-flex" style="gap: 16px;">
               <v-btn color="red" outlined @click="openBhpan">下载资源</v-btn>
-              <v-btn color="blue" outlined @click="follow">关注作者</v-btn>
+              <v-btn color="blue" outlined @click="toggleFollow">{{ followed ? '取消关注' : '关注作者' }}</v-btn>
             </div>
           </v-card-actions>
         </v-card>

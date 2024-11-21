@@ -75,7 +75,7 @@
                   <v-card-title>
                     计算机组成考试题（2023-2024学年）
                     <v-icon color="#F8CC00"> mdi-bitcoin </v-icon>
-                    <v-text style="font-size: 12px; color: #666666; margin-left:0.2%">5菜币</v-text>
+                    <span style="font-size: 13px; color: #666666; margin-left:0.2%">5菜币</span>
                   </v-card-title>
                   <v-card-subtitle>
                     这是一份计算机组成考试题，希望对大家有所帮助。目前正确答案正在整理中...

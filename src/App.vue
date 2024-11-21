@@ -114,8 +114,8 @@ export default {
       drawer: false,
       links: [
         ['mdi-home', '首页', '/'],
-        ['mdi-book-open-variant-outline', '共享资源', '/resources'],
-        ['mdi-account-group', '悬赏', '/tasks'],
+        ['mdi-book-open-variant-outline', '共享资源站', '/resources'],
+        ['mdi-account-group', '悬赏空间', '/tasks'],
         ['mdi-account', '个人中心', '/center'],
       ],
     };

@@ -1,7 +1,12 @@
 <template>
   <v-container class="spacing-playground pa-16" fluid>
     <component :is="currentComponent" />
-    <v-btn class="fixed-button" fab dark color="indigo" @click="add">
+    <v-btn class="fixed-button1" fab dark color="indigo" @click="add">
+      <v-icon dark>
+        mdi-invoice-plus
+      </v-icon>
+    </v-btn>
+    <v-btn class="fixed-button2" fab dark color="indigo" @click="add">
       <v-icon dark>
         mdi-invoice-plus
       </v-icon>
@@ -10,15 +15,11 @@
 </template>
 <script>
   import ShareHub from '../../components/Share/ShareHub.vue'
-  import SharingResource from '../../components/Share/ShareResource.vue'
-  import GiveMeMoney from '../../components/Home/GiveMeMoney.vue'
 
   export default {
     name: 'ShareView',
     components: {
       ShareHub,
-      SharingResource,
-      GiveMeMoney,
     },
     data() {
       return {
@@ -33,7 +34,7 @@
     },
     methods: {
       add() {
-        this.$router.push('/resources/add');
+        this.$router.push('/resources/share');
       }
     },
     watch: {
@@ -44,10 +45,16 @@
   .v-bottom-navigation {
     bottom: 0;
   }
-  .fixed-button {
+  .fixed-button1 {
     position: fixed;
-    right: 5%;
-    bottom: 15%;
+    right: 4%;
+    bottom: 16%;
+    z-index: 5;
+  }
+  .fixed-button2 {
+    position: fixed;
+    right: 4%;
+    bottom: 8%;
     z-index: 5;
   }
 </style>

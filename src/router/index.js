@@ -48,9 +48,9 @@ const routes = [
     }
   },
   {
-    path: '/resources/add',
+    path: '/resources/share',
     name: 'add-resource',
-    component: () => import('../views/Resources/ResourcesView.vue'),
+    component: () => import('../views/Resources/Add/ShareResourceView.vue'),
     meta: {
       requiresAuth: true,
       title: '共享资源'
