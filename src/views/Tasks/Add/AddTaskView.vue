@@ -96,8 +96,8 @@
             coin: 0,
             tags: [],
             tags_to_select: [
-                { name: '1111'},
-                { name: '1122'},
+                { name: '计算机组成'},
+                { name: 'CS'},
                 { name: '1234'},
                 { name: '11'},
             ],

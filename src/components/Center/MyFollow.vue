@@ -42,6 +42,20 @@
               "CSDN毕设辅导道祖第一人，专注于大学生项目实战开发，讲解、毕业答疑辅导等。",
             isAdmin: true,
           },
+          {
+            name: "java李杨勇",
+            avatar: require('@/assets/images/qqnl.png'),
+            description:
+              "CSDN毕设辅导道祖第一人，专注于大学生项目实战开发，讲解、毕业答疑辅导等。",
+            isAdmin: true,
+          },
+          {
+            name: "java李杨勇",
+            avatar: require('@/assets/images/blogDefault.png'),
+            description:
+              "CSDN毕设辅导道祖第一人，专注于大学生项目实战开发，讲解、毕业答疑辅导等。",
+            isAdmin: true,
+          },
         ],
       };
     },
