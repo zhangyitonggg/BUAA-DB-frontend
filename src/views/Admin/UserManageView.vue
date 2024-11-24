@@ -10,7 +10,10 @@
         class="elevation-0"
         disable-sort sticky
         >
-
+        <template v-slot:item.index="{ index }">
+            {{ index + 1 }}
+        </template>
+        
         <template v-slot:item.avatarurl="{ item }">
             <v-avatar size="32">
               <!-- 使用头像图片URL -->
@@ -67,7 +70,7 @@
     data() {
         return {
             headers: [
-                { text: "ID", value: "userid" },
+                { text: "ID", value: "index" },
                 { text: "头像", value: "avatarurl" },
                 { text: "用户名", value: "username" },
                 { text: "电子邮件地址", value: "email" },
@@ -88,7 +91,7 @@
             // 模拟 API 调用
             this.allUser = [
                 {
-                    userid: 1,
+                    userid: 101,
                     avatarurl: "https://via.placeholder.com/32",
                     username: "User1",
                     email: "20220101",

@@ -1,123 +1,179 @@
 <template>
-    <div style="margin-top: 9px;">
-        <v-container>
-            <v-row>
-                <v-col>
-                <v-card outlined  @click="goToPage('/resources/testPost')" style="cursor: pointer;">
-                    <v-row no-gutters class="picture"> <!-- 给整个 v-row 添加 padding -->
-                    <v-col cols="auto" class="d-flex align-center"> <!-- 确保图片在垂直方向上居中 -->
-                        <v-img src="@/assets/images/blogDefault.png" aspect-ratio="1" height="110px" width="110px"
-                        contain></v-img>
-                    </v-col>
-                    <v-col>
-                        <v-card-title style="margin-top:-5px;">
-                        计算机组成考试题（2023-2024学年）
-                        <v-icon color="#F8CC00"> mdi-bitcoin </v-icon>
-                        <span style="font-size: 13px; color: #666666; margin-left:0.2%;">5菜币</span>
-                        </v-card-title>
-                        <div style="margin-left: 1.8%; margin-top: -10px;"> <!-- 添加左边距 -->
-                        <v-chip color="aqua" label small class="me-3">计算机组成</v-chip>
-                        <v-chip color="aqua" label small class="me-3">考试题</v-chip>
-                        <v-chip color="aqua" label small class="me-3">2023-2024</v-chip>
-                        </div>
-                        <v-card-actions style="margin-left: 0.8%;">
-                        <div>
-                            <span>
-                            <v-icon style="display: inline-block; margin-top: -7px;">mdi-thumb-up</v-icon>
-                            <span class="ml-2">3407</span>
-                            </span>
-                            <span>
-                            <v-icon>mdi-thumb-down</v-icon>
-                            <span class="ml-2">109</span>
-                            </span>
-                            <span>
-                            <v-icon>mdi-heart-box</v-icon>
-                            <span class="ml-2">96</span>
-                            </span>
-                            <span>
-                            <v-icon>mdi-comment-multiple</v-icon>
-                            <span class="ml-2">12</span>
-                            </span>
-                        </div>
-                        <div class="ml-auto">
-                            <span>张三</span>
-                            <span>2024-04-29</span>
-                        </div>
-                        </v-card-actions>
-                    </v-col>
-                    </v-row>
-                </v-card>
-                </v-col>
-            </v-row>        
+    <!-- eslint-disable -->
+    <div class="table-container">
+        <v-container fluid class="pa-6">
+            <v-btn class="fixed-button1" fab dark color="indigo" @click="back">
+                <v-icon dark>
+                    mdi-arrow-u-left-top-bold
+                </v-icon>
+            </v-btn>
+            <p class="text-h4 mt-6 mb-4">自己分享的所有资源</p>
+            <p class="text-subtitle-2 mb-4">查看，修改自己的资源分享贴</p>
+    
+            <v-data-table :headers="headers" :items="ownShare" class="elevation-0" sticky>
+                <template v-slot:item.index="{ index }">
+                    {{ index + 1 }}
+                </template>
+                <!-- 操作列 -->
+                <template v-slot:item.view="{ item }">
+                    <!-- 查看按钮 -->
+                    <v-btn icon color="blue" @click="viewItem(item)">
+                        <v-icon>mdi-eye</v-icon>
+                    </v-btn>
+                </template>
+                <template v-slot:item.edit="{ item }">
+                    <v-btn icon color="green" @click="editItem(item)">
+                        <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                </template>
+                <template v-slot:item.delete="{ item }">
+                    <v-btn icon color="red" @click="deleteItem(item)">
+                        <v-icon>mdi-delete</v-icon>
+                    </v-btn>
+                </template>
+    
+            </v-data-table>
         </v-container>
+
+        <v-dialog v-model="dialog" max-width="800px" transition="dialog-bottom-transition">
+            <v-card class="elevation-12 rounded-lg">
+                <v-toolbar flat>
+                    <v-toolbar-title class="text-h5">确认删除</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-btn icon @click="dialog = false" class="text-gray">
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                </v-toolbar>
+        
+                <v-card-text class="text-body-1">
+                    <v-icon color="red">mdi-alert-circle-outline</v-icon>
+                    确定要删除标题为 <strong>{{ curItem ? curItem.title : '' }}</strong> 的资源吗？
+                </v-card-text>
+        
+                <v-divider></v-divider>
+        
+                <v-card-actions class="d-flex justify-end">
+                    <v-btn text @click="dialog = false" class="mr-2">取消</v-btn>
+                    <v-btn color="red" @click="confirmDelete" class="rounded-10" elevation="2">确认删除</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+              
     </div>
 </template>
 
 <script>
 export default {
-    data: () => ({
-    }),
-    components: {
-    },
-    computed: {
-    },
-    watch: {
+
+    data() {
+        return {
+            dialog: false,
+            curItem: null,
+            headers: [
+                { text: "ID", value: "index" },
+                { text: "标题", value: "title" },
+                { text: "创建时间", value: "created_at" },
+                { text: "费用", value: "cost" },
+                { text: "点赞数", value: "likes" },
+                { text: "点踩数", value: "dislikes" },
+                { text: "收藏数", value: "favorites" },
+                { text: "查看", value: "view", sortable: false }, // 添加操作列
+                { text: "编辑", value: "edit", sortable: false }, // 添加操作列
+                { text: "删除", value: "delete", sortable: false }, // 添加操作列
+            ],
+            ownShare: [
+                {
+                    post_id: 1,
+                    link: "/resources/testPost", // todo 链接
+                    image: require("@/assets/images/blogDefault.png"), // 这里需要申请另一个api
+                    title: "计算机组成考试题（2023-2024学年）",
+                    icon: { name: "mdi-bitcoin", color: "#F8CC00" },
+                    cost: 5,
+                    tags: ["计算机组成", "考试题", "2023-2024"], // 这里需要申请另一个api
+                    likes: 3407,
+                    dislikes: 109,
+                    favorites: 96,
+                    comments: 12,
+                    created_by: {
+                        user_id: 1,
+                        username: "张三",
+                        avatar: require("@/assets/images/blogDefault.png"),
+                    },
+                    created_at: "2024-04-29",
+                },
+                {
+                    post_id: 2,
+                    link: "/resources/testPost",
+                    title: "数据结构期末复习资料（2024-2025学年）",
+                    subtitle: "这是一份数据结构的复习资料，涵盖了本学年考试的重点知识点。希望对大家有所帮助。",
+                    tags: ["数据结构", "复习资料", "2024-2025"],
+                    cost: 0,
+                    likes: 5289,
+                    dislikes: 143,
+                    favorites: 305,
+                    comments: 25, // 这里需要获取帖子的评论数量
+                    created_by: {
+                        user_id: 2,
+                        username: "李四",
+                        avatar: require("@/assets/images/blogDefault.png"),
+                    },
+                    created_at: "2024-05-10",
+                },
+            ],
+        };
     },
     methods: {
-        goToPage(page) {
-            this.$router.push(page);
+        // 获取所有用户数据
+        getOwnShare() {
+            // todo 
+        },
+        back() {
+            this.$router.push("/resources");
+        },
+        // 查看操作
+        viewItem(item) {
+            // 跳转到资源详情页面
+            this.$router.push(item.link);
+        },
+        editItem(item) {
+            // 跳转到编辑页面
+            // this.$router.push("/resources/edit/" + item.post_id);
+        },
+        // 删除操作
+        deleteItem(item) {
+            this.curItem = item;
+            this.dialog = true;
+        },
+        confirmDelete() {
+            // todo 调用删除接口
+            this.dialog = false;  // 关闭对话框
+            this.$store.commit("setAlert", {
+                type: "success",
+                message: "删除成功",
+            });
+            this.getOwnShare(); // 刷新列表
         },
     },
     mounted() {
-        this.$store.commit("setAppTitle", "您分享的资源");
+        this.$store.commit("setAppTitle", "我的资源");
+        this.getOwnShare();
     },
-}
+};
 </script>
 
 <style scoped>
-.top {
-  border-width: 3px !important;
-  /* 只改变边框粗细 */
-  border-style: solid;
-  border-radius: 5px;
-  /* 可选，增加圆角效果 */
+.table-container {
+    max-width: 85%; /* 设置表格的最大宽度 */
+    margin: 0 auto; /* 居中对齐 */
+    display: flex; /* 启用 flexbox 布局 */
+    flex-direction: column; /* 纵向排列 */
+    align-items: center; /* 水平居中对齐 */
 }
 
-span {
-  cursor: pointer;
-  margin-right: 20px;
-  color: gray;
-}
-
-.active {
-  color: orange;
-}
-
-.filters {
-  padding: 10px;
-  /* 内边距 */
-  display: inline-block;
-  /* 确保 span 是块元素，并且 padding 生效 */
-}
-
-.tag {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 10px;
-  margin: 0 5px;
-  width: max-content;
-  height: 20px;
-  font-size: 12px;
-  font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
-  color: #3d3d3d;
-  background: #d9fe32;
-  border-radius: 10px;
-}
-
-.picture {
-  padding-left: 1%;
-  padding-top: 0.3%;
-  padding-bottom: 0.1%;
+.fixed-button1 {
+    position: fixed;
+    right: 3%;
+    bottom: 13%;
+    z-index: 5;
 }
 </style>
