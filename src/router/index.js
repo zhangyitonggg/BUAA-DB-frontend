@@ -7,12 +7,22 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/test/',
+    path: '/test',
     name: 'test',
     component: () => import('../views/TestView.vue'),
     meta: {
       requiresAuthed: true,
       title: '测试'
+    }
+  },
+  // 管理员
+  {
+    path: '/admin/userManage',
+    name: 'user-manage',
+    component: () => import('../views/Admin/UserManageView.vue'),
+    meta: {
+      requiresAuthed: true,
+      title: '用户管理'
     }
   },
   // 普通用户
