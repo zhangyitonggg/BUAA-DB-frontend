@@ -23,7 +23,6 @@
   
   <script>
   import UserInfo from '../../components/Center/UserInfo.vue'
-  import SharingResource from '../../components/Share/ShareResource.vue'
   import GiveMeMoney from '../../components/Home/GiveMeMoney.vue'
   import MyFollow from '../../components/Center/MyFollow.vue'
     
@@ -31,7 +30,6 @@
     name: 'CenterView',
     components: {
       UserInfo,
-      SharingResource,
       GiveMeMoney,
       MyFollow,
     },

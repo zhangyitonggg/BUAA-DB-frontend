@@ -171,7 +171,7 @@
             }
         },
         mounted() {
-            this.$store.commit("setAppTitle", "发布悬赏");
+            this.$store.commit("setAppTitle", "分享资源");
         },
     }
 </script>

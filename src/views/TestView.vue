@@ -1,212 +1,250 @@
 <template>
-  <!-- eslint-disable -->
-  <v-container fluid class="pa-6">
-      <p class="text-h4 mt-6 mb-4">所有用户</p>
-      <p class="text-subtitle-2 mb-4">封禁、解封用户</p>
-
-      <v-data-table :headers="headers" :items="allUser" item-value="userid" disable-sort>
-          <!-- 自定义渲染 -->
-          <template v-slot:body>
-              <tbody>
-                  <tr v-for="item in allUser" :key="item.userid">
-                      <td>{{ item.userid }}</td>
-                      <td>
-                          <v-avatar size="32">
-                              <img :src="item.avatarurl" alt="Author" />
-                          </v-avatar>
-                      </td>
-                      <td>{{ item.username }}</td>
-                      <td>{{ item.studentid }}</td>
-                      <td>
-                          <v-btn
-                              :outlined="true"
-                              small
-                              :color="item.isblock ? 'green' : 'red'"
-                              class="me-1"
-                              @click="dialog(item.isblock, item.username, item.userid)">
-                              <v-icon small>
-                                  {{ item.isblock ? 'mdi-account-check' : 'mdi-account-off' }}
-                              </v-icon>
-                          </v-btn>
-                      </td>
-                  </tr>
-              </tbody>
+  <v-container class="spacing-playground pa-16" fluid>
+      <div style="margin-top: -50px;">
+          <template v-if="loading">
+              <v-container fluid class="d-flex align-center justify-center">
+                  <v-row class="text-center">
+                      <v-col>
+                          <v-progress-circular indeterminate color="primary" size="64"></v-progress-circular>
+                      </v-col>
+                  </v-row>
+              </v-container>
+              <v-container fluid class="d-flex align-center justify-center">
+                  <v-row class="text-center">
+                      <v-col>
+                          <h3>
+                              潮平两岸阔，风正一帆悬。
+                          </h3>
+                          <h4>
+                              欢迎回到航U邦。
+                          </h4>
+                          <span>正在获取资源站。</span>
+                      </v-col>
+                  </v-row>
+              </v-container>
           </template>
-      </v-data-table>
-      
+          <template v-else>
+              <v-container>
+                  <v-row v-for="(item) in post" :key="item.post_id">
+                      <v-col>
+                          <div class="card-container">
+                              <!-- 卡片主体 -->
+                              <v-card outlined class="card-content" style="cursor: pointer;">
+                                  <v-row no-gutters class="picture">
+                                      <v-col cols="auto" class="d-flex align-center">
+                                          <!-- <v-img :src="item.image" aspect-ratio="1" height="110px" width="110px"
+                                              contain></v-img> -->
+                                      <v-icon color="#FFB300" style="font-size: 106px; margin-left: -10%; margin-right: -20px;">mdi-file-download-outline</v-icon>
+                                      </v-col>
+                                      <v-col>
+                                          <v-card-title>
+                                              {{ item.title }}
+                                              <v-icon v-if="item.cost>0" color="#F8CC00">mdi-bitcoin</v-icon>
+                                              <span v-if="item.cost>0"
+                                                  style="font-size: 13px; color: #666666; margin-left: 0.2%;">
+                                                  {{ item.cost }} 菜币
+                                              </span>
+                                          </v-card-title>
+                                          <div style="margin-left: 1.8%;">
+                                              <v-chip v-for="(tag, tagIndex) in item.tags" :key="tagIndex"
+                                                  color="aqua" label small class="me-3">
+                                                  {{ tag }}
+                                              </v-chip>
+                                          </div>
+                                          <v-card-actions style="margin-left: 0.8%;">
+                                              <div>
+                                                  <span>
+                                                      <v-icon
+                                                          style="display: inline-block; margin-top: -7px;">mdi-thumb-up</v-icon>
+                                                      <span class="ml-2">{{ item.likes }}</span>
+                                                  </span>
+                                                  <span>
+                                                      <v-icon>mdi-thumb-down</v-icon>
+                                                      <span class="ml-2">{{ item.dislikes }}</span>
+                                                  </span>
+                                                  <span>
+                                                      <v-icon>mdi-heart-box</v-icon>
+                                                      <span class="ml-2">{{ item.favorites }}</span>
+                                                  </span>
+                                                  <span>
+                                                      <v-icon>mdi-comment-multiple</v-icon>
+                                                      <span class="ml-2">{{ item.comments }}</span>
+                                                  </span>
+                                              </div>
+                                              <div class="ml-auto">
+                                                  <span>{{ item.author }}</span>
+                                                  <span>{{ item.date }}</span>
+                                              </div>
+                                          </v-card-actions>
+                                      </v-col>
+                                  </v-row>
+                              </v-card>
+                              <!-- 操作按钮 -->
+                              <div class="action-buttons">
+                                  <v-btn color="primary" class="me-2" icon @click.stop="openItem(item.link)">
+                                      <v-icon style="font-size: 32px;">mdi-open-in-new</v-icon>
+                                  </v-btn>
+                                  <v-btn color="red" icon @click.stop="deleteItem(item)">
+                                      <v-icon style="font-size: 32px;">mdi-delete</v-icon>
+                                  </v-btn>
+                              </div>
+                          </div>
+                      </v-col>
+                  </v-row>
+              </v-container>
 
-      <v-dialog max-width="500px" v-model="dialogActive">
-          <v-card>
-              <v-toolbar flat>
-                  <v-toolbar-title>{{ dialogType ? "解封" : "封禁" }}用户</v-toolbar-title>
-                  <v-spacer></v-spacer>
-                  <v-btn icon @click="dialogActive = false">
-                      <v-icon>mdi-close</v-icon>
-                  </v-btn>
-              </v-toolbar>
-
-              <v-card-text>
-                  确定要{{ dialogType ? "解封" : "封禁" }}用户“{{ dialogUserName }}”？
-              </v-card-text>
-
-              <v-card-actions>
-                  <v-btn text @click="dialogActive = false">取消</v-btn>
-                  <v-btn :color="dialogType ? 'green' : 'red'" :loading="submitLoading" @click="onBlockUnblockClick">
-                      {{ dialogType ? "解封" : "封禁" }}
-                  </v-btn>
-              </v-card-actions>
-          </v-card>
-      </v-dialog>
+          </template>
+      </div>
   </v-container>
 </template>
 
 <script>
-import { mapMutations } from "vuex";
-
 export default {
+  name: 'ShareHub',
   data() {
       return {
-          headers: [
-              { text: "ID", value: "userid" },
-              { text: "头像", value: "avatarurl" },
-              { text: "用户名", value: "username" },
-              { text: "学号", value: "studentid" },
-              { text: "操作", value: "actions"},
+          loading: true,
+          post: [
+              {
+                  post_id: 1,
+                  link: "/resources/testPost", // todo 链接
+                  image: require("@/assets/images/blogDefault.png"), // 这里需要申请另一个api
+                  title: "计算机组成考试题（2023-2024学年）",
+                  icon: { name: "mdi-bitcoin", color: "#F8CC00" },
+                  cost: 5,
+                  tags: ["计算机组成", "考试题", "2023-2024"], // 这里需要申请另一个api
+                  likes: 3407,
+                  dislikes: 109,
+                  favorites: 96,
+                  comments: 12,
+                  created_by: {
+                      user_id: 1,
+                      username: "张三",
+                      avatar: require("@/assets/images/blogDefault.png"),
+                  },
+                  created_at: "2024-04-29",
+              },
+              {
+                  post_id: 2,
+                  link: "/resources/testPost",
+                  title: "数据结构期末复习资料（2024-2025学年）",
+                  subtitle: "这是一份数据结构的复习资料，涵盖了本学年考试的重点知识点。希望对大家有所帮助。",
+                  tags: ["数据结构", "复习资料", "2024-2025"],
+                  cost: 0,
+                  likes: 5289,
+                  dislikes: 143,
+                  favorites: 305,
+                  comments: 25, // 这里需要获取帖子的评论数量
+                  created_by:{
+                      user_id: 2,
+                      username: "李四",
+                      avatar: require("@/assets/images/blogDefault.png"),
+                  },
+                  created_at: "2024-05-10",
+              },
           ],
-          allUser: [],
-          dialogActive: false,
-          dialogType: false, // true 表示解封，false 表示封禁
-          dialogUserName: "",
-          dialogUserID: 0,
-          submitLoading: false,
       };
   },
-  methods: {
-      ...mapMutations(["setAppTitle", "setAlert"]),
-      // 获取所有用户数据
-      getAllUser() {
-          // 模拟 API 调用
-          this.allUser = [
-              {
-                  userid: 1,
-                  avatarurl: "https://via.placeholder.com/32",
-                  username: "User1",
-                  studentid: "20220101",
-                  isblock: false,
-              },
-              {
-                  userid: 2,
-                  avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
-                  username: "User2",
-                  studentid: null,
-                  isblock: true,
-              },
-              {
-                  userid: 3,
-                  avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
-                  username: "User3",
-                  studentid: "20220103",
-                  isblock: false,
-              },
-              {
-                  userid: 4,
-                  avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
-                  username: "User4",
-                  studentid: "20220104",
-                  isblock: true,
-              },
-              {
-                  userid: 5,
-                  avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
-                  username: "User5",
-                  studentid: "20220105",
-                  isblock: false,
-              },
-              {
-                  userid: 6,
-                  avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
-                  username: "User6",
-                  studentid: "20220106",
-                  isblock: true,
-              },
-              {
-                  userid: 7,
-                  avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
-                  username: "User7",
-                  studentid: "20220107",
-                  isblock: false,
-              },
-              {
-                  userid: 8,
-                  avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
-                  username: "User8",
-                  studentid: "20220108",
-                  isblock: true,
-              },
-              {
-                  userid: 9,
-                  avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
-                  username: "User9",
-                  studentid: "20220109",
-                  isblock: false,
-              },
-              {
-                  userid: 10,
-                  avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
-                  username: "User10",
-                  studentid: "20220110",
-                  isblock: true,
-              },
-              {
-                  userid: 11,
-                  avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
-                  username: "User11",
-                  studentid: "20220111",
-                  isblock: false,
-              },
-              {
-                  userid: 12,
-                  avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
-                  username: "User12",
-                  studentid: "20220112",
-                  isblock: true,
-              }
-          ];
-      },
-      // 打开确认对话框
-      dialog(isUnblock, username, userid) {
-          this.dialogType = isUnblock;
-          this.dialogUserName = username;
-          this.dialogUserID = userid;
-          this.dialogActive = true;
-      },
-      // 提交封禁/解封操作
-      onBlockUnblockClick() {
-          this.submitLoading = true;
+  watch: {
 
-          // 模拟 API 提交
-          setTimeout(() => {
-              const action = this.dialogType ? "解封" : "封禁";
-              this.setAlert({
-                  type: "success",
-                  message: `${action}用户“${this.dialogUserName}”成功！`,
-              });
-              this.dialogActive = false;
-              this.submitLoading = false;
-              this.getAllUser(); // 更新用户列表
-          }, 1000);
+  },
+  methods: {
+
+      getPosts() {
+          // todo 获取数据,赋值给post
+          this.loading = false;
+      },
+      goToPage(page) {
+          this.$router.push(page);
+      },
+      openItem(link) {
+          // todo 打开操作逻辑
+          console.log("打开", link);
+          this.goToPage(link);
+      },
+      deleteItem(item) {
+          // todo 删除操作逻辑
+          console.log("删除", item);
       },
   },
   mounted() {
-      this.setAppTitle("用户管理");
-      this.setAlert({
-          type: "success",
-          message: "欢迎来到用户管理页面！请在此管理该系统的用户！",
-      });
-      this.getAllUser();
+      this.$store.commit("setAppTitle", "共享资源站");
+      this.getPosts();
   },
 };
 </script>
 
 <style scoped>
+.top {
+  border-width: 3px !important;
+  /* 只改变边框粗细 */
+  border-style: solid;
+  border-radius: 5px;
+  /* 可选，增加圆角效果 */
+}
+
+span {
+  cursor: pointer;
+  margin-right: 20px;
+  color: gray;
+}
+
+.active {
+  color: orange;
+}
+
+.filters {
+  padding: 10px;
+  /* 内边距 */
+  display: inline-block;
+  /* 确保 span 是块元素，并且 padding 生效 */
+}
+
+.tag {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px;
+  margin: 0 5px;
+  width: max-content;
+  height: 20px;
+  font-size: 12px;
+  font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
+  color: #3d3d3d;
+  background: #d9fe32;
+  border-radius: 10px;
+}
+
+.picture {
+  padding-left: 1%;
+  padding-top: 0.3%;
+  padding-bottom: 0.1%;
+}
+
+.card-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.card-content {
+  transition: transform 0.3s ease;
+  width: 100%;
+}
+
+
+.action-buttons {
+  position: absolute;
+  top: 30px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card-container:hover .action-buttons {
+  opacity: 1;
+  /* 鼠标悬浮时显示按钮 */
+}
 </style>

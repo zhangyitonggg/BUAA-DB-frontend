@@ -62,106 +62,91 @@
         </v-card>
       </v-container>
       <v-container>
-      <!-- todo:这里只写了一个静态卡片，感觉接口最好改一下 -->
-        <v-row>
-          <v-col>
-            <v-card outlined  @click="goToPage('/resources/testPost')" style="cursor: pointer;">
-              <v-row no-gutters class="picture"> <!-- 给整个 v-row 添加 padding -->
-                <v-col cols="auto" class="d-flex align-center"> <!-- 确保图片在垂直方向上居中 -->
-                  <v-img src="@/assets/images/blogDefault.png" aspect-ratio="1" height="110px" width="110px"
-                    contain></v-img>
-                </v-col>
-                <v-col>
-                  <v-card-title style="margin-top:-5px;">
-                    计算机组成考试题（2023-2024学年）
-                    <v-icon color="#F8CC00"> mdi-bitcoin </v-icon>
-                    <span style="font-size: 13px; color: #666666; margin-left:0.2%;">5菜币</span>
-                  </v-card-title>
-                  <div style="margin-left: 1.8%; margin-top: -10px;"> <!-- 添加左边距 -->
-                    <v-chip color="aqua" label small class="me-3">计算机组成</v-chip>
-                    <v-chip color="aqua" label small class="me-3">考试题</v-chip>
-                    <v-chip color="aqua" label small class="me-3">2023-2024</v-chip>
+          <v-row v-for="(item) in post" :key="item.post_id">
+              <v-col>
+                  <div class="card-container">
+                      <!-- 卡片主体 -->
+                      <v-card outlined class="card-content" style="cursor: pointer;">
+                          <v-row no-gutters class="picture">
+                              <v-col cols="auto" class="d-flex align-center">
+                                  <!-- <v-img :src="item.image" aspect-ratio="1" height="110px" width="110px"
+                                      contain></v-img> -->
+                                  <v-icon color="#FFB300" style="font-size: 106px; margin-left: -10%; margin-right: -20px;">mdi-file-download-outline</v-icon>
+                              </v-col>
+                              <v-col>
+                                  <v-card-title>
+                                      {{ item.title }}
+                                      <v-icon v-if="item.cost>0" color="#F8CC00">mdi-bitcoin</v-icon>
+                                      <span v-if="item.cost>0"
+                                          style="font-size: 13px; color: #666666; margin-left: 0.2%;">
+                                          {{ item.cost }} 菜币
+                                      </span>
+                                  </v-card-title>
+                                  <div style="margin-left: 1.8%;">
+                                      <v-chip v-for="(tag, tagIndex) in item.tags" :key="tagIndex"
+                                          color="aqua" label small class="me-3">
+                                          {{ tag }}
+                                      </v-chip>
+                                  </div>
+                                  <v-card-actions style="margin-left: 0.8%;">
+                                      <div>
+                                          <span>
+                                              <v-icon
+                                                  style="display: inline-block; margin-top: -7px;">mdi-thumb-up</v-icon>
+                                              <span class="ml-2">{{ item.likes }}</span>
+                                          </span>
+                                          <span>
+                                              <v-icon>mdi-thumb-down</v-icon>
+                                              <span class="ml-2">{{ item.dislikes }}</span>
+                                          </span>
+                                          <span>
+                                              <v-icon>mdi-heart-box</v-icon>
+                                              <span class="ml-2">{{ item.favorites }}</span>
+                                          </span>
+                                          <span>
+                                              <v-icon>mdi-comment-multiple</v-icon>
+                                              <span class="ml-2">{{ item.comments }}</span>
+                                          </span>
+                                      </div>
+                                      <div class="ml-auto">
+                                          <span>{{ item.created_by.username }}</span>
+                                          <span>{{ item.created_at }}</span>
+                                      </div>
+                                  </v-card-actions>
+                              </v-col>
+                          </v-row>
+                      </v-card>
+                      <!-- 操作按钮 -->
+                      <div class="action-buttons">
+                          <v-btn color="primary" class="me-2" icon @click.stop="tryOpenItem(item)">
+                              <v-icon style="font-size: 32px;">mdi-open-in-new</v-icon>
+                          </v-btn>
+                      </div>
                   </div>
-                  <v-card-actions style="margin-left: 0.8%;">
-                    <div>
-                      <span>
-                        <v-icon style="display: inline-block; margin-top: -7px;">mdi-thumb-up</v-icon>
-                        <span class="ml-2">3407</span>
-                      </span>
-                      <span>
-                        <v-icon>mdi-thumb-down</v-icon>
-                        <span class="ml-2">109</span>
-                      </span>
-                      <span>
-                        <v-icon>mdi-heart-box</v-icon>
-                        <span class="ml-2">96</span>
-                      </span>
-                      <span>
-                        <v-icon>mdi-comment-multiple</v-icon>
-                        <span class="ml-2">12</span>
-                      </span>
-                    </div>
-                    <div class="ml-auto">
-                      <span>张三</span>
-                      <span>2024-04-29</span>
-                    </div>
-                  </v-card-actions>
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-card outlined>
-              <v-row no-gutters class="picture">
-                <v-col cols="auto" class="d-flex align-center">
-                  <v-img src="@/assets/images/logo.png" aspect-ratio="1" height="110px" width="110px"
-                    contain></v-img>
-                </v-col>
-                <v-col>
-                  <v-card-title>
-                    数据结构期末复习资料（2024-2025学年）
-                  </v-card-title>
-                  <v-card-subtitle>
-                    这是一份数据结构的复习资料，涵盖了本学年考试的重点知识点。希望对大家有所帮助。
-                  </v-card-subtitle>
-                  <div style="margin-left: 1.8%;">
-                    <v-chip color="aqua" label small class="me-3">数据结构</v-chip>
-                    <v-chip color="aqua" label small class="me-3">复习资料</v-chip>
-                    <v-chip color="aqua" label small class="me-3">2024-2025</v-chip>
-                  </div>
-                  <v-card-actions style="margin-left: 0.8%;">
-                    <div>
-                      <span>
-                        <v-icon style="display: inline-block; margin-top: -7px;">mdi-thumb-up</v-icon>
-                        <span class="ml-2">5289</span>
-                      </span>
-                      <span>
-                        <v-icon>mdi-thumb-down</v-icon>
-                        <span class="ml-2">143</span>
-                      </span>
-                      <span>
-                        <v-icon>mdi-heart-box</v-icon>
-                        <span class="ml-2">305</span>
-                      </span>
-                      <span>
-                        <v-icon>mdi-comment-multiple</v-icon>
-                        <span class="ml-2">25</span>
-                      </span>
-                    </div>
-                    <div class="ml-auto">
-                      <span>李四</span>
-                      <span>2024-05-10</span>
-                    </div>
-                  </v-card-actions>
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-col>
-        </v-row>
-        
+              </v-col>
+          </v-row>
       </v-container>
+      <!-- 支付确认对话框 -->
+      <v-dialog v-model="dialog" max-width="400">
+        <v-card elevation="3" class="rounded-lg">
+          <v-card-title class="text-h6 text-center font-weight-bold pb-0">
+            <v-icon color="primary" size="32px" class="mr-2">mdi-alert-circle-outline</v-icon>
+            确认支付 <v-icon color="#F8CC00" size="32px" class="ml-2">mdi-bitcoin</v-icon> 
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text class="py-4">
+            <div class="text-body-1">
+              您确定要支付 <strong class="text-primary text-h6">{{ curItem.cost }}</strong> 菜币吗？
+            </div>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions class="justify-end">
+            <v-btn text color="grey darken-2" class="font-weight-bold" @click="closeDialog">取消</v-btn>
+            <v-btn text color="primary" class="font-weight-bold" @click="confirmPayment">确认</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      
     </template>
   </div>
 </template>
@@ -178,7 +163,49 @@ export default {
         search: ''
       },
       filtersChanged: false, // 用来标记 filters 是否有变化
-      posts: [],
+      dialog: false, // 是否显示支付确认对话框
+      curItem: {
+        cost: 0
+      }, // 当前操作的 item
+      post: [
+                {
+                    post_id: 1,
+                    link: "/resources/testPost", // todo 链接
+                    image: require("@/assets/images/blogDefault.png"), // 这里需要申请另一个api
+                    title: "计算机组成考试题（2023-2024学年）",
+                    icon: { name: "mdi-bitcoin", color: "#F8CC00" },
+                    cost: 5,
+                    tags: ["计算机组成", "考试题", "2023-2024"], // 这里需要申请另一个api
+                    likes: 3407,
+                    dislikes: 109,
+                    favorites: 96,
+                    comments: 12,
+                    created_by: {
+                        user_id: 1,
+                        username: "张三",
+                        avatar: require("@/assets/images/blogDefault.png"),
+                    },
+                    created_at: "2024-04-29",
+                },
+                {
+                    post_id: 2,
+                    link: "/resources/testPost",
+                    title: "数据结构期末复习资料（2024-2025学年）",
+                    subtitle: "这是一份数据结构的复习资料，涵盖了本学年考试的重点知识点。希望对大家有所帮助。",
+                    tags: ["数据结构", "复习资料", "2024-2025"],
+                    cost: 0,
+                    likes: 5289,
+                    dislikes: 143,
+                    favorites: 305,
+                    comments: 25, // 这里需要获取帖子的评论数量
+                    created_by:{
+                        user_id: 2,
+                        username: "李四",
+                        avatar: require("@/assets/images/blogDefault.png"),
+                    },
+                    created_at: "2024-05-10",
+                },
+            ],
     };
   },
   watch: {
@@ -216,6 +243,28 @@ export default {
     },
     goToPage(page) {
       this.$router.push(page);
+    },
+    tryOpenItem(item) {
+      this.curItem = item;
+      // todo 打开操作逻辑
+      if (item.cost > 0) {
+        // 如果有价格，就弹出购买对话框
+        this.dialog = true;
+      } else {
+        console.log("打开", item.link);
+        this.goToPage(item.link);
+      }
+    },
+
+    closeDialog() {
+      this.dialog = false; // 隐藏对话框
+    },
+
+    confirmPayment() {
+      // todo 这里需要触发实际支付逻辑，即调用支付 API
+      let s = `已支付 ${this.curItem.cost} 菜币`;
+      this.$store.commit("setAlert", { type: "info", message: s});
+      this.closeDialog(); // 关闭对话框
     },
   },
   mounted() {
@@ -270,5 +319,33 @@ span {
   padding-left: 1%;
   padding-top: 0.3%;
   padding-bottom: 0.1%;
+}
+
+
+.card-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.card-content {
+  transition: transform 0.3s ease;
+  width: 100%;
+}
+
+
+.action-buttons {
+  position: absolute;
+  top: 30px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card-container:hover .action-buttons {
+  opacity: 1;
+  /* 鼠标悬浮时显示按钮 */
 }
 </style>

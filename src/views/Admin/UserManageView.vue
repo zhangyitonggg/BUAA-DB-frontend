@@ -4,34 +4,37 @@
         <p class="text-h4 mt-6 mb-4">所有用户</p>
         <p class="text-subtitle-2 mb-4">封禁、解封用户</p>
   
-        <v-data-table :headers="headers" :items="allUser" item-value="userid" disable-sort>
-            <!-- 自定义渲染 -->
-            <template v-slot:body>
-                <tbody>
-                    <tr v-for="item in allUser" :key="item.userid">
-                        <td>{{ item.userid }}</td>
-                        <td>
-                            <v-avatar size="32">
-                                <img :src="item.avatarurl" alt="Author" />
-                            </v-avatar>
-                        </td>
-                        <td>{{ item.username }}</td>
-                        <td>{{ item.studentid }}</td>
-                        <td>
-                            <v-btn
-                                :outlined="true"
-                                small
-                                :color="item.isblock ? 'green' : 'red'"
-                                class="me-1"
-                                @click="dialog(item.isblock, item.username, item.userid)">
-                                <v-icon small>
-                                    {{ item.isblock ? 'mdi-account-check' : 'mdi-account-off' }}
-                                </v-icon>
-                            </v-btn>
-                        </td>
-                    </tr>
-                </tbody>
-            </template>
+        <v-data-table
+        :headers="headers"
+        :items="allUser"
+        class="elevation-0"
+        disable-sort sticky
+        >
+        <template v-slot:item.index="{ index }">
+            {{ index + 1 }}
+        </template>
+        
+        <template v-slot:item.avatarurl="{ item }">
+            <v-avatar size="32">
+              <!-- 使用头像图片URL -->
+              <img :src="item.avatarurl" alt="User Avatar" />
+            </v-avatar>
+        </template>
+
+        <template v-slot:item.isblock="{ item }">
+            <v-btn
+                :outlined="true"
+                small
+                :color="item.isblock ? 'green' : 'red'"
+                class="me-1"
+                @click="dialog(item.isblock, item.username, item.userid)"
+            >
+                <v-icon small>
+                    {{ item.isblock ? 'mdi-account-check' : 'mdi-account-off' }}
+                </v-icon>
+            </v-btn>
+        </template>
+        
         </v-data-table>
         
   
@@ -67,11 +70,11 @@
     data() {
         return {
             headers: [
-                { text: "ID", value: "userid" },
+                { text: "ID", value: "index" },
                 { text: "头像", value: "avatarurl" },
                 { text: "用户名", value: "username" },
-                { text: "学号", value: "studentid" },
-                { text: "操作", value: "actions"},
+                { text: "电子邮件地址", value: "email" },
+                { text: "操作", value: "isblock" },
             ],
             allUser: [],
             dialogActive: false,
@@ -88,87 +91,87 @@
             // 模拟 API 调用
             this.allUser = [
                 {
-                    userid: 1,
+                    userid: 101,
                     avatarurl: "https://via.placeholder.com/32",
                     username: "User1",
-                    studentid: "20220101",
+                    email: "20220101",
                     isblock: false,
                 },
                 {
                     userid: 2,
                     avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
                     username: "User2",
-                    studentid: null,
+                    email: null,
                     isblock: true,
                 },
                 {
                     userid: 3,
                     avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
                     username: "User3",
-                    studentid: "20220103",
+                    email: "20220103",
                     isblock: false,
                 },
                 {
                     userid: 4,
                     avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
                     username: "User4",
-                    studentid: "20220104",
+                    email: "20220104",
                     isblock: true,
                 },
                 {
                     userid: 5,
                     avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
                     username: "User5",
-                    studentid: "20220105",
+                    email: "20220105",
                     isblock: false,
                 },
                 {
                     userid: 6,
                     avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
                     username: "User6",
-                    studentid: "20220106",
+                    email: "20220106",
                     isblock: true,
                 },
                 {
                     userid: 7,
                     avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
                     username: "User7",
-                    studentid: "20220107",
+                    email: "20220107",
                     isblock: false,
                 },
                 {
                     userid: 8,
                     avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
                     username: "User8",
-                    studentid: "20220108",
+                    email: "20220108",
                     isblock: true,
                 },
                 {
                     userid: 9,
                     avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
                     username: "User9",
-                    studentid: "20220109",
+                    email: "20220109",
                     isblock: false,
                 },
                 {
                     userid: 10,
                     avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
                     username: "User10",
-                    studentid: "20220110",
+                    email: "20220110",
                     isblock: true,
                 },
                 {
                     userid: 11,
                     avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
                     username: "User11",
-                    studentid: "20220111",
+                    email: "20220111",
                     isblock: false,
                 },
                 {
                     userid: 12,
                     avatarurl: "https://cdn.vuetifyjs.com/images/john.jpg",
                     username: "User12",
-                    studentid: "20220112",
+                    email: "20220112",
                     isblock: true,
                 }
             ];
