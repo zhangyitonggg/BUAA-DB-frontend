@@ -1,89 +1,86 @@
 <template>
+  <v-container class="spacing-playground pa-16" fluid style="width: 85%;">
     <div>
-      <template v-if="loading">
-        <v-container fluid class="d-flex align-center justify-center">
-          <v-row class="text-center">
-            <v-col>
-              <v-progress-circular indeterminate color="primary" size="64"></v-progress-circular>
-            </v-col>
-          </v-row>
-        </v-container>
-        <v-container fluid class="d-flex align-center justify-center">
-          <v-row class="text-center">
-            <v-col>
-              <h3>
-                潮平两岸阔，风正一帆悬。
-              </h3>
-              <h4>
-                欢迎回到 ASEPT。
-              </h4>
-              <span>正在获取公告。</span>
-            </v-col>
-          </v-row>
-        </v-container>
-      </template>
-  
-      <template v-else>
-        <v-row class="pb-10">
-          <v-spacer />
-          <v-btn large @click="dialog_openannouncement = true" color="primary">
-            <v-icon>mdi-plus</v-icon>
-            <span>新建公告</span>
-          </v-btn>
-        </v-row>
-        <template>
-          <v-expansion-panels inset focusable v-if="news.length > 0">
-            <v-expansion-panel v-for="(item, index) in news" :key="index">
-              <v-expansion-panel-header :disable-icon-rotate="!item.is_active">
-                <div style="display: flex; justify-content: space-between; width: 100%;">
-                  <div>{{ item.title }}</div>
-                  <div style="color: grey; text-align: right; margin-right: 16px;">
-                    <span>{{ item.author }}</span>
-                    <span> - </span>
-                    <span>{{ formatDate(item.update_at) }}</span>
-                  </div>
-                </div>
-                <template v-slot:actions>
-                  <v-icon :color="item.is_active ? 'primary' : 'error'">
-                    {{ item.is_active ? '$expand' : 'mdi-alert-circle' }}
-                  </v-icon>
-                </template>
-              </v-expansion-panel-header>
-              <v-expansion-panel-content>
-                <div class="panel-content">
-                  <v-md-preview :text="item.content"></v-md-preview>
-                </div>
-                <v-btn block @click="initAnnouncementModifyDialog(item)"> 修改公告 </v-btn>
-                <v-dialog v-model="dialog_modifyannouncement" width="50%">
-                  <v-card>
-                    <v-card-title>
-                      修改公告
-                    </v-card-title>
-                    <v-card-text>
-                      <v-text-field label="公告标题" filled outlined v-model="announcementTitle"></v-text-field>
-                      <v-textarea label="公告内容" filled outlined rows="20" v-model="announcementContent"></v-textarea>
-                      <v-switch v-model="announcementActive" :label="`${announcementActived}`"></v-switch>
-                    </v-card-text>
-                    <v-divider></v-divider>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="primary" text @click="modifyAnnouncement(item)" :disabled="loading"
-                        :loading="loading"> 修改
-                      </v-btn>
-                      <v-btn color="error" text @click="dialog_modifyannouncement = false" :disabled="loading"> 取消
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
-          <h2 v-else class="d-flex justify-center align-center">
-            好吧，看起来现在还没有公告。
-          </h2>
+        <template v-if="loading">
+          <v-container fluid class="d-flex align-center justify-center">
+            <v-row class="text-center">
+              <v-col>
+                <v-progress-circular indeterminate color="primary" size="64"></v-progress-circular>
+              </v-col>
+            </v-row>
+          </v-container>
+          <v-container fluid class="d-flex align-center justify-center">
+            <v-row class="text-center">
+              <v-col>
+                <h3>
+                  潮平两岸阔，风正一帆悬。
+                </h3>
+                <h4>
+                  欢迎回到 ASEPT。
+                </h4>
+                <span>正在获取公告。</span>
+              </v-col>
+            </v-row>
+          </v-container>
         </template>
-      </template>
-      <v-dialog v-model="dialog_openannouncement" width="50%">
+
+        <template v-else>
+          <v-row justify="center">
+            <v-expansion-panels inset v-model="activePanel">
+              <v-expansion-panel
+                v-for="(item, i) in news"
+                :key="i"
+              >
+                <v-expansion-panel-header>
+                  <div style="display: flex; justify-content: space-between; width: 100%;">
+                    <div>{{ item.title }}</div>
+                    <div style="color: grey; text-align: right; margin-right: 16px;">
+                      <span>{{ formatDate(item.notified_at) }}</span>
+                    </div>
+                  </div>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <v-md-preview :text="item.content"></v-md-preview>
+                  <v-btn block @click="initAnnouncementModifyDialog(item)"> 修改公告 </v-btn>
+
+                  <v-dialog v-model="dialog_modifyannouncement" width="50%">
+                    <v-card>
+                      <v-card-title>
+                        修改公告
+                      </v-card-title>
+                      <v-card-text>
+                        <v-text-field label="公告标题" filled outlined v-model="announcementTitle"></v-text-field>
+                        <v-textarea label="公告内容" filled outlined rows="20" v-model="announcementContent"></v-textarea>
+                      </v-card-text>
+                      <v-divider></v-divider>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="primary" text @click="modifyAnnouncement(item)" :disabled="loading"
+                          :loading="loading"> 修改
+                        </v-btn>
+                        <v-btn color="error" text @click="dialog_modifyannouncement = false" :disabled="loading"> 取消
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
+          </v-row>
+        </template>
+        <v-banner v-if="news.length === 0">
+          好吧，看起来现在还没有公告。
+        </v-banner>
+    </div>
+
+    <v-btn class="fixed-button1" fab dark color="indigo" @click="dialog_openannouncement = true">
+        <v-icon dark>
+          mdi-invoice-plus
+        </v-icon>
+    </v-btn>
+
+    <v-dialog v-model="dialog_openannouncement" width="50%">
         <v-card>
           <v-card-title>
             新建公告
@@ -103,10 +100,10 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </div>
+    </v-container>
   </template>
   
-  <script lang="js">
+  <script>
   import { format } from 'date-fns';
   
   import VMdPreview from '@kangc/v-md-editor/lib/preview';
@@ -119,29 +116,29 @@
     Hljs: hljs,
   });
   
-  
   export default {
     name: "NewsList",
     components: {
-      VMdPreview,
+      VMdPreview
     },
     data() {
       return {
+        news: [],
+        loading: true,
+        activePanel: 0, // 默认展开第一个面板，设置为数字
+
         dialog_openannouncement: false,
         dialog_modifyannouncement: false,
-        news: null,
-        loading: true,
-        activePanel: 0,
+
         announcementTitle: "",
         announcementContent: "",
-        announcementActive: false,
       }
     },
     mounted() {
       this.$store.commit("setAppTitle", "公告管理");
       this.$store.dispatch("getNews", { page: 1 })
         .then(res => {
-          this.news = res.announcements;
+          this.news = res.messages;
         })
         .catch(_ => {
           this.news = [];
@@ -155,13 +152,16 @@
       formatDate(dateString) {
         return format(new Date(dateString), 'yyyy-MM-dd HH:mm:ss');
       },
+      cancelPublishAnnouncement() {
+        this.dialog_openannouncement = false;
+      },
       publishAnnouncement() {
         this.loading = true;
         this.$store.dispatch("publishAnnouncement", {
           title: this.announcementTitle,
           content: this.announcementContent,
         })
-          .then(_ => {
+        .then(_ => {
             this.$store.commit("setAlert", { type: "success", message: "公告发布成功。" });
             this.loading = true;
             this.$store.dispatch("getNews")
@@ -181,22 +181,18 @@
             this.loading = false;
           });
       },
-      cancelPublishAnnouncement() {
-        this.dialog_openannouncement = false;
-      },
       initAnnouncementModifyDialog(item) {
         this.announcementTitle = item.title;
         this.announcementContent = item.content;
-        this.announcementActive = item.is_active;
         this.dialog_modifyannouncement = true;
       },
       modifyAnnouncement(item) {
         this.loading = true;
+        // todo 需要写一下store的action
         this.$store.dispatch("modifyAnnouncement", {
           aid: item.aid,
           title: this.announcementTitle,
           content: this.announcementContent,
-          is_active: this.announcementActive,
         })
           .then(_ => {
             this.$store.commit("setAlert", { type: "success", message: "公告修改成功。" });
@@ -217,11 +213,6 @@
             this.dialog_modifyannouncement = false;
             this.loading = false;
           });
-      }
-    },
-    computed: {
-      announcementActived() {
-        return this.announcementActive ? "公告状态：有效" : "公告状态：无效";
       }
     },
     watch: {
@@ -254,4 +245,12 @@
   .panel-content {
     margin-top: 30px;
   }
+
+  .fixed-button1 {
+    position: fixed;
+    right: 4%;
+    bottom: 16%;
+    z-index: 5;
+  }
   </style>
+  

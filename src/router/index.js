@@ -25,6 +25,15 @@ const routes = [
       title: '用户管理'
     }
   },
+  {
+    path: '/admin/newsManage',
+    name: 'news-manage',
+    component: () => import('../views/Admin/NewsManageView.vue'),
+    meta: {
+      requiresAuthed: true,
+      title: '公告管理'
+    }
+  },
   // 普通用户
   {
     path: '/',
