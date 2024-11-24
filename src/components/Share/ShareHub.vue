@@ -69,17 +69,17 @@
                       <v-card outlined class="card-content" style="cursor: pointer;">
                           <v-row no-gutters class="picture">
                               <v-col cols="auto" class="d-flex align-center">
-                                  <v-img :src="item.image" aspect-ratio="1" height="110px" width="110px"
-                                      contain></v-img>
+                                  <!-- <v-img :src="item.image" aspect-ratio="1" height="110px" width="110px"
+                                      contain></v-img> -->
+                                  <v-icon color="#FFB300" style="font-size: 106px; margin-left: -10%; margin-right: -20px;">mdi-file-download-outline</v-icon>
                               </v-col>
                               <v-col>
                                   <v-card-title>
                                       {{ item.title }}
-                                      <v-icon v-if="item.icon" :color="item.icon.color">{{ item.icon.name
-                                          }}</v-icon>
-                                      <span v-if="item.price"
+                                      <v-icon v-if="item.cost>0" color="#F8CC00">mdi-bitcoin</v-icon>
+                                      <span v-if="item.cost>0"
                                           style="font-size: 13px; color: #666666; margin-left: 0.2%;">
-                                          {{ item.price }}
+                                          {{ item.cost }} 菜币
                                       </span>
                                   </v-card-title>
                                   <div style="margin-left: 1.8%;">
@@ -109,8 +109,8 @@
                                           </span>
                                       </div>
                                       <div class="ml-auto">
-                                          <span>{{ item.author }}</span>
-                                          <span>{{ item.date }}</span>
+                                          <span>{{ item.created_by.username }}</span>
+                                          <span>{{ item.created_at }}</span>
                                       </div>
                                   </v-card-actions>
                               </v-col>
@@ -118,7 +118,7 @@
                       </v-card>
                       <!-- 操作按钮 -->
                       <div class="action-buttons">
-                          <v-btn color="primary" class="me-2" icon @click.stop="openItem(item.link)">
+                          <v-btn color="primary" class="me-2" icon @click.stop="tryOpenItem(item)">
                               <v-icon style="font-size: 32px;">mdi-open-in-new</v-icon>
                           </v-btn>
                       </div>
@@ -126,7 +126,27 @@
               </v-col>
           </v-row>
       </v-container>
-
+      <!-- 支付确认对话框 -->
+      <v-dialog v-model="dialog" max-width="400">
+        <v-card elevation="3" class="rounded-lg">
+          <v-card-title class="text-h6 text-center font-weight-bold pb-0">
+            <v-icon color="primary" size="32px" class="mr-2">mdi-alert-circle-outline</v-icon>
+            确认支付 <v-icon color="#F8CC00" size="32px" class="ml-2">mdi-bitcoin</v-icon> 
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text class="py-4">
+            <div class="text-body-1">
+              您确定要支付 <strong class="text-primary text-h6">{{ curItem.cost }}</strong> 菜币吗？
+            </div>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions class="justify-end">
+            <v-btn text color="grey darken-2" class="font-weight-bold" @click="closeDialog">取消</v-btn>
+            <v-btn text color="primary" class="font-weight-bold" @click="confirmPayment">确认</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      
     </template>
   </div>
 </template>
@@ -143,35 +163,47 @@ export default {
         search: ''
       },
       filtersChanged: false, // 用来标记 filters 是否有变化
+      dialog: false, // 是否显示支付确认对话框
+      curItem: {
+        cost: 0
+      }, // 当前操作的 item
       post: [
                 {
                     post_id: 1,
-                    link: "/resources/testPost",
-                    image: require("@/assets/images/blogDefault.png"),
+                    link: "/resources/testPost", // todo 链接
+                    image: require("@/assets/images/blogDefault.png"), // 这里需要申请另一个api
                     title: "计算机组成考试题（2023-2024学年）",
                     icon: { name: "mdi-bitcoin", color: "#F8CC00" },
-                    price: "5菜币",
-                    tags: ["计算机组成", "考试题", "2023-2024"],
+                    cost: 5,
+                    tags: ["计算机组成", "考试题", "2023-2024"], // 这里需要申请另一个api
                     likes: 3407,
                     dislikes: 109,
                     favorites: 96,
                     comments: 12,
-                    author: "张三",
-                    date: "2024-04-29",
+                    created_by: {
+                        user_id: 1,
+                        username: "张三",
+                        avatar: require("@/assets/images/blogDefault.png"),
+                    },
+                    created_at: "2024-04-29",
                 },
                 {
                     post_id: 2,
                     link: "/resources/testPost",
-                    image: require("@/assets/images/logo.png"),
                     title: "数据结构期末复习资料（2024-2025学年）",
                     subtitle: "这是一份数据结构的复习资料，涵盖了本学年考试的重点知识点。希望对大家有所帮助。",
                     tags: ["数据结构", "复习资料", "2024-2025"],
+                    cost: 0,
                     likes: 5289,
                     dislikes: 143,
                     favorites: 305,
-                    comments: 25,
-                    author: "李四",
-                    date: "2024-05-10",
+                    comments: 25, // 这里需要获取帖子的评论数量
+                    created_by:{
+                        user_id: 2,
+                        username: "李四",
+                        avatar: require("@/assets/images/blogDefault.png"),
+                    },
+                    created_at: "2024-05-10",
                 },
             ],
     };
@@ -212,10 +244,27 @@ export default {
     goToPage(page) {
       this.$router.push(page);
     },
-    openItem(link) {
+    tryOpenItem(item) {
+      this.curItem = item;
       // todo 打开操作逻辑
-      console.log("打开", link);
-      this.goToPage(link);
+      if (item.cost > 0) {
+        // 如果有价格，就弹出购买对话框
+        this.dialog = true;
+      } else {
+        console.log("打开", item.link);
+        this.goToPage(item.link);
+      }
+    },
+
+    closeDialog() {
+      this.dialog = false; // 隐藏对话框
+    },
+
+    confirmPayment() {
+      // todo 这里需要触发实际支付逻辑，即调用支付 API
+      let s = `已支付 ${this.curItem.cost} 菜币`;
+      this.$store.commit("setAlert", { type: "info", message: s});
+      this.closeDialog(); // 关闭对话框
     },
   },
   mounted() {
