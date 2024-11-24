@@ -7,7 +7,8 @@
         <v-data-table
         :headers="headers"
         :items="allUser"
-        class="elevation-1"
+        class="elevation-0"
+        disable-sort sticky
         >
 
         <template v-slot:item.avatarurl="{ item }">

@@ -34,6 +34,15 @@ const routes = [
       title: '公告管理'
     }
   },
+  {
+    path: '/admin/shareManage',
+    name: 'share-manage',
+    component: () => import('../views/Admin/ShareManageView.vue'),
+    meta: {
+      requiresAuthed: true,
+      title: '分享管理'
+    }
+  },
   // 普通用户
   {
     path: '/',
