@@ -125,10 +125,10 @@
                                 <!-- 操作按钮 -->
                                 <div class="action-buttons">
                                     <v-btn color="primary" class="me-2" icon @click.stop="openItem(item.link)">
-                                        <v-icon>mdi-open-in-new</v-icon>
+                                        <v-icon style="font-size: 32px;">mdi-open-in-new</v-icon>
                                     </v-btn>
                                     <v-btn color="red" icon @click.stop="deleteItem(item)">
-                                        <v-icon>mdi-delete</v-icon>
+                                        <v-icon style="font-size: 32px;">mdi-delete</v-icon>
                                     </v-btn>
                                 </div>
                             </div>
@@ -184,7 +184,6 @@ export default {
                     date: "2024-05-10",
                 },
             ],
-            hoverIndex: null, // 当前悬浮的卡片索引
         };
     },
     watch: {
