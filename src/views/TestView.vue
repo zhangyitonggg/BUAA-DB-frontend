@@ -1,250 +1,188 @@
 <template>
-  <v-container class="spacing-playground pa-16" fluid>
-      <div style="margin-top: -50px;">
-          <template v-if="loading">
-              <v-container fluid class="d-flex align-center justify-center">
-                  <v-row class="text-center">
-                      <v-col>
-                          <v-progress-circular indeterminate color="primary" size="64"></v-progress-circular>
-                      </v-col>
-                  </v-row>
-              </v-container>
-              <v-container fluid class="d-flex align-center justify-center">
-                  <v-row class="text-center">
-                      <v-col>
-                          <h3>
-                              潮平两岸阔，风正一帆悬。
-                          </h3>
-                          <h4>
-                              欢迎回到航U邦。
-                          </h4>
-                          <span>正在获取资源站。</span>
-                      </v-col>
-                  </v-row>
-              </v-container>
-          </template>
-          <template v-else>
-              <v-container>
-                  <v-row v-for="(item) in post" :key="item.post_id">
-                      <v-col>
-                          <div class="card-container">
-                              <!-- 卡片主体 -->
-                              <v-card outlined class="card-content" style="cursor: pointer;">
-                                  <v-row no-gutters class="picture">
-                                      <v-col cols="auto" class="d-flex align-center">
-                                          <!-- <v-img :src="item.image" aspect-ratio="1" height="110px" width="110px"
-                                              contain></v-img> -->
-                                      <v-icon color="#FFB300" style="font-size: 106px; margin-left: -10%; margin-right: -20px;">mdi-file-download-outline</v-icon>
-                                      </v-col>
-                                      <v-col>
-                                          <v-card-title>
-                                              {{ item.title }}
-                                              <v-icon v-if="item.cost>0" color="#F8CC00">mdi-bitcoin</v-icon>
-                                              <span v-if="item.cost>0"
-                                                  style="font-size: 13px; color: #666666; margin-left: 0.2%;">
-                                                  {{ item.cost }} 菜币
-                                              </span>
-                                          </v-card-title>
-                                          <div style="margin-left: 1.8%;">
-                                              <v-chip v-for="(tag, tagIndex) in item.tags" :key="tagIndex"
-                                                  color="aqua" label small class="me-3">
-                                                  {{ tag }}
-                                              </v-chip>
-                                          </div>
-                                          <v-card-actions style="margin-left: 0.8%;">
-                                              <div>
-                                                  <span>
-                                                      <v-icon
-                                                          style="display: inline-block; margin-top: -7px;">mdi-thumb-up</v-icon>
-                                                      <span class="ml-2">{{ item.likes }}</span>
-                                                  </span>
-                                                  <span>
-                                                      <v-icon>mdi-thumb-down</v-icon>
-                                                      <span class="ml-2">{{ item.dislikes }}</span>
-                                                  </span>
-                                                  <span>
-                                                      <v-icon>mdi-heart-box</v-icon>
-                                                      <span class="ml-2">{{ item.favorites }}</span>
-                                                  </span>
-                                                  <span>
-                                                      <v-icon>mdi-comment-multiple</v-icon>
-                                                      <span class="ml-2">{{ item.comments }}</span>
-                                                  </span>
-                                              </div>
-                                              <div class="ml-auto">
-                                                  <span>{{ item.author }}</span>
-                                                  <span>{{ item.date }}</span>
-                                              </div>
-                                          </v-card-actions>
-                                      </v-col>
-                                  </v-row>
-                              </v-card>
-                              <!-- 操作按钮 -->
-                              <div class="action-buttons">
-                                  <v-btn color="primary" class="me-2" icon @click.stop="openItem(item.link)">
-                                      <v-icon style="font-size: 32px;">mdi-open-in-new</v-icon>
-                                  </v-btn>
-                                  <v-btn color="red" icon @click.stop="deleteItem(item)">
-                                      <v-icon style="font-size: 32px;">mdi-delete</v-icon>
-                                  </v-btn>
-                              </div>
-                          </div>
-                      </v-col>
-                  </v-row>
-              </v-container>
-
-          </template>
-      </div>
-  </v-container>
-</template>
-
-<script>
-export default {
-  name: 'ShareHub',
-  data() {
-      return {
-          loading: true,
-          post: [
-              {
-                  post_id: 1,
-                  link: "/resources/testPost", // todo 链接
-                  image: require("@/assets/images/blogDefault.png"), // 这里需要申请另一个api
-                  title: "计算机组成考试题（2023-2024学年）",
-                  icon: { name: "mdi-bitcoin", color: "#F8CC00" },
-                  cost: 5,
-                  tags: ["计算机组成", "考试题", "2023-2024"], // 这里需要申请另一个api
-                  likes: 3407,
-                  dislikes: 109,
-                  favorites: 96,
-                  comments: 12,
-                  created_by: {
-                      user_id: 1,
-                      username: "张三",
-                      avatar: require("@/assets/images/blogDefault.png"),
-                  },
-                  created_at: "2024-04-29",
-              },
-              {
-                  post_id: 2,
-                  link: "/resources/testPost",
-                  title: "数据结构期末复习资料（2024-2025学年）",
-                  subtitle: "这是一份数据结构的复习资料，涵盖了本学年考试的重点知识点。希望对大家有所帮助。",
-                  tags: ["数据结构", "复习资料", "2024-2025"],
-                  cost: 0,
-                  likes: 5289,
-                  dislikes: 143,
-                  favorites: 305,
-                  comments: 25, // 这里需要获取帖子的评论数量
-                  created_by:{
-                      user_id: 2,
-                      username: "李四",
-                      avatar: require("@/assets/images/blogDefault.png"),
-                  },
-                  created_at: "2024-05-10",
-              },
-          ],
-      };
-  },
-  watch: {
-
-  },
-  methods: {
-
-      getPosts() {
-          // todo 获取数据,赋值给post
-          this.loading = false;
-      },
-      goToPage(page) {
-          this.$router.push(page);
-      },
-      openItem(link) {
-          // todo 打开操作逻辑
-          console.log("打开", link);
-          this.goToPage(link);
-      },
-      deleteItem(item) {
-          // todo 删除操作逻辑
-          console.log("删除", item);
-      },
-  },
-  mounted() {
-      this.$store.commit("setAppTitle", "共享资源站");
-      this.getPosts();
-  },
-};
-</script>
-
-<style scoped>
-.top {
-  border-width: 3px !important;
-  /* 只改变边框粗细 */
-  border-style: solid;
-  border-radius: 5px;
-  /* 可选，增加圆角效果 */
-}
-
-span {
-  cursor: pointer;
-  margin-right: 20px;
-  color: gray;
-}
-
-.active {
-  color: orange;
-}
-
-.filters {
-  padding: 10px;
-  /* 内边距 */
-  display: inline-block;
-  /* 确保 span 是块元素，并且 padding 生效 */
-}
-
-.tag {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 10px;
-  margin: 0 5px;
-  width: max-content;
-  height: 20px;
-  font-size: 12px;
-  font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
-  color: #3d3d3d;
-  background: #d9fe32;
-  border-radius: 10px;
-}
-
-.picture {
-  padding-left: 1%;
-  padding-top: 0.3%;
-  padding-bottom: 0.1%;
-}
-
-.card-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.card-content {
-  transition: transform 0.3s ease;
-  width: 100%;
-}
-
-
-.action-buttons {
-  position: absolute;
-  top: 30px;
-  right: 20px;
-  display: flex;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.card-container:hover .action-buttons {
-  opacity: 1;
-  /* 鼠标悬浮时显示按钮 */
-}
-</style>
+    <div class="container">
+        <div class="row">
+            <div class="card" v-for="(item, index) in cards" :key="index">
+                <div class="card-header">
+                    <span :class="'tag ' + item.tagClass">{{ item.tag }}</span>
+                    <span class="details">{{ item.details }}</span>
+                </div>
+                <div class="card-body">
+                    <h3>{{ item.title }}</h3>
+                    <p>{{ item.content }}</p>
+                </div>
+                <div class="card-middle">
+                    <span :class="'tag ' + item.tagClass"># {{ item.tag }}</span>
+                </div>
+                <div class="card-footer">
+                    <span class="author">发布者: {{ item.author }}</span>
+                    <div>
+                        <button @click="handleStar(index)">⭐</button>
+                        <button @click="handleDelete(index)">🗑️</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </template>
+    
+    <script>
+    export default {
+        data() {
+            return {
+                cards: [
+                    {
+                        tag: "置顶",
+                        tagClass: "highlight",
+                        details: "10 关注 | 45 回复",
+                        title: "【任务发布】寻找全栈开发导师",
+                        content: "希望能找到一位有丰富全栈开发经验的导师，每周进行一次线上指导，帮助我解决学习中的问题并提供项目实践建议。感兴趣的请联系！",
+                        author: "张三",
+                    },
+                    {
+                        tag: "公告",
+                        tagClass: "info",
+                        details: "3 关注 | 12 回复",
+                        title: "【提问】如何优化后端接口性能？",
+                        content: "最近在开发一个电商项目，发现部分接口响应时间过长。主要使用的技术栈是Node.js + Express。请问有哪些优化建议，或者有没有类似的案例分享？",
+                        author: "李四",
+                    },
+                    {
+                        tag: "普通",
+                        tagClass: "normal",
+                        details: "5 关注 | 15 回复",
+                        title: "【求助】设计一个任务发布系统的数据库结构",
+                        content: "正在设计一个任务发布系统，涉及到用户、任务、评论等功能。希望能得到关于数据库表结构设计的具体建议，尤其是如何设计关联关系更合理。",
+                        author: "王五",
+                    },
+                    {
+                        tag: "公告",
+                        tagClass: "info",
+                        details: "7 关注 | 20 回复",
+                        title: "【任务发布】前端设计优化需求",
+                        content: "需要一名熟悉Vue.js和UI/UX设计的开发者，帮助优化现有项目的用户界面，包括交互设计和性能提升。有兴趣的可以提交报价。",
+                        author: "赵六",
+                    },
+                    {
+                        tag: "置顶",
+                        tagClass: "highlight",
+                        details: "8 关注 | 30 回复",
+                        title: "【提问】React和Vue如何选择？",
+                        content: "在开发一个中型项目时，团队对选择React还是Vue存在争议。请问这两者在性能、生态和学习成本上的主要差异是什么？希望大家能分享自己的经验。",
+                        author: "钱七",
+                    },
+                    {
+                        tag: "普通",
+                        tagClass: "normal",
+                        details: "2 关注 | 6 回复",
+                        title: "【求助】后端服务高并发处理方案",
+                        content: "项目上线后访问量激增，后端服务器偶尔会崩溃。使用的技术栈是Java Spring Boot。请问有哪些可行的高并发处理方案？",
+                        author: "孙八",
+                    },
+                    {
+                        tag: "置顶",
+                        tagClass: "highlight",
+                        details: "12 关注 | 40 回复",
+                        title: "【任务发布】短期项目外包——数据分析",
+                        content: "我们正在寻找一位熟悉Python和数据分析的开发者，负责处理并分析一组业务数据。项目周期为两周，具体细节可以私信商讨。",
+                        author: "周九",
+                    },
+                    {
+                        tag: "公告",
+                        tagClass: "info",
+                        details: "9 关注 | 25 回复",
+                        title: "【提问】如何设计任务优先级排序算法？",
+                        content: "在任务管理系统中，需要根据用户需求动态调整任务的优先级排序。请问有哪些常用的排序算法或者设计思路适合这种场景？",
+                        author: "吴十",
+                    },
+                    {
+                        tag: "普通",
+                        tagClass: "normal",
+                        details: "4 关注 | 10 回复",
+                        title: "【求助】移动端页面适配问题",
+                        content: "项目的移动端页面在不同分辨率设备上显示效果不一致。请问有什么最佳实践或者工具可以帮助解决适配问题？",
+                        author: "郑十一",
+                    },
+                ],
+            };
+        },
+        methods: {
+            handleStar(index) {
+                alert(`卡片 ${index + 1} 收藏！`);
+            },
+            handleDelete(index) {
+                this.cards.splice(index, 1);
+            },
+        },
+    };
+    </script>
+    
+    <style scoped>
+    .container {
+        padding: 20px;
+    }
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .card {
+        flex: 0 0 32.4%; /* 每行展示三个卡片 */
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+    }
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .tag {
+        padding: 3px 8px;
+        border-radius: 3px;
+        color: #fff;
+        font-size: 12px;
+    }
+    .highlight {
+        background-color: red;
+    }
+    .info {
+        background-color: blue;
+    }
+    .normal {
+        background-color: green;
+    }
+    .details {
+        font-size: 12px;
+        color: #999;
+    }
+    .card-body {
+        margin-bottom: 10px;
+    }
+    .card-middle {
+        margin: 10px 0;
+        font-size: 14px;
+        color: #666;
+    }
+    .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .author {
+        font-size: 14px;
+        color: #333;
+    }
+    button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    button:hover {
+        color: orange;
+    }
+    </style>
