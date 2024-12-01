@@ -120,6 +120,7 @@ export default {
         ['mdi-newspaper-variant-multiple-outline', '管理公告', '/admin/newsManage'],
         ['mdi-account-cog', '管理用户', '/admin/userManage'],
         ['mdi-notebook-remove-outline', '管理分享', '/admin/shareManage'],
+        ['mdi-calendar-multiple', '管理悬赏', '/admin/taskManage'],
       ],
     };
   },

@@ -43,6 +43,15 @@ const routes = [
       title: '分享管理'
     }
   },
+  {
+    path: '/admin/taskManage',
+    name: 'task-manage',
+    component: () => import('../views/Admin/TaskManageView.vue'),
+    meta: {
+      requiresAuthed: true,
+      title: '悬赏管理'
+    }
+  },
   // 普通用户
   {
     path: '/',

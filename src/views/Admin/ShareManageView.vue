@@ -273,7 +273,7 @@ export default {
         },
     },
     mounted() {
-        this.$store.commit("setAppTitle", "共享资源站");
+        this.$store.commit("setAppTitle", "管理资源");
         this.getPosts();
     },
 };
