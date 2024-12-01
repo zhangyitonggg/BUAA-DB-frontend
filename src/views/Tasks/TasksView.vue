@@ -1,37 +1,68 @@
 <template>
-  <div>
-    <v-btn class="fixed-button" fab dark color="indigo" @click="addTask">
+  <v-container class="spacing-playground pa-16" fluid>
+    <component :is="currentComponent" />
+    <v-btn class="fixed-button1" fab dark color="indigo" @click="add">
       <v-icon dark>
         mdi-invoice-plus
       </v-icon>
     </v-btn>
-  </div>
+    <v-btn class="fixed-button2" fab dark color="#8B4513" @click="own">
+      <v-icon dark>
+        mdi-home-edit
+      </v-icon>
+    </v-btn>
+  </v-container>
 </template>
 <script>
+import TaskHub from '../../components/Task/TaskHub.vue'
+
   export default {
     name: 'TasksView',
     components: {
+      TaskHub,
+    },
+    data() {
+      return {
+        activeBtn: 'TaskHub',
+      }
     },
     computed: {
+      currentComponent() {
+        return this.activeBtn;
+      }
     },
     methods: {
-      addTask() {
+      add() {
         this.$router.push('/tasks/add');
+      },
+      own() {
+        this.$router.push('/tasks/own');
       }
     },
     watch: {
     },
     mounted() {
-      this.$store.commit("setAppTitle", "悬赏");
+      this.$store.commit("setAppTitle", "任务悬赏站");
     },
   }
 </script>
 
 <style scoped>
-  .fixed-button {
-    position: fixed;
-    right: 3%;
-    bottom: 15%;
-    z-index: 5;
-  }
+.v-bottom-navigation {
+  bottom: 0;
+}
+
+.fixed-button1 {
+  position: fixed;
+  right: 4%;
+  bottom: 16%;
+  z-index: 5;
+}
+
+.fixed-button2 {
+  position: fixed;
+  right: 4%;
+  bottom: 8%;
+  z-index: 5;
+}
 </style>
