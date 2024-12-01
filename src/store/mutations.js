@@ -69,6 +69,10 @@ export default {
       localStorage.removeItem('__user_name__');
       sessionStorage.removeItem('__token__');
       sessionStorage.removeItem('__user_name__');
-    }
+    },
+    // 设置是否查看我的收藏
+    setMyFavorite(state, myFavorite) {
+      state.myFavorite = myFavorite;
+    },
   };
   

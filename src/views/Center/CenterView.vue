@@ -5,15 +5,15 @@
       <v-bottom-navigation app fixed color="primary" v-model="activeBtn">
         <v-btn value="UserInfo">
           <span>基本信息</span>
-          <v-icon>mdi-message-alert-outline</v-icon>
+          <v-icon>mdi-message-alert</v-icon>
         </v-btn>
         <v-btn value="MyFollow">
           <span>我的关注</span>
-          <v-icon>mdi-hand-coin</v-icon>
+          <v-icon>mdi-account-star</v-icon>
         </v-btn>
-        <v-btn value="GiveMeMoney">
+        <v-btn value="MyFavorite">
           <span>我的收藏</span>
-          <v-icon>mdi-hand-coin</v-icon>
+          <v-icon>mdi-movie-open-star</v-icon>
         </v-btn>
       </v-bottom-navigation>
     </v-container>
@@ -23,15 +23,15 @@
   
   <script>
   import UserInfo from '../../components/Center/UserInfo.vue'
-  import GiveMeMoney from '../../components/Home/GiveMeMoney.vue'
   import MyFollow from '../../components/Center/MyFollow.vue'
-    
+  import MyFavorite from '../../components/Center/MyFavorite.vue'; 
+
   export default {
     name: 'CenterView',
     components: {
       UserInfo,
-      GiveMeMoney,
       MyFollow,
+      MyFavorite,
     },
     data() {
       return {
@@ -42,6 +42,13 @@
     computed: {
       currentComponent() {
         return this.activeBtn;
+      }
+    },
+    created() {
+      console.log(this.$store.state.myFavorite)
+      if (this.$store.state.myFavorite) {
+        this.$store.commit("setMyFavorite", false);
+        this.activeBtn = 'MyFavorite';
       }
     },
     methods: {

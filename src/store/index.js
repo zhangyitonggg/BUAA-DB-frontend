@@ -21,6 +21,8 @@ export default new Vuex.Store({
     _token_: null,
     _app_title_: "航U邦",
     hasParticles: true,
+  
+    myFavorite: false,
   },
 
   mutations,

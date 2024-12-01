@@ -33,26 +33,14 @@
                             <v-col>
                                 <span @click="setFilter('sort_by', 0)"
                                     :class="{ active: filters.sort_by === 0 }">综合</span>
-                                <span @click="setFilter('sort_by', 1)"
-                                    :class="{ active: filters.sort_by === 1 }">最多点赞</span>
+                                <!-- <span @click="setFilter('sort_by', 1)"
+                                    :class="{ active: filters.sort_by === 1 }"></span> -->
                                 <span @click="setFilter('sort_by', 4)"
-                                    :class="{ active: filters.sort_by === 4 }">最多收藏</span>
+                                    :class="{ active: filters.sort_by === 4 }">悬赏金额</span>
                                 <span @click="setFilter('sort_by', 2)"
                                     :class="{ active: filters.sort_by === 2 }">最近创建</span>
                                 <span @click="setFilter('sort_by', 3)"
-                                    :class="{ active: filters.sort_by === 3 }">最近评论</span>
-                            </v-col>
-                        </v-row>
-                        <v-row class="align-center">
-                            <v-col cols="auto">
-                                <span><strong>收费</strong>:</span>
-                            </v-col>
-                            <v-col>
-                                <v-radio-group v-model="filters.pay" row>
-                                    <v-radio label="不限" :value="0"></v-radio>
-                                    <v-radio label="收费" :value="1"></v-radio>
-                                    <v-radio label="免费" :value="2"></v-radio>
-                                </v-radio-group>
+                                    :class="{ active: filters.sort_by === 3 }">最近回答</span>
                             </v-col>
                         </v-row>
                         <v-row class="align-center">
@@ -82,7 +70,7 @@
             </v-container>
             <div class="container">
                 <div class="row">
-                    <div class="card" v-for="(item, index) in cards" :key="index">
+                    <div class="card" v-for="(item, index) in cards" :key="index" @click="tryOpenItem(item)">
                         <div class="card-body">
                             <h3>{{ item.title }}</h3>
                             <p>{{ item.tiny_content }}</p>
@@ -135,6 +123,7 @@ export default {
             curItem: null,
             cards: [
                 {
+                    mission_id:0,
                     title: "【任务发布】寻找全栈开发导师",
                     tiny_content: "希望能找到一位有丰富全栈开发经验的导师，每周进行一次线上指导，帮助我解决学习中的问题并提供项目实践建议。感兴趣的请联系！",
                     created_at: "2021-09-01",
@@ -145,6 +134,7 @@ export default {
                     commission: 12,
                 },
                 {
+                    mission_id:1,
                     title: "【提问】如何优化后端接口性能？",
                     tiny_content: "最近在开发一个电商项目，发现部分接口响应时间过长。主要使用的技术栈是Node.js + Express。请问有哪些优化建议，或者有没有类似的案例分享？",
                     created_at: "2021-09-01",
@@ -155,6 +145,7 @@ export default {
                     commission: 0,
                 },
                 {
+                    mission_id:2,
                     title: "【求助】设计一个任务发布系统的数据库结构",
                     tiny_content: "正在设计一个任务发布系统，涉及到用户、任务、评论等功能。希望能得到关于数据库表结构设计的具体建议，尤其是如何设计关联关系更合理。",
                     created_at: "2021-09-01",
@@ -165,6 +156,7 @@ export default {
                     commission: 1,
                 },
                 {
+                    mission_id:3,
                     title: "【任务发布】前端设计优化需求",
                     tiny_content: "需要一名熟悉Vue.js和UI/UX设计的开发者，帮助优化现有项目的用户界面，包括交互设计和性能提升。有兴趣的可以提交报价。",
                     created_at: "2021-09-01",
@@ -175,6 +167,7 @@ export default {
                     commission: 0,
                 },
                 {
+                    mission_id:3,
                     title: "【提问】React和Vue如何选择？",
                     tiny_content: "在开发一个中型项目时，团队对选择React还是Vue存在争议。请问这两者在性能、生态和学习成本上的主要差异是什么？希望大家能分享自己的经验。",
                     created_at: "2021-09-01",
@@ -185,6 +178,8 @@ export default {
                     commission: 10,
                 },
                 {
+                    mission_id:3,
+
                     title: "【求助】后端服务高并发处理方案",
                     tiny_content: "项目上线后访问量激增，后端服务器偶尔会崩溃。使用的技术栈是Java Spring Boot。请问有哪些可行的高并发处理方案？",
                     created_at: "2021-09-01",
@@ -195,6 +190,8 @@ export default {
                     commission: 20,
                 },
                 {
+                    mission_id:3,
+
                     title: "【任务发布】短期项目外包——数据分析",
                     tiny_content: "我们正在寻找一位熟悉Python和数据分析的开发者，负责处理并分析一组业务数据。项目周期为两周，具体细节可以私信商讨。",
                     created_at: "2021-09-01",
@@ -205,6 +202,7 @@ export default {
                     commission: 1,
                 },
                 {
+                    mission_id:3,
                     title: "【提问】如何设计任务优先级排序算法？",
                     tiny_content: "在任务管理系统中，需要根据用户需求动态调整任务的优先级排序。请问有哪些常用的排序算法或者设计思路适合这种场景？",
                     created_at: "2021-09-01",
@@ -215,6 +213,7 @@ export default {
                     commission: 2,
                 },
                 {
+                    mission_id:3,
                     title: "【求助】移动端页面适配问题",
                     tiny_content: "项目的移动端页面在不同分辨率设备上显示效果不一致。请问有什么最佳实践或者工具可以帮助解决适配问题？",
                     created_at: "2021-09-01",
@@ -270,9 +269,9 @@ export default {
         },
         tryOpenItem(item) {
             this.curItem = item;
-            // todo 打开操作逻辑
-            console.log("打开", item.link);
-            this.goToPage(item.link);
+            // todo 打开任务
+            // this.$router.push("/tasks/" + item.mission_id);
+            this.goToPage("/tasks/testPostForOther");
         },
     },
     mounted() {

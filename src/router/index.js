@@ -121,6 +121,33 @@ const routes = [
     }
   },
   {
+    path: '/tasks/own',
+    name: 'own-task',
+    component: () => import('../views/Tasks/Own/OwnTaskView.vue'),
+    meta: {
+      requiresAuth: true,
+      title: '我的悬赏'
+    }
+  },
+  {
+    path: '/tasks/testPostForAsker', // 测试用,后面换成/tasksForAsker/:id
+    name: 'get-task',
+    component: () => import('../components/Task/TaskPostForAsker.vue'),
+    meta: {
+      requiresAuth: true,
+      title: '悬赏详情'
+    }
+  },
+  {
+    path: '/tasks/testPostForOther', // 测试用,后面换成/tasksForOther/:id
+    name: 'get-task',
+    component: () => import('../components/Task/TaskPostForOther.vue'),
+    meta: {
+      requiresAuth: true,
+      title: '悬赏详情'
+    }
+  },
+  {
     path: '/center',
     name: 'center',
     component: () => import('../views/Center/CenterView.vue'),
