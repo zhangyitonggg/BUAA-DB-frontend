@@ -138,7 +138,7 @@ export default {
     },
     logout() {
       this.$store.commit("clearPersonalInfo");
-      this.$router.push({ name: 'login' });
+      this.$router.push('/auth');
     },
     changeMode() {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
@@ -214,7 +214,7 @@ export default {
   transform: scale(0.8);
 }
 .logo {
-  vertical-align: middle; 
+  vertical-align: middle;
   margin-left: 0px;
   margin-top: 0px;
   width: 65px;
