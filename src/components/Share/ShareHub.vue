@@ -146,7 +146,6 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      
     </template>
   </div>
 </template>
@@ -167,45 +166,7 @@ export default {
       curItem: {
         cost: 0
       }, // 当前操作的 item
-      post: [
-                {
-                    post_id: 1,
-                    link: "/resources/testPost", // todo 链接
-                    image: require("@/assets/images/blogDefault.png"), // 这里需要申请另一个api
-                    title: "计算机组成考试题（2023-2024学年）",
-                    icon: { name: "mdi-bitcoin", color: "#F8CC00" },
-                    cost: 5,
-                    tags: ["计算机组成", "考试题", "2023-2024"], // 这里需要申请另一个api
-                    likes: 3407,
-                    dislikes: 109,
-                    favorites: 96,
-                    comments: 12,
-                    created_by: {
-                        user_id: 1,
-                        username: "张三",
-                        avatar: require("@/assets/images/blogDefault.png"),
-                    },
-                    created_at: "2024-04-29",
-                },
-                {
-                    post_id: 2,
-                    link: "/resources/testPost",
-                    title: "数据结构期末复习资料（2024-2025学年）",
-                    subtitle: "这是一份数据结构的复习资料，涵盖了本学年考试的重点知识点。希望对大家有所帮助。",
-                    tags: ["数据结构", "复习资料", "2024-2025"],
-                    cost: 0,
-                    likes: 5289,
-                    dislikes: 143,
-                    favorites: 305,
-                    comments: 25, // 这里需要获取帖子的评论数量
-                    created_by:{
-                        user_id: 2,
-                        username: "李四",
-                        avatar: require("@/assets/images/blogDefault.png"),
-                    },
-                    created_at: "2024-05-10",
-                },
-            ],
+      post: [],
     };
   },
   watch: {
@@ -229,17 +190,15 @@ export default {
     },
     getPosts() {
       // 获取数据
-      this.$store.dispatch("getPosts",{pay: this.filters.pay, sort_by: this.filters.sort_by, search: this.filters.search})
+      this.$store.dispatch("getPosts",{pay: this.filters.pay, sort_by: this.filters.sort_by, key_word: this.filters.search})
         .then(res => {
           this.posts = res.posts;
         })
-        .catch(_ => {
+        .catch(e => {
           this.posts = [];
-          this.$store.commit("setAlert", { type: "error", message: "无法连接到资源站。请检查你的网络设置。" })
+          this.$store.commit("setAlert", { type: "error", message: e })
         })
-        .finally(() => {
-          this.loading = false;
-        });
+        .finally(() => { this.loading = false; });
     },
     goToPage(page) {
       this.$router.push(page);
@@ -268,9 +227,9 @@ export default {
     },
   },
   mounted() {
-      this.$store.commit("setAppTitle", "共享资源站");
-      this.getPosts();
-    },
+    this.$store.commit("setAppTitle", "共享资源站");
+    this.getPosts();
+  },
 };
 </script>
 
