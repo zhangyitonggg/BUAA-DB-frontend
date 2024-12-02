@@ -7,8 +7,10 @@ export default {
   checkToken(state) {
     if (!state._user_name_ || state._user_name_ === "UnauthorizedUser") {
       state._show_platform_frame_ = false;
-    setAppTitle(state, title) {
-      state._app_title_ = title;
+    }
+  },
+  setAppTitle(state, title) {
+    state._app_title_ = title;
   },
   // 注销账户
   clearPersonalInfo(state) {
