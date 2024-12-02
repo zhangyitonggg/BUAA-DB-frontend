@@ -107,7 +107,6 @@ router.interceptors.request.use(
         config.headers['Content-Type'] = 'application/json';
       }
     }
-    console.log(config);
     return config;
   },
   error => {

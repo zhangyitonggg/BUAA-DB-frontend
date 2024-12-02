@@ -102,7 +102,7 @@ const routes = [
     }
   },
   {
-    path: '/resources/testPost', // 测试用,后面换成/resources/:id
+    path: '/resources/:id', // 测试用,后面换成/resources/:id
     name: 'get-resource',
     component: () => import('../components/Share/SharePost.vue'),
     meta: {

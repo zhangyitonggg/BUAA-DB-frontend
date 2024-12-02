@@ -12,7 +12,7 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title>
-                <v-icon left>mdi-card-account-details</v-icon>  
+                <v-icon left>mdi-card-account-details</v-icon>
                 用户名
               </v-list-item-title>
               <v-list-item-subtitle style="margin-left:9.2%;">zhangyitong</v-list-item-subtitle>
@@ -21,7 +21,7 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title>
-                <v-icon left>mdi-google-classroom</v-icon> 
+                <v-icon left>mdi-google-classroom</v-icon>
                 身份
               </v-list-item-title>
               <v-list-item-subtitle style="margin-left:9.2%;">普通用户</v-list-item-subtitle>
@@ -231,6 +231,18 @@ export default {
   },
   mounted() {
       this.$store.commit("setAppTitle", "用户信息");
+      this.$store.dispatch("getUserProfile", {id: this.$store.getters.userId})
+        .then((res) => {
+          this.personalityTag = res.personalityTag;
+          this.email = res.email;
+          this.moneyNumber = res.capital;
+          this.likeNumber = res.likes;
+          this.fansNumber = res.fans;
+          this.postNumber = res.posts;
+          this.answerNumber = res.replies;
+          this.avatarUrl = res.avatarurl;
+        })
+        .catch((err) => { this.$store.commit("setAlert", {type: "error", message: err}); });
   },
   methods: {
     showTagDialog() {
@@ -290,7 +302,6 @@ export default {
       //   .then((uploadedUrl) => {
       //     // 上传成功后更新头像
       //     // this.avatarUrl = uploadedUrl;
-          
       //     this.$emit("success", "头像上传成功");
       //   })
       //   .catch(() => {
@@ -318,14 +329,14 @@ export default {
 </script>
 
 <style scoped>
-.card {
-  margin-bottom: 35px;
-}
-.one_col {
-  padding-bottom: 0%;
-  margin-bottom: -1%;
-}
-h3 {
-  font-weight: bold;
-}
+  .card {
+    margin-bottom: 35px;
+  }
+  .one_col {
+    padding-bottom: 0%;
+    margin-bottom: -1%;
+  }
+  h3 {
+    font-weight: bold;
+  }
 </style>

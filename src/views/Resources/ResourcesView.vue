@@ -13,6 +13,7 @@
     </v-btn>
   </v-container>
 </template>
+
 <script>
 import ShareHub from '../../components/Share/ShareHub.vue'
 
@@ -44,6 +45,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
 .v-bottom-navigation {
   bottom: 0;

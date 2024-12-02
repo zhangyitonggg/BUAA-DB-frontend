@@ -22,8 +22,8 @@
     <v-app-bar app v-if="$store.state._show_platform_frame_">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <img src="@/assets/images/logo.png" alt="our logo" class="logo" style="cursor: pointer;" @mouseover="showWelcome = true" @mouseleave="showWelcome = false">
-      <v-toolbar-title v-if="showWelcome" style="margin-left: 20px;" class="welcome-text">航U邦欢迎您！</v-toolbar-title>      
-      <v-toolbar-title v-if="!showWelcome" style="margin-left: 20px;">{{ $store.state._app_title_ }}</v-toolbar-title>      
+      <v-toolbar-title v-if="showWelcome" style="margin-left: 20px;" class="welcome-text">航U邦欢迎您！</v-toolbar-title>
+      <v-toolbar-title v-if="!showWelcome" style="margin-left: 20px;">{{ $store.state._app_title_ }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <div class="pr-4">{{ getCurrentTimeGreetings() }}，{{ $store.getters.username }}</div>
       <v-btn icon @click="toggleParticles" :color="$store.getters.hasParticles ? 'primary' : 'grey'">
@@ -94,7 +94,10 @@
       elevation="11"
       v-show="$store.state._alert_.show != 0"
       :type="['success', 'info', 'warning', 'error'].includes($store.state._alert_.type) ? $store.state._alert_.type : 'info'"
-      transition="scroll-y-transition">
+      transition="scroll-y-transition"
+      dense
+      prominent
+    >
       {{ $store.state._alert_.message }}
     </v-alert>
   </v-app>
@@ -142,10 +145,12 @@ export default {
     },
     changeMode() {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+      localStorage.setItem('__dark_theme__', this.$vuetify.theme.dark);
       this.$store.commit("setAlert", this.$vuetify.theme.dark ? { "type": "success", "message": "黑暗模式已启用。" } : { "type": "success", "message": "黑暗模式已关闭。" });
     },
     toggleParticles() {
       this.$store.commit("setParticles", !this.$store.getters.hasParticles);
+      localStorage.setItem('__particles__', this.$store.getters.hasParticles);
       this.$store.commit("setAlert", this.$store.getters.hasParticles ? { "type": "success", "message": "背景颗粒已启用。" } : { "type": "success", "message": "背景颗粒已关闭。" });
     },
     getCurrentTimeGreetings() {
@@ -163,7 +168,7 @@ export default {
     if (localStorage.getItem('__token__') && localStorage.getItem('__user_name__')) {
       this.$store.commit('setAlert', {
         type: "success",
-        message: "欢迎回来，" + localStorage.getItem('__user_name__') + "。",
+        message: "别来无恙，" + localStorage.getItem('__user_name__') + "。",
       });
     }
   },
@@ -186,10 +191,11 @@ export default {
 }
 
 .v-alert {
-  z-index: 1001;
+  z-index: 999;
   position: fixed;
   bottom: 0;
   width: 105%;
+  margin-bottom: 0;
   height: fit-content;
 }
 

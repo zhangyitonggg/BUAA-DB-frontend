@@ -11,6 +11,10 @@ const api = {
         else return await router.get(path.baseUrl + path.tags.search);
     },
     createPost: async(title, content, tags, cost, link) => { return await router.post(path.baseUrl + path.post.create, {title: title, content: content, tags: tags, cost: cost, link: link}); },
+    createTask: async(title, content, tags, commission) => { return await router.post(path.baseUrl + path.tasks.create, {title: title, content: content, tags: tags, commission: commission}); },
+    getPostDetail: async(id) => { return await router.get(path.baseUrl + path.post.root + id); },
+    getUserProfile: async(id) => { return await router.get(path.baseUrl + path.user.root + id + path.user.profile); },
+    getTasks: async(pay, sory_by, key_word) => { return await router.get(path.baseUrl + path.tasks.search, {params: {page: 1, per_page: 30, pay: pay, sort_by: sory_by, key_word: key_word, max_length: 30}}); },
 }
 
 export default api;

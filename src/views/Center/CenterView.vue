@@ -18,13 +18,12 @@
       </v-bottom-navigation>
     </v-container>
   </div>
+</template>
 
-  </template>
-  
-  <script>
+<script>
   import UserInfo from '../../components/Center/UserInfo.vue'
   import MyFollow from '../../components/Center/MyFollow.vue'
-  import MyFavorite from '../../components/Center/MyFavorite.vue'; 
+  import MyFavorite from '../../components/Center/MyFavorite.vue';
 
   export default {
     name: 'CenterView',
@@ -56,10 +55,10 @@
     watch: {
     }
   }
-  </script>
-  
-  <style scoped>
+</script>
+
+<style scoped>
   .v-bottom-navigation {
     bottom: 0;
   }
-  </style>
+</style>

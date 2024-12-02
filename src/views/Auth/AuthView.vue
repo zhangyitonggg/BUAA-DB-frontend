@@ -92,8 +92,6 @@ export default {
           password: this.password,
           remember: this.remember,
         });
-        console.log(res);
-        this.$store.commit("setRole", res.role);
         this.$store.commit("getUserName");
         this.$store.commit('setAlert', {
           type: "success",

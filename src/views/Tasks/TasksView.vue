@@ -48,21 +48,21 @@ import TaskHub from '../../components/Task/TaskHub.vue'
 </script>
 
 <style scoped>
-.v-bottom-navigation {
-  bottom: 0;
-}
+  .v-bottom-navigation {
+    bottom: 0;
+  }
 
-.fixed-button1 {
-  position: fixed;
-  right: 4%;
-  bottom: 16%;
-  z-index: 5;
-}
+  .fixed-button1 {
+    position: fixed;
+    right: 4%;
+    bottom: 16%;
+    z-index: 5;
+  }
 
-.fixed-button2 {
-  position: fixed;
-  right: 4%;
-  bottom: 8%;
-  z-index: 5;
-}
+  .fixed-button2 {
+    position: fixed;
+    right: 4%;
+    bottom: 8%;
+    z-index: 5;
+  }
 </style>

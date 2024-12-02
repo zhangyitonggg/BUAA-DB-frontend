@@ -126,7 +126,7 @@ export default {
   },
   data() {
     return {
-      // Data goes here
+      loading: true,
       post: {
         tags: [
           "工具推荐", "开发者"
@@ -145,7 +145,7 @@ export default {
         like: true,
         dislike: false,
         favorite: true,
-      }, 
+      },
       followed: false,
       dialog: false, // 控制弹框显示
       newComment: "", // 用户输入的评论
@@ -178,6 +178,13 @@ export default {
   methods: {
     getPost() {
       // todo 调 1.获得post的接口以及 2.获得评论的接口 以及 3.获得是否关注的接口
+      this.loading = true;
+      this.$store.dispatch("getPost", { id: this.$route.params.id })
+        .then((res) => {
+          this.post = res.data.post;
+        })
+        .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
+        .finally(() => { this.loading = false; });
     },
     openBhpan() {
       window.open(this.post.bhpan_url);
@@ -241,18 +248,22 @@ export default {
       }
     },
   },
+  mounted() {
+    this.getPost();
+  },
 };
 </script>
+
 <style scoped>
-.title {
-  font-size: 24px;
-  margin-left:10px;
-}
-.v-code {
-  font-family: 'Courier New', monospace;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 14px;
-  color: #333;
-}
+  .title {
+    font-size: 24px;
+    margin-left:10px;
+  }
+  .v-code {
+    font-family: 'Courier New', monospace;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+  }
 </style>
