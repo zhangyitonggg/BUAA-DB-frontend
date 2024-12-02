@@ -128,10 +128,14 @@ router.interceptors.response.use(
   },
   error => {
     const { response } = error;
-    try {
-      return Promise.reject(undefinedErrorHandler(response.status, response.data));
-    } catch (e) {
-      return Promise.reject("对不起。我们遇到了一些未知的问题。");
+    if (response) {
+      try {
+        return Promise.reject(undefinedErrorHandler(response.status, response.data));
+      } catch (e) {
+        return Promise.reject("对不起。我们遇到了一些未知的问题。");
+      }
+    } else {
+      return Promise.reject("无法连接到服务器。请检查您的网络连接。");
     }
   }
 )

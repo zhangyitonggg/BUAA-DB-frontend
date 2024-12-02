@@ -84,14 +84,14 @@ export default {
   methods: {
     async handleLogin() {
       this.loading = true;
+      if (!this.username || !this.password) {
+        this.$store.commit("setAlert", {
+          type: "error",
+          message: "请填写用户名和密码。",
+        });
+        return;
+      }
       try {
-        if (!this.username || !this.password) {
-          this.$store.commit("setAlert", {
-            type: "error",
-            message: "请填写用户名和密码。",
-          });
-          return;
-        }
         let res = await this.$store.dispatch("login", {
           username: this.username,
           password: this.password,
@@ -103,8 +103,12 @@ export default {
           message: "欢迎回来，" + this.$store.getters.username + "。",
         });
         this.$router.push("/");
-      } catch (e) { /**/ }
-      finally { this.loading = false; }
+      } catch (e) {
+        this.$store.commit("setAlert", {
+          type: "error",
+          message: e,
+        });
+      } finally { this.loading = false; }
     },
     async handleRegister() {
       if (!this.username || !this.password) {

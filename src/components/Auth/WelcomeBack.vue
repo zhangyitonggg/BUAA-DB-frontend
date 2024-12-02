@@ -17,6 +17,8 @@ export default {
 
     const tl = gsap.timeline();
 
+    tl.to({}, { duration: 0.6 });
+
     tl.fromTo(
       textElement.querySelectorAll(".char:nth-child(1), .char:nth-child(2)"),
       {
