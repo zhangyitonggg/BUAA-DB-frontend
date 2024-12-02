@@ -61,6 +61,7 @@
     },
     methods: {
       unFollow(user) {
+        // todo 取消关注,调用一下api
         this.users = this.users.filter(u => u !== user);
       },
     },

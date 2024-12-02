@@ -56,6 +56,20 @@
                                     </v-radio-group>
                                 </v-col>
                             </v-row>
+                            <v-row class="align-center">
+                                <v-col cols="auto">
+                                    <span><strong>标签筛选</strong>:</span>
+                                </v-col>
+                                <v-col>
+                                    <v-chip-group v-model="filters.tags" multiple column active-class="active-tag">
+                                        <v-chip v-for="(tag, index) in availableTags" :key="index"
+                                            :color="getTagColor(tag)"
+                                            outlined @click="toggleTag(tag)">
+                                            {{ tag }}
+                                        </v-chip>
+                                    </v-chip-group>
+                                </v-col>
+                            </v-row>
                         </div>
                         <!-- 底部的搜索栏 -->
                         <v-divider></v-divider>
@@ -150,8 +164,12 @@ export default {
             filters: {
                 sort_by: 0,
                 pay: 0,
+                tags: [],
                 search: ''
             },
+            availableTags: [
+              "计算机组成", "数据库", "面向对象", "测试", "考试题", "数据结构", "2023-2024", "2024-2025", "复习资料"
+            ],
             filtersChanged: false, // 用来标记 filters 是否有变化
             post: [
                 {
@@ -227,6 +245,20 @@ export default {
                     this.loading = false;
                 });
         },
+        getTagColor(tag) {
+          return this.filters.tags.includes(tag) ? 'brown' : 'blue accent-2';
+        },
+        toggleTag(tag) {
+            console.log(tag);
+            const index = this.filters.tags.indexOf(tag);
+            if (index === -1) {
+                // 如果标签未被选中，则添加到 filters.tags
+                this.filters.tags.push(tag);
+            } else {
+                // 如果标签已被选中，则移除
+                this.filters.tags.splice(index, 1);
+            }
+        },
         goToPage(page) {
             this.$router.push(page);
         },
@@ -241,7 +273,7 @@ export default {
         },
     },
     mounted() {
-        this.$store.commit("setAppTitle", "共享资源站");
+        this.$store.commit("setAppTitle", "管理资源");
         this.getPosts();
     },
 };
