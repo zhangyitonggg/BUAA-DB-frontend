@@ -7,7 +7,21 @@ export default {
   checkToken(state) {
     if (!state._user_name_ || state._user_name_ === "UnauthorizedUser") {
       state._show_platform_frame_ = false;
-    }
+    setAppTitle(state, title) {
+      state._app_title_ = title;
+  },
+  // 注销账户
+  clearPersonalInfo(state) {
+    state._user_name_ = null;
+    state._token_ = null;
+    localStorage.removeItem('__token__');
+    localStorage.removeItem('__user_name__');
+    sessionStorage.removeItem('__token__');
+    sessionStorage.removeItem('__user_name__');
+  },
+  // 设置是否查看我的收藏
+  setMyFavorite(state, myFavorite) {
+    state.myFavorite = myFavorite;
   },
   // 从 cookie 中获取Token
   getToken(state) {

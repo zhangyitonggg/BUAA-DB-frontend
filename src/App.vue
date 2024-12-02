@@ -115,11 +115,12 @@ export default {
       links: [
         ['mdi-home', '首页', '/'],
         ['mdi-book-open-variant-outline', '共享资源站', '/resources'],
-        ['mdi-account-group', '悬赏空间', '/tasks'],
+        ['mdi-account-group', '任务悬赏站', '/tasks'],
         ['mdi-account', '个人中心', '/center'],
         ['mdi-newspaper-variant-multiple-outline', '管理公告', '/admin/newsManage'],
         ['mdi-account-cog', '管理用户', '/admin/userManage'],
         ['mdi-notebook-remove-outline', '管理分享', '/admin/shareManage'],
+        ['mdi-calendar-multiple', '管理悬赏', '/admin/taskManage'],
       ],
     };
   },

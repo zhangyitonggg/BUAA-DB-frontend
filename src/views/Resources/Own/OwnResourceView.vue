@@ -137,6 +137,11 @@ export default {
         editItem(item) {
             // 跳转到编辑页面
             // this.$router.push("/resources/edit/" + item.post_id);
+            /* todo wxf去写吧：
+                编辑页面就直接和发布页面一样，但是需要在发布页面中获取到当前资源的信息，即title，content，tags，cost等信息
+                点击取消按钮，认为不修改，直接返回。
+                点击确认按钮，发送修改请求，修改成功后，返回。
+            */
         },
         // 删除操作
         deleteItem(item) {
