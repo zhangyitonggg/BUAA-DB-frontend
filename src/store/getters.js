@@ -1,4 +1,3 @@
-/* eslint-disable */
 // $store.getters.hasParticles
 export default {
     hasParticles(state) {
