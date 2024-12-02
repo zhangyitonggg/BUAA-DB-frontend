@@ -4,7 +4,8 @@
     <v-card class="white-card">
       <div class="ma-6">
         <h2 class="mb-4">
-          欢迎<span v-if="showRegister">新朋友！</span><span v-else>回来口牙！</span>
+          <new-friend v-if="showRegister" />
+          <welcome-back v-else />
           <img src="@/assets/images/logo.png" alt="our logo" class="welcome-image" style="float: right">
         </h2>
         <v-subheader id="loginPanelSubheader" style="margin-bottom: 10px">
@@ -64,8 +65,12 @@
 </template>
 
 <script>
+import WelcomeBack from "../../components/Auth/WelcomeBack.vue";
+import NewFriend from "../../components/Auth/NewFriend.vue";
+
 export default {
   name: "AuthPanel",
+  components: { WelcomeBack, NewFriend },
   data() {
     return {
       username: "",
@@ -160,9 +165,11 @@ export default {
   background-position: center;
   background-repeat: no-repeat;
 }
+
 .dense {
   margin: -5px 0 -10px 0 !important;
 }
+
 .topmost {
   z-index: 1001;
 }
@@ -172,13 +179,15 @@ export default {
   align-items: center;
   height: 100vh;
 }
+
 #loginPanelProgressBar {
   position: absolute;
   top: -30px;
   margin: 0 0 0 0;
 }
+
 .white-card {
-  width: 21%; /* 确保与外层卡片同宽 */
+  width: 17%; /* 确保与外层卡片同宽 */
   min-width: 300px;
   height: 50%;
   min-height: 450px;
@@ -195,15 +204,18 @@ export default {
   z-index: 2;
   position: relative;
 }
+
 .buttonyt {
   z-index: 2;
   position: relative;
 }
+
 #welcomePanelSubheader {
   clear: both;
   padding-bottom: 20px;
   padding-left: 0;
 }
+
 .welcome-image {
   vertical-align: middle;
   width: 70px;
