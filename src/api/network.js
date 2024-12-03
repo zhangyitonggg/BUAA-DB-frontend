@@ -1,24 +1,10 @@
 import axios from "axios";
-import qs from "qs";
 import store from "../store";
-
-const handle400 = (info) => {
-  if (info.detail) {
-    switch (info.detail) {
-      case "Contains sensetive words":
-        return "对不起。看起来你的输入包含了敏感词汇。请检查输入再试。";
-      default:
-        return info.detail;
-    }
-  } else {
-    return "对不起。看起来你遇到了一些问题。";
-  }
-}
 
 const undefinedErrorHandler = (status, info) => {
   switch (status) {
     case 400:
-      return handle400(info);
+      return "对不起。看起来你遇到了一些问题。";
     case 401:
       return "对不起。看起来你没有对应的权限。";
     case 403:
@@ -99,7 +85,6 @@ router.interceptors.request.use(
   config => {
     if (config.method === 'post') {
       if (config.useQs) {
-        config.data = qs.stringify(config.data);
         config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
       } else if (!config.headers['Content-Type']) {
         config.headers['Content-Type'] = 'multipart/form-data';

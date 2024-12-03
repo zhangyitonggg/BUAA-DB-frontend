@@ -1,8 +1,0 @@
-| 字段名             |   类型   |        解释        |        备注         |
-| :----------------- | :------: | :----------------: | :-----------------: |
-| commission         |   int    |        佣金        |          -          |
-| open               |   bool   |      是否有效      |          -          |
-| tags               | [string] | tag 的**名称**集合 |          -          |
-| title              |  string  |         -          |          -          |
-| content            |  string  |         -          |          -          |
-| created_at         | datetime |         -          |          -          |

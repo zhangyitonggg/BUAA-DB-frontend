@@ -1,4 +1,4 @@
-import router from "../utils/network";
+import router from "./network";
 import path from "./path";
 
 const api = {

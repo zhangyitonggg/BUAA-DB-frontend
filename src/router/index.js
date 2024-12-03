@@ -1,10 +1,14 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 import store from '../store';
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/',
+    redirect: '/home/'
+  },
   {
     path: '/test',
     name: 'test',
@@ -53,10 +57,6 @@ const routes = [
   },
   // 普通用户
   {
-    path: '/',
-    redirect: '/home/'
-  },
-  {
     path: '/auth',
     name: 'auth',
     component: () => import('../views/Auth/AuthView.vue'),
@@ -102,7 +102,7 @@ const routes = [
     }
   },
   {
-    path: '/resources/:id', // 测试用,后面换成/resources/:id
+    path: '/resources/:id',
     name: 'get-resource',
     component: () => import('../components/Share/SharePost.vue'),
     meta: {
@@ -185,9 +185,10 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  routes, // 这里是路由数组
-  mode: 'history'
-});
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes
+})
 
 router.beforeEach((to, from, next) => {
   store.commit("getUserName");
@@ -217,4 +218,4 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-export default router;
+export default router

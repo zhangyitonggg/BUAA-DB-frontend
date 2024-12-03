@@ -16,8 +16,7 @@
       hoverMode="grab"
       :clickEffect="false"
       clickMode="push"
-    >
-    </vue-particles>
+    />
 
     <v-app-bar app v-if="$store.state._show_platform_frame_">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
@@ -182,59 +181,59 @@ export default {
 
 
 <style lang="scss">
-@import './assets/styles/main.scss';
+  @import './assets/styles/main.scss';
 
-#particles-js {
-  width: 100%;
-  height: calc(100vh - 64px);
-  position: absolute;
-}
+  #particles-js {
+    width: 100%;
+    height: calc(100vh - 64px);
+    position: absolute;
+  }
 
-.v-alert {
-  z-index: 999;
-  position: fixed;
-  bottom: 0;
-  width: 105%;
-  margin-bottom: 0;
-  height: fit-content;
-}
+  .v-alert {
+    z-index: 999;
+    position: fixed;
+    bottom: 0;
+    width: 105%;
+    margin-bottom: 0;
+    height: fit-content;
+  }
 
-.slide-y-enter-active,
-.slide-y-leave-active {
-  transition: all 0.5s ease;
-}
+  .slide-y-enter-active,
+  .slide-y-leave-active {
+    transition: all 0.5s ease;
+  }
 
-.slide-y-enter,
-.slide-y-leave-to {
-  transform: translateY(100%);
-  opacity: 0;
-}
+  .slide-y-enter,
+  .slide-y-leave-to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
 
-.scale-transition {
-  transition: transform 0.3s ease;
-}
-.scale-transition-enter-active {
-  transform: scale(1.2);
-}
-.scale-transition-leave-active {
-  transform: scale(0.8);
-}
-.logo {
-  vertical-align: middle;
-  margin-left: 0px;
-  margin-top: 0px;
-  width: 65px;
-  height: auto;
-}
-.welcome-text {
-  background-color: rgba(249, 234, 134, 0.9); /* 使用明亮的黄色背景 */
-  color: #ed5e5e; /* 使用红色文字 */
-  padding: 8px 15px; /* 增加内边距 */
-  border-radius: 10px; /* 增加圆角 */
-  white-space: nowrap; /* 不换行 */
-  transition: opacity 0.3s; /* 过渡效果 */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* 添加阴影效果 */
-  font-weight: bold; /* 加粗字体 */
-  font-size: 16px; /* 调整字体大小 */
-}
+  .scale-transition {
+    transition: transform 0.3s ease;
+  }
+  .scale-transition-enter-active {
+    transform: scale(1.2);
+  }
+  .scale-transition-leave-active {
+    transform: scale(0.8);
+  }
+  .logo {
+    vertical-align: middle;
+    margin-left: 0px;
+    margin-top: 0px;
+    width: 65px;
+    height: auto;
+  }
+  .welcome-text {
+    background-color: rgba(249, 234, 134, 0.9); /* 使用明亮的黄色背景 */
+    color: #ed5e5e; /* 使用红色文字 */
+    padding: 8px 15px; /* 增加内边距 */
+    border-radius: 10px; /* 增加圆角 */
+    white-space: nowrap; /* 不换行 */
+    transition: opacity 0.3s; /* 过渡效果 */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* 添加阴影效果 */
+    font-weight: bold; /* 加粗字体 */
+    font-size: 16px; /* 调整字体大小 */
+  }
 </style>

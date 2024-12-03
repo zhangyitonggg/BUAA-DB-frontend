@@ -98,6 +98,7 @@
     </v-btn>
   </v-container>
 </template>
+
 <script>
   import VMdPreview from '@kangc/v-md-editor/lib/preview';
   import '@kangc/v-md-editor/lib/style/preview.css';
@@ -166,8 +167,8 @@
       this.$store.commit("setAppTitle", "发布悬赏");
       this.loading = true;
       this.$store.dispatch("getTags", {key_word: null})
-        .then((tags) => {
-          this.tags_to_select = tags;
+        .then((res) => {
+          this.tags_to_select = res.tags;
         })
         .catch((error) => {
           this.$store.commit("setAlert", {
