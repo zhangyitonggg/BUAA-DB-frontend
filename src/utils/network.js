@@ -15,7 +15,7 @@ const handle400 = (info) => {
   }
 }
 
-const errorHandle = (status, info) => {
+const undefinedErrorHandler = (status, info) => {
   switch (status) {
     case 400:
       return handle400(info);
@@ -42,9 +42,56 @@ const errorHandle = (status, info) => {
   }
 };
 
+const definedErrorHandler = (error) => {
+  if (error in definedErrorCodes)
+    return definedErrorCodes[error];
+  else
+    return "我们遇到了一些未知的问题。";
+}
+
+const definedErrorCodes = {
+  100: "我们遇到了未定义的错误。",
+  101: "看起来服务器出现了一些问题。",
+  102: "请求的格式不正确。",
+  103: "发生了网络错误。",
+  104: "未找到对应的资源。",
+  200: "发生了与用户相关的错误。",
+  201: "用户名已被占用。",
+  202: "密码太弱，请设置更强的密码。",
+  203: "邮箱已被占用。",
+  204: "学号与实名不匹配。",
+  205: "未找到学生信息。",
+  206: "注册时发生其他错误。",
+  207: "登录时未找到对应的账号。",
+  208: "密码错误，请检查后重试。",
+  209: "该用户已被封禁。",
+  210: "登录时发生其他错误。",
+  211: "未找到对应的用户信息。",
+  212: "用户尚未登录。",
+  213: "用户已经登录。",
+  214: "用户权限不足。",
+  300: "发生了与通知相关的错误。",
+  301: "未找到对应的通知。",
+  400: "发生了与公告相关的错误。",
+  401: "公告创建失败。",
+  402: "未找到对应的公告。",
+  500: "发生了与帖子或任务相关的错误。",
+  501: "创建失败。",
+  502: "未找到对应的内容。",
+  503: "未支付或未提交。",
+  504: "提交或评论失败。",
+  505: "找不到相关记录。",
+  506: "发生其他错误。",
+  507: "关闭操作失败。",
+  508: "未关闭。",
+  600: "发生了与支付相关的错误。",
+  601: "菜币余额不足，请充值后重试。",
+};
+
 
 const router = axios.create({
   timeout: 6000,
+  withCredentials: true,
 });
 
 
@@ -54,21 +101,13 @@ router.interceptors.request.use(
       if (config.useQs) {
         config.data = qs.stringify(config.data);
         config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-      } else if (config.useMultipart) {
+      } else if (!config.headers['Content-Type']) {
         config.headers['Content-Type'] = 'multipart/form-data';
-        config.timeout = 120000;
       } else {
         config.headers['Content-Type'] = 'application/json';
       }
     }
-    const token = store.state._token_;
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-      config.params = {
-        ...config.params,
-        authorized_user_name: store.getters.username
-      };
-    }
+    console.log(config);
     return config;
   },
   error => {
@@ -79,15 +118,19 @@ router.interceptors.request.use(
 router.interceptors.response.use(
   response => {
     if (response.status === 200) {
-      return Promise.resolve(response);
-    } else {
-      return Promise.reject(response);
-    }
+      let res = response.data.content;
+      if (res.code != 0) {
+        console.log(res);
+        let message = definedErrorHandler(res.code);
+        store.commit('setAlert', { message: message, type: "error" });
+        return Promise.reject(res.data);
+      } return Promise.resolve(res.data);
+    } else return Promise.reject(response);
   },
   error => {
     const { response } = error;
     try {
-      return Promise.reject(errorHandle(response.status, response.data));
+      return Promise.reject(undefinedErrorHandler(response.status, response.data));
     } catch (e) {
       return Promise.reject("对不起。我们遇到了一些未知的问题。");
     }

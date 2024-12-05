@@ -1,13 +1,13 @@
 <template>
   <v-card flat class="back">
     <v-progress-linear :indeterminate="true" v-show="loading" id="loginPanelProgressBar" color="success" />
-    <v-card class="white-card"> <!-- 新增的白色卡片 -->
+    <v-card class="white-card">
       <div class="ma-6">
         <h2 class="mb-4">
-          欢迎<span v-if="showRegister">新朋友！</span><span v-else>回来呀！</span>
-          <img src="@/assets/images/logo.png" alt="our logo" class="welcome-image">
+          欢迎<span v-if="showRegister">新朋友！</span><span v-else>回来口牙！</span>
+          <img src="@/assets/images/logo.png" alt="our logo" class="welcome-image" style="float: right">
         </h2>
-        <v-subheader id="loginPanelSubheader">
+        <v-subheader id="loginPanelSubheader" style="margin-bottom: 10px">
           <template v-if="loading">
             <span v-if="showRegister">正在联系远程服务器</span>
             <span v-else>正在验证你的身份</span>
@@ -22,7 +22,7 @@
         <v-form v-if="showRegister" class="loginPanelForm" @submit.prevent="handleRegister">
           <v-text-field class="dense" outlined label="用户名" :rules="[v => !!v || '必填']" autofocus required
             prepend-inner-icon="mdi-account-box" v-model="username" :disabled="loading" />
-          <v-text-field class="dense" outlined label="密码" :rules="[ 
+          <v-text-field class="dense" outlined label="密码" :rules="[
             v => !!v || '',
             v => v.length > 3 || '至少3字符',
             v => v.length < 21 || '至多20字符',
@@ -80,34 +80,46 @@ export default {
     async handleLogin() {
       this.loading = true;
       try {
-        await this.$store.dispatch("login", {
+        if (!this.username || !this.password) {
+          this.$store.commit("setAlert", {
+            type: "error",
+            message: "请填写用户名和密码。",
+          });
+          return;
+        }
+        let res = await this.$store.dispatch("login", {
           username: this.username,
           password: this.password,
           remember: this.remember,
         });
+        console.log(res);
+        this.$store.commit("setRole", res.role);
         this.$store.commit("getUserName");
         this.$store.commit('setAlert', {
           type: "success",
           message: "欢迎回来，" + this.$store.getters.username + "。",
         });
-        
         this.$router.push("/");
-      } catch (error) {
+      } catch (e) { /**/ }
+      finally { this.loading = false; }
+    },
+    async handleRegister() {
+      if (!this.username || !this.password) {
         this.$store.commit("setAlert", {
           type: "error",
-          message: error,
+          message: "请填写用户名和密码。",
         });
-      } finally {
-        this.loading = false;
+        return;
       }
-    },
-    handleRegister() {
+      if (this.robot) {
+        this.$store.commit("setAlert", {
+          type: "error",
+          message: "拒绝机器人注册，从我做起。",
+        });
+        return;
+      }
       this.loading = true;
-      this.$store
-        .dispatch("register", {
-          username: this.username,
-          password: this.password,
-        })
+      this.$store.dispatch("register", {username: this.username, password: this.password})
         .then(() => {
           this.$store.commit("setAlert", {
             type: "success",
@@ -117,15 +129,8 @@ export default {
           this.password = "";
           this.switchRegisterPage();
         })
-        .catch((e) => {
-          this.$store.commit("setAlert", {
-            type: "error",
-            message: e,
-          });
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+        .catch((e) => {})
+        .finally(() => { this.loading = false; });
     },
     switchRegisterPage() {
       this.showRegister = !this.showRegister;
@@ -175,9 +180,12 @@ export default {
   margin: 0 0 0 0;
 }
 .white-card {
-  background-color: white; /* 设置卡片为白色 */
   width: 21%; /* 确保与外层卡片同宽 */
-  height: 48%; 
+  min-width: 300px;
+  height: 50%;
+  min-height: 450px;
+  position: relative;
+  z-index: 2;
   opacity: 0.95; /* 增加透明度 */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* 增大阴影效果 */
   border-radius: 12px; /* 增加圆角效果 */
@@ -200,8 +208,6 @@ export default {
 }
 .welcome-image {
   vertical-align: middle;
-  margin-left: 45px;
   width: 70px;
-  height: auto;
 }
 </style>

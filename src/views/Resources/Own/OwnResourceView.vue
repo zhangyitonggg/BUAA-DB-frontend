@@ -1,5 +1,4 @@
 <template>
-    <!-- eslint-disable -->
     <div class="table-container">
         <v-container fluid class="pa-6">
             <v-btn class="fixed-button1" fab dark color="indigo" @click="back">

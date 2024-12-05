@@ -1,5 +1,4 @@
 <template>
-    <!-- eslint-disable -->
     <v-container fluid class="pa-6">
         <p class="text-h4 mt-6 mb-4">所有用户</p>
         <p class="text-subtitle-2 mb-4">封禁、解封用户</p>
