@@ -17,7 +17,7 @@ const base = {
     post: {
         root: '/post/',
         search: '/post/search',
-        create: '/post/create',
+        create: '/post/create/',
         comments: '/comments',
         creatComment: '/comments/create/',
         favour: '/favour',

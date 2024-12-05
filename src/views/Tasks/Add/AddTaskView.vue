@@ -168,7 +168,11 @@
       this.loading = true;
       this.$store.dispatch("getTags", {key_word: null})
         .then((res) => {
-          this.tags_to_select = res.tags;
+          this.tags_to_select = res.tags.map((tag) => {
+            return {
+              name: tag,
+            };
+          });
         })
         .catch((error) => {
           this.$store.commit("setAlert", {

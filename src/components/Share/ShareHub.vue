@@ -204,7 +204,6 @@ export default {
     getTags() {
       this.$store.dispatch("getTags", { key_word: null })
         .then(res => {
-          console.log(res.tags);
           this.availableTags = res.tags;
         })
         .catch(e => {
@@ -212,9 +211,12 @@ export default {
         });
     },
     getPosts() {
-      // 获取数据
-      this.loading = true;
-      this.$store.dispatch("getPosts",{pay: this.filters.pay, sort_by: this.filters.sort_by, key_word: this.filters.search})
+      this.$store.dispatch("getPosts",{
+        pay: this.filters.pay,
+        sort_by: this.filters.sort_by,
+        key_word: this.filters.search,
+        tags: this.filters.tags.join(','),
+      })
         .then(res => {
           this.post = res.posts;
         })
@@ -222,7 +224,6 @@ export default {
           this.post = [];
           this.$store.commit("setAlert", { type: "error", message: e })
         })
-        .finally(() => { this.loading = false; });
     },
     goToPage(page) {
       this.$router.push(page);
@@ -252,7 +253,7 @@ export default {
       }
     },
     closeDialog() {
-      this.dialog = false; // 隐藏对话框
+      this.dialog = false;
     },
     confirmPayment() {
       // todo 这里需要触发实际支付逻辑，即调用支付 API
@@ -262,9 +263,11 @@ export default {
     },
   },
   mounted() {
+    this.loading = true;
     this.$store.commit("setAppTitle", "共享资源");
     this.getTags();
     this.getPosts();
+    this.loading = false;
   },
 };
 </script>

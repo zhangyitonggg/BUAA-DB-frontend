@@ -19,7 +19,7 @@ export default {
   },
   async register(context, { username, password }) { return await api.register(username, password) },
   async getNews(context, { page }) { return await api.getnews(page); },
-  async getPosts(context, {tags, pay, sory_by, key_word}) { return await api.getPosts(tags, pay, sory_by, key_word); },
+  async getPosts(context, {pay, sory_by, key_word, tags}) { return await api.getPosts(pay, sory_by, key_word, tags); },
   async getTags(context, {key_word}) { return await api.getTags(key_word); },
   async createPost(context, {title, content, tags, cost, link}) { return await api.createPost(title, content, tags, cost, link); },
   async getPost(context, {id}) { return await api.getPostDetail(id); },
