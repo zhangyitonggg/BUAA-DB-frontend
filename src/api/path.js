@@ -7,6 +7,7 @@ const base = {
         profile: '/profile/',
         follow: '/follow/',
         not_follow: '/not_follow/',
+        follows: '/follows/',
     },
     billboard: {
         getNews: '/billboard/index',
@@ -17,7 +18,7 @@ const base = {
         search: '/post/search',
         create: '/post/create',
         comments: '/comments',
-        creatComment: 'comments/create',
+        creatComment: '/comments/create/',
         favour: '/favour',
         not_favour: '/not_favour',
         like: '/like',

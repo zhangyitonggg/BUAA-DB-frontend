@@ -24,6 +24,8 @@ const api = {
     getPostComments: async(id) => { return await router.get(path.baseUrl + path.post.root + id + path.post.comments)},
     followUser: async(id) => { return await router.post(path.baseUrl + path.user.root + id + path.user.follow)},
     notFollowUser: async(id) => { return await router.post(path.baseUrl + path.user.root + id + path.user.not_follow)},
+    createComment: async(id, content, parent_id) => { return await router.post(path.baseUrl + path.post.root + id + path.post.creatComment, {content: content, parent_id: parent_id}); },
+    getFollows: async(id) => { return await router.get(path.baseUrl + path.user.root + id + path.user.follows); },
 }
 
 export default api;

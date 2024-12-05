@@ -35,4 +35,6 @@ export default {
   async getPostComments(context, {id}) { return await api.getPostComments(id); },
   async followUser(context, {id}) { return await api.followUser(id); },
   async notFollowUser(context, {id}) { return await api.notFollowUser(id); },
+  async createComment(context, {id, content, parent_id}) { return await api.createComment(id, content, parent_id); },
+  async getFollows(context, {id}) { return await api.getFollows(id); },
 };

@@ -131,28 +131,7 @@ export default {
       followed: false,
       dialog: false, // 控制弹框显示
       newComment: "", // 用户输入的评论
-      comments: [
-        {
-          content: "我推荐 Docker，非常好用的容器化工具，能让部署更简单。",
-          created_at: "2024-10-17 16:07",
-          likes: 12,
-          dislikes: 1,
-          created_by: {
-            user_id: 2,
-            username: "用户123",
-          },
-        },
-        {
-          content: "我最近在用 Figma 设计工具，非常棒，适合团队协作。",
-          created_at: "2024-10-17 16:10",
-          likes: 23,
-          dislikes: 2,
-          created_by: {
-            user_id: 3,
-            username: "开发者小张",
-          },
-        },
-      ]
+      comments: []
     };
   },
   methods: {
@@ -162,11 +141,17 @@ export default {
       this.$store.dispatch("getPost", { id: this.$route.params.id })
         .then((res) => {
           this.post = res;
-          console.log(this.post)
+          this.$store.dispatch("getPostComments", { id: this.$route.params.id })
+            .then((res) => { this.comments = res.comments; })
+            .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
+          this.$store.dispatch("getFollows", { id: this.$store.state._user_id_ })
+            .then((res) => {
+              if (res.users.includes(this.post.created_by.user_id)) {
+                this.followed = true;
+              }
+            })
+            .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
         })
-        .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
-      this.$store.dispatch("getPostComments", { id: this.$route.params.id })
-        .then((res) => { this.comments = res.comments; })
         .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
       this.loading = false;
     },
@@ -233,7 +218,7 @@ export default {
           .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
       } else {
         this.followed = false;
-        this.$store.dispatch("unfollowUser", {id: this.post.created_by.user_id })
+        this.$store.dispatch("notFollowUser", {id: this.post.created_by.user_id })
           .then((res) => { this.$store.commit("setAlert", { "type": "success", "message": "已取关。" }); })
           .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
       }
@@ -246,8 +231,12 @@ export default {
       // 处理评论提交逻辑
       if (this.newComment.trim() !== "") {
         this.dialog = false;
-        // todo 调用提交评论接口
-        // todo 重新获取一下评论
+        this.$store.dispatch("createComment", { id: this.$route.params.id, content: this.newComment, parent_id: 0 })
+          .then((res) => { this.$store.commit("setAlert", { "type": "success", "message": "评论成功。" }); })
+          .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
+        this.$store.dispatch("getPostComments", { id: this.$route.params.id })
+          .then((res) => { this.comments = res.comments; })
+          .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
       } else {
         this.$store.commit("setAlert", { "type": "error", "message": "评论不可以为空。" });
       }
