@@ -110,7 +110,7 @@
                       </div>
                       <div class="ml-auto">
                         <span>{{ item.created_by.username }}</span>
-                        <span>{{ item.created_at }}</span>
+                        <span>{{ formatDate(item.created_at) }}</span>
                       </div>
                     </v-card-actions>
                   </v-col>
@@ -153,10 +153,13 @@
 
 <script>
 import Loading from '../Loading.vue';
+import { format } from 'date-fns';
+
 export default {
   name: 'ShareHub',
   components: {
-    Loading
+    Loading,
+    format,
   },
   data() {
     return {
@@ -183,6 +186,9 @@ export default {
     },
   },
   methods: {
+    formatDate(dateString) {
+      return format(new Date(dateString), 'yyyy-MM-dd HH:mm:ss');
+    },
     onCardMouseLeave() {
       if (this.filtersChanged) {
         // 如果 filters 有变化，就重新获取数据

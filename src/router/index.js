@@ -138,8 +138,8 @@ const routes = [
     }
   },
   {
-    path: '/tasks/testPostForAsker', // 测试用,后面换成/tasksForAsker/:id
-    name: 'get-task',
+    path: '/tasksForAsker/testPostForAsker', // 测试用,后面换成/tasksForAsker/:id
+    name: 'get-task-test',
     component: () => import('../components/Task/TaskPostForAsker.vue'),
     meta: {
       requiresAuth: true,

@@ -26,4 +26,5 @@ export default {
   async getUserProfile(context, {id}) { return await api.getUserProfile(id); },
   async getTasks(context, {tags, pay, sory_by, key_word}) { return await api.getTasks(tags, pay, sory_by, key_word); },
   async createTask(context, {title, content, tags, commission}) { return await api.createTask(title, content, tags, commission); },
+  async likePost(context, {id}) { return await api.likePost(id); },
 };

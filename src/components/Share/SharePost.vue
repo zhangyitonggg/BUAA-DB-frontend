@@ -59,7 +59,7 @@
       </v-card>
       <!-- 回答部分 -->
       <v-card class="mt-5 pa-5">
-        <v-card-title>{{ comments.length }} 条分享</v-card-title>
+        <v-card-title>{{ comments.length }} 条评论</v-card-title>
         <v-divider></v-divider>
         <div v-for="(comment, index) in comments" :key="index">
           <v-card class="pa-2 my-3" outlined>
@@ -122,30 +122,12 @@ VMdPreview.use(githubTheme, {
 export default {
   name: "PostPage",
   components: {
-      VMdPreview
+    VMdPreview
   },
   data() {
     return {
       loading: true,
-      post: {
-        tags: [
-          "工具推荐", "开发者"
-        ],
-        title: "资源分享：开发者必备工具",
-        content:  "## Docker \n 大家好！今天想跟大家分享一些我在开发中常用的工具，希望对大家有所~~帮助~~。 \n\n ```c\nint a = 1;\n```\n ### 请在下方下载资源包。",
-        bhpan_url:"https://bhpan.buaa.edu.cn/link/AAA86BCF578B0049A582920EA83FEE2F78",
-        created_at: "2024-11-12 12:00:12",
-        favorites: 12,
-        likes: 23,
-        dislikes: 2,
-        created_by: {
-          user_id: 1,
-          username: "John Doe",
-        },
-        like: true,
-        dislike: false,
-        favorite: true,
-      },
+      post: {},
       followed: false,
       dialog: false, // 控制弹框显示
       newComment: "", // 用户输入的评论
@@ -177,22 +159,26 @@ export default {
   },
   methods: {
     getPost() {
-      // todo 调 1.获得post的接口以及 2.获得评论的接口 以及 3.获得是否关注的接口
+      // todo 调 2.获得评论的接口 以及 3.获得是否关注的接口
       this.loading = true;
       this.$store.dispatch("getPost", { id: this.$route.params.id })
         .then((res) => {
-          this.post = res.data.post;
+          this.post = res;
+          console.log(this.post)
         })
         .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
         .finally(() => { this.loading = false; });
     },
     openBhpan() {
+      console.log(this.post.bhpan_url)
       window.open(this.post.bhpan_url);
     },
     toggleLike() {
       if (this.post.like == false) {
         this.post.like = true;
-        // todo 调用点赞接口
+        this.$store.dispatch("likePost", {id: this.$route.params.id })
+          .then((res) => { this.$store.commit("setAlert", { "type": "success", "message": "已点赞。" }); })
+          .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
         if (this.post.dislike == true) {
           this.post.dislike = false;
           // todo 调用取消点踩接口

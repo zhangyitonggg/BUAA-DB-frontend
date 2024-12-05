@@ -17,6 +17,7 @@ const base = {
         comments: 'comments',
         creatComment: 'comments/create',
         favor: '/favor',
+        like: '/like',
     },
     tags: {
         search: '/tags/search',
