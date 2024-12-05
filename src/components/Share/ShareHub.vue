@@ -235,7 +235,7 @@ export default {
       }
     },
     getTagColor(tag) {
-      return this.filters.tags.includes(tag) ? 'brown' : 'blue accent-2';
+      return this.filters.tags.includes(tag) ? 'blue accent-2' : 'brown';
     },
     toggleTag(tag) {
       const index = this.filters.tags.indexOf(tag);
@@ -245,7 +245,7 @@ export default {
       } else {
         // 如果标签已被选中，则移除
         this.filters.tags.splice(index, 1);
-      }
+      } console.log(this.filters.tags);
     },
     closeDialog() {
       this.dialog = false;
