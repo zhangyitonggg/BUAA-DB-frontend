@@ -140,8 +140,7 @@ export default {
           created_by: {
             user_id: 2,
             username: "用户123",
-          },  
-
+          },
         },
         {
           content: "我最近在用 Figma 设计工具，非常棒，适合团队协作。",
@@ -151,8 +150,7 @@ export default {
           created_by: {
             user_id: 3,
             username: "开发者小张",
-          },  
-
+          },
         },
       ]
     };
@@ -167,7 +165,10 @@ export default {
           console.log(this.post)
         })
         .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
-        .finally(() => { this.loading = false; });
+      this.$store.dispatch("getPostComments", { id: this.$route.params.id })
+        .then((res) => { this.comments = res.comments; })
+        .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
+      this.loading = false;
     },
     openBhpan() {
       console.log(this.post.bhpan_url)
@@ -181,42 +182,60 @@ export default {
           .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
         if (this.post.dislike == true) {
           this.post.dislike = false;
-          // todo 调用取消点踩接口
+          this.$store.dispatch("notLikePost", {id: this.$route.params.id })
+            .then((res) => {})
+            .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
         }
       } else {
         this.post.like = false;
-        // todo 调用取消点赞接口
+        this.$store.dispatch("notLikePost", {id: this.$route.params.id })
+          .then((res) => {})
+          .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
       }
     },
     toggleDisLike() {
       if (this.post.dislike == false) {
         this.post.dislike = true;
-        // todo 调用点踩接口
+        this.$store.dispatch("dislikePost", {id: this.$route.params.id })
+          .then((res) => { this.$store.commit("setAlert", { "type": "success", "message": "已点踩。" }); })
+          .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
         if (this.post.like == true) {
           this.post.like = false;
-          // todo 调用取消点赞接口
+          this.$store.dispatch("notDislikePost", {id: this.$route.params.id })
+            .then((res) => {})
+            .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
         }
       } else {
         this.post.dislike = false;
-        // todo 调用取消点踩接口
+        this.$store.dispatch("notDislikePost", {id: this.$route.params.id })
+          .then((res) => {})
+          .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
       }
     },
     togglefavorite() {
       if (this.post.favorite == true) {
         this.post.favorite = false;
-        // todo 调用取消收藏接口
+        this.$store.dispatch("notFavourPost", {id: this.$route.params.id })
+          .then((res) => { this.$store.commit("setAlert", { "type": "success", "message": "已取消收藏。" }); })
+          .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
       } else {
         this.post.favorite = true;
-        // todo 调用收藏接口
+        this.$store.dispatch("favourPost", {id: this.$route.params.id })
+          .then((res) => { this.$store.commit("setAlert", { "type": "success", "message": "已收藏。" }); })
+          .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
       }
     },
     toggleFollow() {
       if (this.followed == false) {
         this.followed = true;
-        // todo 调用关注接口
+        this.$store.dispatch("followUser", {id: this.post.created_by.user_id })
+          .then((res) => { this.$store.commit("setAlert", { "type": "success", "message": "已关注。" }); })
+          .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
       } else {
         this.followed = false;
-        // todo 调用取消关注接口
+        this.$store.dispatch("unfollowUser", {id: this.post.created_by.user_id })
+          .then((res) => { this.$store.commit("setAlert", { "type": "success", "message": "已取关。" }); })
+          .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
       }
     },
     openCommentDialog() {

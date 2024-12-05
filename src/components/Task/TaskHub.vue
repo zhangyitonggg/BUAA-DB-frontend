@@ -270,7 +270,7 @@ export default {
     this.$store.commit("setAppTitle", "共享资源站");
     this.$store.dispatch("getTags", {key_word: null})
       .then((tags) => {
-        this.availableTags = tags;
+        this.availableTags = tags.tags;
       })
       .catch((error) => {
         this.$store.commit("setAlert", {

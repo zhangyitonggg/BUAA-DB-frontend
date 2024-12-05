@@ -40,11 +40,11 @@
               </v-col>
               <v-col>
                 <v-chip-group v-model="filters.tags" multiple column active-class="active-tag">
-                  <!-- <v-chip v-for="(tag, index) in availableTags" :key="index"
+                  <v-chip v-for="(tag, index) in availableTags" :key="index"
                     :color="getTagColor(tag)"
                     outlined @click="toggleTag(tag)">
                     {{ tag }}
-                  </v-chip> -->
+                  </v-chip>
                 </v-chip-group>
               </v-col>
             </v-row>
@@ -167,7 +167,8 @@ export default {
       filters: {
         sort_by: 0,
         pay: 0,
-        search: ''
+        search: '',
+        tags: [],
       },
       filtersChanged: false, // 用来标记 filters 是否有变化
       dialog: false, // 是否显示支付确认对话框
@@ -175,6 +176,7 @@ export default {
         cost: 0
       }, // 当前操作的 item
       post: [],
+      availableTags: [],
     };
   },
   watch: {
@@ -202,6 +204,7 @@ export default {
     getTags() {
       this.$store.dispatch("getTags", { key_word: null })
         .then(res => {
+          console.log(res.tags);
           this.availableTags = res.tags;
         })
         .catch(e => {

@@ -27,4 +27,12 @@ export default {
   async getTasks(context, {tags, pay, sory_by, key_word}) { return await api.getTasks(tags, pay, sory_by, key_word); },
   async createTask(context, {title, content, tags, commission}) { return await api.createTask(title, content, tags, commission); },
   async likePost(context, {id}) { return await api.likePost(id); },
+  async dislikePost(context, {id}) { return await api.dislikePost(id); },
+  async notLikePost(context, {id}) { return await api.notLikePost(id); },
+  async notDislikePost(context, {id}) { return await api.notDislikePost(id); },
+  async favourPost(context, {id}) { return await api.favourPost(id); },
+  async notFavourPost(context, {id}) { return await api.notFavourPost(id); },
+  async getPostComments(context, {id}) { return await api.getPostComments(id); },
+  async followUser(context, {id}) { return await api.followUser(id); },
+  async notFollowUser(context, {id}) { return await api.notFollowUser(id); },
 };
