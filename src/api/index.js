@@ -27,6 +27,7 @@ const api = {
     createComment: async(id, content, parent_id) => { return await router.post(path.baseUrl + path.post.root + id + path.post.creatComment, {content: content, parent_id: parent_id}); },
     getFollows: async(id) => { return await router.get(path.baseUrl + path.user.root + id + path.user.follows); },
     ownPosts: async() => { return await router.get(path.baseUrl + path.post.own); },
+    modifyUser: async(id, password, email, signature) => { return await router.post(path.baseUrl + path.user.root + id + path.user.modify, {password: password, email: email, signature: signature}); },
 }
 
 export default api;

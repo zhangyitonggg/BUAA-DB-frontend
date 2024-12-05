@@ -217,7 +217,7 @@ export default {
       newPassword: '',
       confirmPassword: '',
       newEmail: '',
-      personalityTag: '热爱编程，喜欢挑战',
+      personalityTag: '',
       email: '22373337@buaa.edu.cn',
       showGiveMeMoneyDialog: false,
       moneyNumber: 10,
@@ -232,13 +232,15 @@ export default {
       this.$store.commit("setAppTitle", "用户信息");
       this.$store.dispatch("getUserProfile", {id: this.$store.state._user_id_})
         .then((res) => {
-          // this.personalityTag = res.signature;
-          // this.email = res.email;
-          // this.moneyNumber = res.capital;
-          // this.likeNumber = res.likes;
-          // this.fansNumber = res.fans;
-          // this.postNumber = res.posts;
-          // this.answerNumber = res.replies;
+          this.personalityTag = res.signature;
+          if (!this.personalityTag) this.personalityTag = "这个人很懒，什么也没有写。";
+          this.email = res.email;
+          if (!this.email) this.email = "未设置";
+          this.moneyNumber = res.capital;
+          this.likeNumber = res.likes;
+          this.fansNumber = res.fans;
+          this.postNumber = res.posts;
+          this.answerNumber = res.replies;
           // this.avatarUrl = res.avatarurl;
         })
         .catch((err) => { this.$store.commit("setAlert", {type: "error", message: err}); });
@@ -249,8 +251,13 @@ export default {
       this.tagDialog = true;
     },
     updatePersonalityTag() {
-      this.personalityTag = this.newPersonalityTag;
-      this.tagDialog = false;
+      this.$store.dispatch("modifyUser", {id:this.$store.state._user_id_, password: null, email: null, signature: this.newPersonalityTag})
+        .then(() => {
+          this.$store.commit("setAlert", {type: "success", message: "签名修改成功。"});
+          this.personalityTag = this.newPersonalityTag;
+          this.tagDialog = false;
+        })
+        .catch((err) => { this.$store.commit("setAlert", {type: "error", message: err}); })
     },
     showPasswordDialog() {
       this.newPassword = '';
@@ -259,10 +266,16 @@ export default {
     },
     updatePassword() {
       if (this.newPassword === this.confirmPassword) {
-        // 在此处添加更新密码的逻辑
+        this.$store.dispatch("modifyUser", {id:this.$store.state._user_id_, password: this.newPassword, email: null, signature: null})
+          .then(() => {
+            this.newPassword = "";
+            this.confirmPassword = "";
+            this.$store.commit("setAlert", {type: "success", message: "密码修改成功。"});
+          })
+          .catch((err) => { this.$store.commit("setAlert", {type: "error", message: err}); })
         this.passwordDialog = false;
       } else {
-        alert("密码不匹配");
+        this.$store.commit("setAlert", {type: "error", message: "两次输入的密码不一致。"});
       }
     },
     showEmailDialog() {
@@ -270,9 +283,13 @@ export default {
       this.emailDialog = true;
     },
     updateEmail() {
-      // 在此处添加更新电子邮件的逻辑
-      this.email = this.newEmail;
-      this.emailDialog = false;
+      this.$store.dispatch("modifyUser", {id:this.$store.state._user_id_, password: null, email: this.newEmail, signature: null})
+        .then(() => {
+          this.email = this.newEmail;
+          this.$store.commit("setAlert", {type: "success", message: "邮箱修改成功。"});
+          this.emailDialog = false;
+        })
+        .catch((err) => { this.$store.commit("setAlert", {type: "error", message: err}); })
     },
     confirmRecharge() {
       // 在此处添加充值逻辑

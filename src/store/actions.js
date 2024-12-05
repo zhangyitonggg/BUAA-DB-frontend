@@ -38,4 +38,5 @@ export default {
   async createComment(context, {id, content, parent_id}) { return await api.createComment(id, content, parent_id); },
   async getFollows(context, {id}) { return await api.getFollows(id); },
   async ownPosts(context) { return await api.ownPosts(); },
+  async modifyUser(context, {id, password, email, signature}) { return await api.modifyUser(id, password, email, signature); },
 };

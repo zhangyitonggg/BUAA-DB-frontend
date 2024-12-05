@@ -8,6 +8,7 @@ const base = {
         follow: '/follow/',
         not_follow: '/not_follow/',
         follows: '/follows/',
+        modify: '/modify/',
     },
     billboard: {
         getNews: '/billboard/index',
