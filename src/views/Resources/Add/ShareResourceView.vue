@@ -86,7 +86,7 @@
       dark
       @click="publish"
       class="mr-2"
-      :disabled="loading || !title || cost < 0 || !content || !link || rules.isValidUrl(link) !== true"
+      :disabled="isDisabled"
     >
       <v-icon left>mdi-send</v-icon> 发布
     </v-btn>
@@ -147,8 +147,14 @@ export default {
       }
       return '请上传资源的链接';
     },
-  },
-  watch: {
+    isDisabled() {
+      return this.loading ||
+        this.title === null ||
+        this.cost < 0 ||
+        this.content === null ||
+        this.link === null ||
+        this.rules.isValidUrl(this.link) !== true;
+    },
   },
   methods: {
     remove (item) {
@@ -192,20 +198,16 @@ export default {
             message: e,
           });
         })
-        .finally(() => { this.loading = false; });
+      this.loading = false;
     },
     back() {
       this.$router.push('/resources');
-      this.$store.commit("setAlert", {
-        type: "success",
-        message: "已取消发布任务。",
-      });
     }
   },
   mounted() {
     this.$store.dispatch("getTags", {key_word: null})
-      .then(() => {
-        this.tags_to_select = this.$store.state.tags;
+      .then((res) => {
+        this.tags_to_select = res.tags;
       })
       .catch((e) => {
         this.tags_to_select = [];

@@ -176,9 +176,7 @@
             message: error,
           });
         })
-        .finally(() => {
-          this.loading = false;
-        });
+      this.loading = false;
     },
   }
 </script>

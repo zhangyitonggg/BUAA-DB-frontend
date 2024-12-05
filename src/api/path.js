@@ -32,7 +32,7 @@ const base = {
     tasks: {
         root: '/mission/',
         search: '/mission/search',
-        create: '/mission/create',
+        create: '/mission/create/',
         comments: 'comments',
         creatComment: 'comments/create',
         favor: '/favor',
