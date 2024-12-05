@@ -211,8 +211,15 @@ export default {
         });
     },
     getPosts() {
+      console.log(this.filters.tags)
+      let pay = null
+      if (this.filters.pay === 1) {
+        pay = true;
+      } else if (this.filters.pay === 2) {
+        pay = false;
+      }
       this.$store.dispatch("getPosts",{
-        pay: this.filters.pay,
+        pay: pay,
         sort_by: this.filters.sort_by,
         key_word: this.filters.search,
         tags: this.filters.tags.join(','),
@@ -242,7 +249,6 @@ export default {
       return this.filters.tags.includes(tag) ? 'brown' : 'blue accent-2';
     },
     toggleTag(tag) {
-      console.log(tag);
       const index = this.filters.tags.indexOf(tag);
       if (index === -1) {
         // 如果标签未被选中，则添加到 filters.tags

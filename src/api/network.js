@@ -93,9 +93,7 @@ function no_nil(obj) {
 router.interceptors.request.use(
   config => {
     config.data = no_nil(config.data);
-    // console.log(config.params);
     config.params = no_nil(config.params);
-    // console.log(config.params);
     if (config.method === 'post') {
       if (config.useQs) {
         config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
