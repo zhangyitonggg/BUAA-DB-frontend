@@ -86,14 +86,33 @@ export default {
                     post_id: 1,
                     link: "/resources/testPost", // todo 链接
                     image: require("@/assets/images/blogDefault.png"), // 这里需要申请另一个api
+                    title: "航U邦前端源码",
+                    icon: { name: "mdi-bitcoin", color: "#F8CC00" },
+                    cost: 20,
+                    tags: ["数据库", "2024-2025"], // 这里需要申请另一个api
+                    likes: 6,
+                    dislikes: 0,
+                    favorites: 2,
+                    comments: 24,
+                    created_by: {
+                        user_id: 1,
+                        username: "张三",
+                        avatar: require("@/assets/images/blogDefault.png"),
+                    },
+                    created_at: "2024-04-29",
+                },
+                {
+                    post_id: 1,
+                    link: "/resources/testPost", // todo 链接
+                    image: require("@/assets/images/blogDefault.png"), // 这里需要申请另一个api
                     title: "计算机组成考试题（2023-2024学年）",
                     icon: { name: "mdi-bitcoin", color: "#F8CC00" },
                     cost: 5,
                     tags: ["计算机组成", "考试题", "2023-2024"], // 这里需要申请另一个api
-                    likes: 3407,
-                    dislikes: 109,
-                    favorites: 96,
-                    comments: 12,
+                    likes: 7,
+                    dislikes: 1,
+                    favorites: 6,
+                    comments: 6,
                     created_by: {
                         user_id: 1,
                         username: "张三",
@@ -108,10 +127,10 @@ export default {
                     subtitle: "这是一份数据结构的复习资料，涵盖了本学年考试的重点知识点。希望对大家有所帮助。",
                     tags: ["数据结构", "复习资料", "2024-2025"],
                     cost: 0,
-                    likes: 5289,
-                    dislikes: 143,
-                    favorites: 305,
-                    comments: 25, // 这里需要获取帖子的评论数量
+                    likes: 8,
+                    dislikes: 0,
+                    favorites: 3,
+                    comments: 5, // 这里需要获取帖子的评论数量
                     created_by: {
                         user_id: 2,
                         username: "李四",
@@ -119,6 +138,60 @@ export default {
                     },
                     created_at: "2024-05-10",
                 },
+                {
+                    post_id: 3,
+                    link: "/resources/testPost",
+                    title: "操作系统期末复习资料（2024-2025学年）",
+                    subtitle: "这是一份操作系统的复习资料，涵盖了本学年考试的重点知识点。",
+                    tags: ["操作系统", "复习资料", "2024-2025"],
+                    cost: 0,
+                    likes: 10,
+                    dislikes: 2,
+                    favorites: 4,
+                    comments: 3,
+                    created_by: {
+                        user_id: 3,
+                        username: "王五",
+                        avatar: require("@/assets/images/blogDefault.png"),
+                    },
+                    created_at: "2024-06-15",
+                },
+                {
+                    post_id: 4,
+                    link: "/resources/testPost",
+                    title: "计算机网络期末复习资料（2024-2025学年）",
+                    subtitle: "这是一份计算机网络的复习资料，涵盖了本学年考试的重点知识点。",
+                    tags: ["计算机网络", "复习资料", "2024-2025"],
+                    cost: 0,
+                    likes: 12,
+                    dislikes: 1,
+                    favorites: 5,
+                    comments: 4,
+                    created_by: {
+                        user_id: 4,
+                        username: "赵六",
+                        avatar: require("@/assets/images/blogDefault.png"),
+                    },
+                    created_at: "2024-07-20",
+                },
+                {
+                    post_id: 5,
+                    link: "/resources/testPost",
+                    title: "数据库系统期末复习资料（2024-2025学年）",
+                    subtitle: "这是一份数据库系统的复习资料，涵盖了本学年考试的重点知识点。",
+                    tags: ["数据库系统", "复习资料", "2024-2025"],
+                    cost: 0,
+                    likes: 15,
+                    dislikes: 0,
+                    favorites: 6,
+                    comments: 5,
+                    created_by: {
+                        user_id: 5,
+                        username: "孙七",
+                        avatar: require("@/assets/images/blogDefault.png"),
+                    },
+                    created_at: "2024-08-10",
+                }
             ],
         };
     },

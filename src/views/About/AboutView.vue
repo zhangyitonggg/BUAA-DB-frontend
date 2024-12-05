@@ -108,7 +108,7 @@ data() {
         "received_events_url": "https://api.github.com/users/AOSTL/received_events",
         "type": "User",
         "site_admin": false,
-        "contributions": 38
+        "contributions": 49
       },
       {
         "login": "fysszlr",
@@ -129,7 +129,7 @@ data() {
         "received_events_url": "https://api.github.com/users/AOSTL/received_events",
         "type": "User",
         "site_admin": false,
-        "contributions": 46
+        "contributions": 56
       },
       {
         "login": "zhangyitongg",
@@ -150,7 +150,7 @@ data() {
         "received_events_url": "https://api.github.com/users/jhdonghj/received_events",
         "type": "User",
         "site_admin": false,
-        "contributions": 37
+        "contributions": 57
       }
     ],
   };

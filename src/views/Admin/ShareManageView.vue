@@ -196,7 +196,7 @@ export default {
                     link: "/resources/testPost",
                     title: "数据结构期末复习资料（2024-2025学年）",
                     subtitle: "这是一份数据结构的复习资料，涵盖了本学年考试的重点知识点。希望对大家有所帮助。",
-                    tags: ["数据结构", "复习资料", "2024-2025"],
+                    tags: ["数据结构", "考试题", "复习资料", "2024-2025"],
                     cost: 0,
                     likes: 5289,
                     dislikes: 143,
@@ -273,7 +273,7 @@ export default {
         },
     },
     mounted() {
-        this.$store.commit("setAppTitle", "管理资源");
+        this.$store.commit("setAppTitle", "管理分享");
         this.getPosts();
     },
 };

@@ -114,7 +114,8 @@
             tags: [],
             tags_to_select: [
                 { name: '计算机组成'},
-                { name: 'CS'},
+                { name: '数据库'},
+                { name: '2024-2025'},
                 { name: '1234'},
                 { name: '11'},
             ],

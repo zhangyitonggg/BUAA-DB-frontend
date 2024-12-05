@@ -59,6 +59,30 @@
             },
             created_at: "2024-05-10",
           },
+          {
+            post_id: 3,
+            title: "操作系统复习资料（2023-2024学年）",
+            cost: 0,
+            tags: ["操作系统", "复习资料", "2023-2024"],
+            created_by: {
+              user_id: 3,
+              username: "王五",
+              avatar: require("@/assets/images/blogDefault.png"),
+            },
+            created_at: "2024-06-15",
+          },
+          {
+            post_id: 4,
+            title: "计算机网络期末考试题（2024-2025学年）",
+            cost: 10,
+            tags: ["计算机网络", "考试题", "2024-2025"],
+            created_by: {
+              user_id: 4,
+              username: "赵六",
+              avatar: require("@/assets/images/blogDefault.png"),
+            },
+            created_at: "2024-07-20",
+          }
         ],
       };
     },

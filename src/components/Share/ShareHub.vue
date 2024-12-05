@@ -192,6 +192,25 @@ export default {
               cost: 0
           }, // 当前操作的 item
           post: [
+                {
+                  post_id: 0,
+                  link: "/resources/testPost", // todo 链接
+                  image: require("@/assets/images/blogDefault.png"), // 这里需要申请另一个api
+                  title: "数据库期末考试往年题",
+                  icon: { name: "mdi-bitcoin", color: "#F8CC00" },
+                  cost: 114514,
+                  tags: ["计算机组成", "考试题", "2023-2024"], // 这里需要申请另一个api
+                  likes: 7,
+                  dislikes: 0,
+                  favorites: 6,
+                  comments: 2,
+                  created_by: {
+                      user_id: 1,
+                      username: "朗波老师",
+                      avatar: require("@/assets/images/blogDefault.png"),
+                  },
+                  created_at: "2024-12-01",
+              },
               {
                   post_id: 1,
                   link: "/resources/testPost", // todo 链接
@@ -200,13 +219,13 @@ export default {
                   icon: { name: "mdi-bitcoin", color: "#F8CC00" },
                   cost: 5,
                   tags: ["计算机组成", "考试题", "2023-2024"], // 这里需要申请另一个api
-                  likes: 3407,
-                  dislikes: 109,
-                  favorites: 96,
-                  comments: 12,
+                  likes: 11,
+                  dislikes: 2,
+                  favorites: 2,
+                  comments: 4,
                   created_by: {
-                      user_id: 1,
-                      username: "张三",
+                      user_id: 2,
+                      username: "神秘的CO助教",
                       avatar: require("@/assets/images/blogDefault.png"),
                   },
                   created_at: "2024-04-29",
@@ -218,13 +237,13 @@ export default {
                   subtitle: "这是一份数据结构的复习资料，涵盖了本学年考试的重点知识点。希望对大家有所帮助。",
                   tags: ["数据结构", "复习资料", "2024-2025"],
                   cost: 0,
-                  likes: 5289,
-                  dislikes: 143,
-                  favorites: 305,
-                  comments: 25, // 这里需要获取帖子的评论数量
+                  likes: 8,
+                  dislikes: 1,
+                  favorites: 5,
+                  comments: 5, // 这里需要获取帖子的评论数量
                   created_by: {
-                      user_id: 2,
-                      username: "李四",
+                      user_id: 3,
+                      username: "某神秘的数据结构助教组长zyt",
                       avatar: require("@/assets/images/blogDefault.png"),
                   },
                   created_at: "2024-05-10",

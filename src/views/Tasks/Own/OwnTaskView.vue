@@ -51,95 +51,115 @@ export default {
             ],
             ownTasks: [
                 {
-                    title: "【任务发布】寻找全栈开发导师",
-                    tiny_content: "希望能找到一位有丰富全栈开发经验的导师，每周进行一次线上指导，帮助我解决学习中的问题并提供项目实践建议。感兴趣的请联系！",
-                    created_at: "2021-09-01",
-                    created_by: {
-                        username: "张三",
+                    "mission_id": 0,
+                    "title": "【紧急求助】寻找数据库往年考试题",
+                    "tiny_content": "跪求能够提供数据库课程往年考试题的同学，分享资料并感谢！",
+                    "created_at": "2024-11-01",
+                    "created_by": {
+                        "username": "张三"
                     },
-                    tags: ["2024-2025", "复习资料"],
-                    commission: 12,
+                    "tags": ["数据库", "往年试题", "复习资料"],
+                    "commission": 12
                 },
                 {
-                    title: "【提问】如何优化后端接口性能？",
-                    tiny_content: "最近在开发一个电商项目，发现部分接口响应时间过长。主要使用的技术栈是Node.js + Express。请问有哪些优化建议，或者有没有类似的案例分享？",
-                    created_at: "2021-09-01",
-                    created_by: {
-                        username: "张三",
+                    "mission_id": 1,
+                    "title": "【紧急求助】需要机器学习相关的论文资料",
+                    "tiny_content": "有谁能分享一些机器学习领域的经典论文或学习资料吗？非常感谢！",
+                    "created_at": "2024-11-02",
+                    "created_by": {
+                        "username": "李四"
                     },
-                    tags: ["计算机组成", "2024-2025", "复习资料"],
-                    commission: 0,
+                    "tags": ["机器学习", "论文", "复习资料"],
+                    "commission": 0
                 },
                 {
-                    title: "【求助】设计一个任务发布系统的数据库结构",
-                    tiny_content: "正在设计一个任务发布系统，涉及到用户、任务、评论等功能。希望能得到关于数据库表结构设计的具体建议，尤其是如何设计关联关系更合理。",
-                    created_at: "2021-09-01",
-                    created_by: {
-                        username: "张三",
+                    "mission_id": 2,
+                    "title": "【紧急求助】计算机组成原理复习资料",
+                    "tiny_content": "有没有计算机组成原理的复习资料或者笔记？希望能够分享一些，感谢大家！",
+                    "created_at": "2024-11-03",
+                    "created_by": {
+                        "username": "王五"
                     },
-                    tags: ["计算机组成", "2024-2025", "复习资料"],
-                    commission: 1,
+                    "tags": ["计算机组成", "复习资料", "笔记"],
+                    "commission": 0
                 },
                 {
-                    title: "【任务发布】前端设计优化需求",
-                    tiny_content: "需要一名熟悉Vue.js和UI/UX设计的开发者，帮助优化现有项目的用户界面，包括交互设计和性能提升。有兴趣的可以提交报价。",
-                    created_at: "2021-09-01",
-                    created_by: {
-                        username: "张三",
+                    "mission_id": 3,
+                    "title": "【紧急求助】C语言编程习题集",
+                    "tiny_content": "想找一些C语言编程习题集，帮助复习基础知识。有资料的请分享，谢谢！",
+                    "created_at": "2024-11-04",
+                    "created_by": {
+                        "username": "赵六"
                     },
-                    tags: ["计算机组成", "2024-2025", "复习资料"],
-                    commission: 0,
+                    "tags": ["C语言", "编程习题", "复习资料"],
+                    "commission": 0
                 },
                 {
-                    title: "【提问】React和Vue如何选择？",
-                    tiny_content: "在开发一个中型项目时，团队对选择React还是Vue存在争议。请问这两者在性能、生态和学习成本上的主要差异是什么？希望大家能分享自己的经验。",
-                    created_at: "2021-09-01",
-                    created_by: {
-                        username: "张三",
+                    "mission_id": 4,
+                    "title": "【求助】计算机网络历年试题",
+                    "tiny_content": "谁有计算机网络课程的历年试题或参考资料，分享一下，非常感激！",
+                    "created_at": "2024-11-05",
+                    "created_by": {
+                        "username": "钱七"
                     },
-                    tags: ["计算机组成", "2024-2025", "复习资料"],
-                    commission: 10,
+                    "tags": ["计算机网络", "试题", "复习资料"],
+                    "commission": 10
                 },
                 {
-                    title: "【求助】后端服务高并发处理方案",
-                    tiny_content: "项目上线后访问量激增，后端服务器偶尔会崩溃。使用的技术栈是Java Spring Boot。请问有哪些可行的高并发处理方案？",
-                    created_at: "2021-09-01",
-                    created_by: {
-                        username: "张三",
+                    "mission_id": 5,
+                    "title": "【求助】算法与数据结构学习资料",
+                    "tiny_content": "正在学习算法与数据结构，需要一些参考资料或者学习笔记，谁能提供？",
+                    "created_at": "2024-11-06",
+                    "created_by": {
+                        "username": "孙八"
                     },
-                    tags: ["计算机组成", "2024-2025", "复习资料"],
-                    commission: 20,
+                    "tags": ["算法", "数据结构", "学习资料"],
+                    "commission": 5
                 },
                 {
-                    title: "【任务发布】短期项目外包——数据分析",
-                    tiny_content: "我们正在寻找一位熟悉Python和数据分析的开发者，负责处理并分析一组业务数据。项目周期为两周，具体细节可以私信商讨。",
-                    created_at: "2021-09-01",
-                    created_by: {
-                        username: "张三",
+                    "mission_id": 6,
+                    "title": "【求助】Java编程考试试题",
+                    "tiny_content": "有没有Java编程的历年考试试题或习题集，帮忙分享一下，谢谢！",
+                    "created_at": "2024-11-07",
+                    "created_by": {
+                        "username": "周九"
                     },
-                    tags: ["计算机组成", "2024-2025", "复习资料"],
-                    commission: 1,
+                    "tags": ["Java", "编程", "考试试题"],
+                    "commission": 7
                 },
                 {
-                    title: "【提问】如何设计任务优先级排序算法？",
-                    tiny_content: "在任务管理系统中，需要根据用户需求动态调整任务的优先级排序。请问有哪些常用的排序算法或者设计思路适合这种场景？",
-                    created_at: "2021-09-01",
-                    created_by: {
-                        username: "张三",
+                    "mission_id": 7,
+                    "title": "【求助】操作系统复习资料",
+                    "tiny_content": "谁有操作系统的复习资料或者笔记？希望可以帮助我更好地复习，谢谢！",
+                    "created_at": "2024-11-08",
+                    "created_by": {
+                        "username": "吴十"
                     },
-                    tags: ["计算机组成", "2024-2025", "复习资料"],
-                    commission: 2,
+                    "tags": ["操作系统", "复习资料", "笔记"],
+                    "commission": 6
                 },
                 {
-                    title: "【求助】移动端页面适配问题",
-                    tiny_content: "项目的移动端页面在不同分辨率设备上显示效果不一致。请问有什么最佳实践或者工具可以帮助解决适配问题？",
-                    created_at: "2021-09-01",
-                    created_by: {
-                        username: "张三",
+                    "mission_id": 8,
+                    "title": "【求助】计算机图形学学习资料",
+                    "tiny_content": "需要一些计算机图形学的学习资料，谁有可以分享吗？非常感谢！",
+                    "created_at": "2024-11-09",
+                    "created_by": {
+                        "username": "郑十一"
                     },
-                    tags: ["计算机组成", "2024-2025", "复习资料"],
-                    commission: 0,
+                    "tags": ["计算机图形学", "学习资料", "参考书籍"],
+                    "commission": 4
                 },
+                {
+                    "mission_id": 9,
+                    "title": "【求助】操作系统课程笔记",
+                    "tiny_content": "有没有操作系统课程的笔记或者复习资料，急需帮助！",
+                    "created_at": "2024-11-10",
+                    "created_by": {
+                        "username": "冯十二"
+                    },
+                    "tags": ["操作系统", "复习资料", "笔记"],
+                    "commission": 2
+                }
             ],
         };
     },
@@ -158,7 +178,7 @@ export default {
         },
     },
     mounted() {
-        this.$store.commit("setAppTitle", "我的资源");
+        this.$store.commit("setAppTitle", "我的悬赏");
         this.getOwnTask();
     },
 };
