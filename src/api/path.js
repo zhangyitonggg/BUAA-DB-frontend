@@ -25,6 +25,7 @@ const base = {
         not_like: '/not_like',
         dislike: '/dislike',
         not_dislike: '/not_dislike',
+        own: '/post/own',
     },
     tags: {
         search: '/tags/search',

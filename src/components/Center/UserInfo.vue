@@ -88,8 +88,8 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title>
-                <v-icon left>mdi-bootstrap</v-icon>  
-                菜币数量 &nbsp;&nbsp; {{moneyNumber}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                <v-icon left>mdi-bootstrap</v-icon>
+                菜币数量 &nbsp;&nbsp; {{moneyNumber}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <v-chip color="yellow" label small class="me-1" @click="showGiveMeMoneyDialog = true">去充值</v-chip>
               </v-list-item-title>
             </v-list-item-content>
@@ -100,7 +100,7 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title>
-                <v-icon left>mdi-thumb-up-outline</v-icon>  
+                <v-icon left>mdi-thumb-up-outline</v-icon>
                 获赞数量
               </v-list-item-title>
               <v-list-item-title style="margin-left:13%;">{{likeNumber}}</v-list-item-title>
@@ -109,7 +109,7 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title>
-                <v-icon left>mdi-human-male-board-poll</v-icon> 
+                <v-icon left>mdi-human-male-board-poll</v-icon>
                 粉丝数量
               </v-list-item-title>
               <v-list-item-title style="margin-left:13%;">{{fansNumber}}</v-list-item-title>
@@ -139,7 +139,6 @@
         </v-col>
       </v-row>
     </v-card>
-    
     <!-- 修改个性标签对话框 -->
     <v-dialog v-model="tagDialog" max-width="500px">
       <v-card>
@@ -231,16 +230,16 @@ export default {
   },
   mounted() {
       this.$store.commit("setAppTitle", "用户信息");
-      this.$store.dispatch("getUserProfile", {id: this.$store.getters.userId})
+      this.$store.dispatch("getUserProfile", {id: this.$store.state._user_id_})
         .then((res) => {
-          this.personalityTag = res.personalityTag;
-          this.email = res.email;
-          this.moneyNumber = res.capital;
-          this.likeNumber = res.likes;
-          this.fansNumber = res.fans;
-          this.postNumber = res.posts;
-          this.answerNumber = res.replies;
-          this.avatarUrl = res.avatarurl;
+          // this.personalityTag = res.signature;
+          // this.email = res.email;
+          // this.moneyNumber = res.capital;
+          // this.likeNumber = res.likes;
+          // this.fansNumber = res.fans;
+          // this.postNumber = res.posts;
+          // this.answerNumber = res.replies;
+          // this.avatarUrl = res.avatarurl;
         })
         .catch((err) => { this.$store.commit("setAlert", {type: "error", message: err}); });
   },
