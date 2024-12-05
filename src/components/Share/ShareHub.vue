@@ -39,7 +39,7 @@
                 <span><strong>标签筛选</strong>:</span>
               </v-col>
               <v-col>
-                <v-chip-group v-model="filters.tags" multiple column active-class="active-tag">
+                <v-chip-group multiple column active-class="active-tag">
                   <v-chip v-for="(tag, index) in availableTags" :key="index"
                     :color="getTagColor(tag)"
                     outlined @click="toggleTag(tag)">
@@ -146,7 +146,6 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-
     </template>
   </div>
 </template>
@@ -201,17 +200,7 @@ export default {
     setFilter(type, value) {
       this.filters[type] = value;
     },
-    getTags() {
-      this.$store.dispatch("getTags", { key_word: null })
-        .then(res => {
-          this.availableTags = res.tags;
-        })
-        .catch(e => {
-          this.$store.commit("setAlert", { type: "error", message: e })
-        });
-    },
     getPosts() {
-      console.log(this.filters.tags)
       let pay = null
       if (this.filters.pay === 1) {
         pay = true;
@@ -222,7 +211,7 @@ export default {
         pay: pay,
         sort_by: this.filters.sort_by,
         key_word: this.filters.search,
-        tags: this.filters.tags.join(','),
+        tags: this.filters.tags
       })
         .then(res => {
           this.post = res.posts;
@@ -271,7 +260,13 @@ export default {
   mounted() {
     this.loading = true;
     this.$store.commit("setAppTitle", "共享资源");
-    this.getTags();
+    this.$store.dispatch("getTags", { key_word: null })
+      .then(res => {
+        this.availableTags = res.tags;
+      })
+      .catch(e => {
+        this.$store.commit("setAlert", { type: "error", message: e })
+      });
     this.getPosts();
     this.loading = false;
   },
