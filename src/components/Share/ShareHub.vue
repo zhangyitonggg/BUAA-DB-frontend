@@ -64,7 +64,7 @@
           <v-col>
             <div class="card-container">
               <!-- 卡片主体 -->
-              <v-card outlined class="card-content" style="cursor: pointer;">
+              <v-card outlined class="card-content" style="cursor: pointer;" @click.stop="tryOpenItem(item)">
                 <v-row no-gutters class="picture">
                   <v-col cols="auto" class="d-flex align-center">
                     <!-- <v-img :src="item.image" aspect-ratio="1" height="110px" width="110px"
@@ -116,12 +116,6 @@
                   </v-col>
                 </v-row>
               </v-card>
-              <!-- 操作按钮 -->
-              <div class="action-buttons">
-                <v-btn color="primary" class="me-2" icon @click.stop="tryOpenItem(item)">
-                  <v-icon style="font-size: 32px;">mdi-open-in-new</v-icon>
-                </v-btn>
-              </div>
             </div>
           </v-col>
         </v-row>
@@ -216,10 +210,7 @@ export default {
         .then(res => {
           this.post = res.posts;
         })
-        .catch(e => {
-          this.post = [];
-          this.$store.commit("setAlert", { type: "error", message: e })
-        })
+        .catch(e => { this.$store.commit("setAlert", { type: "error", message: e }) })
     },
     goToPage(page) {
       this.$router.push(page);
@@ -245,7 +236,7 @@ export default {
       } else {
         // 如果标签已被选中，则移除
         this.filters.tags.splice(index, 1);
-      } console.log(this.filters.tags);
+      }
     },
     closeDialog() {
       this.dialog = false;

@@ -27,7 +27,7 @@
                 <span><strong>标签筛选</strong>:</span>
               </v-col>
               <v-col>
-                <v-chip-group v-model="filters.tags" multiple column active-class="active-tag">
+                <v-chip-group multiple column active-class="active-tag">
                   <v-chip v-for="(tag, index) in availableTags" :key="index"
                     :color="getTagColor(tag)"
                     outlined @click="toggleTag(tag)">
@@ -227,27 +227,16 @@ export default {
       this.filters[type] = value;
     },
     getTasks() {
-      this.loading = true;
       this.$store.dispatch("getTasks", this.filters)
         .then((res) => {
-          console.log(res);
           this.cards = res.posts;
         })
-        .catch((error) => {
-          this.$store.commit("setAlert", {
-            type: "error",
-            message: error,
-          });
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+        .catch((error) => { this.$store.commit("setAlert", { type: "error", message: error, }); })
     },
     getTagColor(tag) {
-      return this.filters.tags.includes(tag) ? 'brown' : 'blue accent-2';
+      return this.filters.tags.includes(tag) ? 'blue accent-2' : 'brown';
     },
     toggleTag(tag) {
-      console.log(tag);
       const index = this.filters.tags.indexOf(tag);
       if (index === -1) {
         // 如果标签未被选中，则添加到 filters.tags
@@ -262,11 +251,11 @@ export default {
     },
     tryOpenItem(item) {
       this.curItem = item;
-      // todo 打开任务
       this.$router.push("/tasks/" + item.mission_id);
     },
   },
   mounted() {
+    this.loading = true;
     this.$store.commit("setAppTitle", "共享资源站");
     this.$store.dispatch("getTags", {key_word: null})
       .then((tags) => {
@@ -279,6 +268,7 @@ export default {
         });
       });
     this.getTasks();
+    this.loading = false;
   },
 };
 </script>

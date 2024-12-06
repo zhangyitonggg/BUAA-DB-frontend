@@ -115,9 +115,7 @@ router.interceptors.response.use(
     if (response.status === 200) {
       let res = response.data.content;
       if (res.code != 0) {
-        console.log(res);
         let message = definedErrorHandler(res.code);
-        store.commit('setAlert', { message: message, type: "error" });
         return Promise.reject(res.data);
       } return Promise.resolve(res.data);
     } else return Promise.reject(response);

@@ -5,7 +5,7 @@ const api = {
     register: async(username, password) => { return await router.post(path.baseUrl + path.user.register, {username: username, password: password, email: null, student_id: null, real_name: null}); },
     login: async(username, password) => { return await router.post(path.baseUrl + path.user.login, {username: username, password: password, email: null}, {}); },
     getnews: async(page) => { return await router.get(path.baseUrl + path.billboard.getNews, {params:{page: page, per_page: 15}}); },
-    getPosts: async(pay, sory_by, key_word, tags) => { return await router.get(path.baseUrl + path.post.search, {params: {page: 1, per_page: 30, pay: pay, sort_by: sory_by, key_word: key_word, max_length: 30, tags: tags}}); },
+    getPosts: async(pay, sort_by, key_word, tags) => { return await router.get(path.baseUrl + path.post.search, {params: {page: 1, per_page: 30, pay: pay, sort_by: sort_by, key_word: key_word, max_length: 30, tags: tags}}); },
     getTags: async(key_word) => {
         if (key_word) return await router.get(path.baseUrl + path.tags.search, {params: {key_word: key_word}});
         else return await router.get(path.baseUrl + path.tags.search);
@@ -14,7 +14,7 @@ const api = {
     createTask: async(title, content, tags, commission) => { return await router.post(path.baseUrl + path.tasks.create, {title: title, content: content, tags: tags, commission: commission}); },
     getPostDetail: async(id) => { return await router.get(path.baseUrl + path.post.root + id); },
     getUserProfile: async(id) => { return await router.get(path.baseUrl + path.user.root + id + path.user.profile); },
-    getTasks: async(pay, sory_by, key_word) => { return await router.get(path.baseUrl + path.tasks.search, {params: {page: 1, per_page: 30, pay: pay, sort_by: sory_by, key_word: key_word, max_length: 30}}); },
+    getTasks: async(tags, sort_by, key_word) => { return await router.get(path.baseUrl + path.tasks.search, {params: {page: 1, per_page: 30, sort_by: sort_by, key_word: key_word, tags: tags, max_length: 30}}); },
     likePost: async(id) => { return await router.post(path.baseUrl + path.post.root + id + path.post.like)},
     notLikePost: async(id) => { return await router.post(path.baseUrl + path.post.root + id + path.post.not_like)},
     dislikePost: async(id) => { return await router.post(path.baseUrl + path.post.root + id + path.post.dislike)},
@@ -28,6 +28,8 @@ const api = {
     getFollows: async(id) => { return await router.get(path.baseUrl + path.user.root + id + path.user.follows); },
     ownPosts: async() => { return await router.get(path.baseUrl + path.post.own); },
     modifyUser: async(id, password, email, signature) => { return await router.post(path.baseUrl + path.user.root + id + path.user.modify, {password: password, email: email, signature: signature}); },
+    publishAnnouncement: async(title, content) => { return await router.post(path.baseUrl + path.billboard.create, {title: title, content: content}); },
+    getAllUsers: async() => { return await router.get(path.baseUrl + path.user.list); },
 }
 
 export default api;

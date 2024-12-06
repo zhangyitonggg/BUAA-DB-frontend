@@ -146,7 +146,7 @@
         .then(_ => {
             this.$store.commit("setAlert", { type: "success", message: "公告发布成功。" });
             this.loading = true;
-            this.$store.dispatch("getNews")
+            this.$store.dispatch("getNews", {page: 1})
               .then(res => {
                 this.news = res.announcements;
               })
