@@ -41,4 +41,6 @@ export default {
   async modifyUser(context, {id, password, email, signature}) { return await api.modifyUser(id, password, email, signature); },
   async publishAnnouncement(context, {title, content}) { return await api.publishAnnouncement(title, content); },
   async getAllUsers(context) { return await api.getAllUsers(); },
+  async blockUser(context, {id}) { return await api.blockUser(id); },
+  async unblockUser(context, {id}) { return await api.unblockUser(id); },
 };

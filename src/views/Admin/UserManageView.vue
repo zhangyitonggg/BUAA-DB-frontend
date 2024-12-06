@@ -24,7 +24,7 @@
           small
           :color="item.isblock ? 'green' : 'red'"
           class="me-1"
-          @click="dialog(item.isblock, item.username, item.userid)"
+          @click="dialog(item.isblock, item.username, item.id)"
         >
           <v-icon small>
             {{ item.isblock ? 'mdi-account-check' : 'mdi-account-off' }}
@@ -89,34 +89,56 @@
       });
     },
     // 打开确认对话框
-    dialog(isUnblock, username, userid) {
+    dialog(isUnblock, username, id) {
       this.dialogType = isUnblock;
       this.dialogUserName = username;
-      this.dialogUserID = userid;
+      this.dialogUserID = id;
       this.dialogActive = true;
     },
     // 提交封禁/解封操作
     onBlockUnblockClick() {
       this.submitLoading = true;
-      // 模拟 API 提交
-      setTimeout(() => {
-        const action = this.dialogType ? "解封" : "封禁";
-        this.setAlert({
-          type: "success",
-          message: `${action}用户“${this.dialogUserName}”成功！`,
-        });
-        this.dialogActive = false;
-        this.submitLoading = false;
-        this.getAllUser(); // 更新用户列表
-      }, 1000);
+      console.log(this.dialogUserID)
+      if (this.dialogType) {
+        // 解封用户
+        this.$store.dispatch("unblockUser", {id: this.dialogUserID})
+          .then(() => {
+            this.setAlert({
+              type: "success",
+              message: `解封用户“${this.dialogUserName}”成功！`,
+            });
+            this.dialogActive = false;
+            this.getAllUser(); // 更新用户列表
+          })
+          .catch((err) => {
+            this.setAlert({
+              type: "error",
+              message: err,
+            });
+          });
+      } else {
+        // 封禁用户
+        this.$store.dispatch("blockUser", {id: this.dialogUserID})
+          .then(() => {
+            this.setAlert({
+              type: "success",
+              message: `封禁用户“${this.dialogUserName}”成功！`,
+            });
+            this.dialogActive = false;
+            this.getAllUser(); // 更新用户列表
+          })
+          .catch((err) => {
+            this.setAlert({
+              type: "error",
+              message: err,
+            });
+          });
+      }
+      this.submitLoading = false;
     },
   },
   mounted() {
     this.setAppTitle("用户管理");
-    this.setAlert({
-      type: "success",
-      message: "欢迎来到用户管理页面！请在此管理该系统的用户！",
-    });
     this.getAllUser();
   },
   };

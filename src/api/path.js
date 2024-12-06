@@ -10,6 +10,8 @@ const base = {
         follows: '/follows/',
         modify: '/modify/',
         list: '/user/list/',
+        block: '/user/block/',
+        unblock: '/user/unblock/',
     },
     billboard: {
         getNews: '/billboard/index',

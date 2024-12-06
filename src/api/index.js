@@ -30,6 +30,8 @@ const api = {
     modifyUser: async(id, password, email, signature) => { return await router.post(path.baseUrl + path.user.root + id + path.user.modify, {password: password, email: email, signature: signature}); },
     publishAnnouncement: async(title, content) => { return await router.post(path.baseUrl + path.billboard.create, {title: title, content: content}); },
     getAllUsers: async() => { return await router.get(path.baseUrl + path.user.list); },
+    blockUser: async(id) => { return await router.post(path.baseUrl + path.user.block, {user_id: id}); },
+    unblockUser: async(id) => { return await router.post(path.baseUrl + path.user.unblock, {user_id: id}); },
 }
 
 export default api;
