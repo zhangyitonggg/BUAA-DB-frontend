@@ -8,7 +8,6 @@
       >
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
-  
       <!-- 任务部分 -->
       <v-row justify="center">
         <v-col cols="12" md="8">

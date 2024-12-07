@@ -100,7 +100,6 @@ export default {
   }
 
   .follow-btn {
-    background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 20px;
     padding: 5px 15px;

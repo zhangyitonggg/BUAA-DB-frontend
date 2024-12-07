@@ -3,7 +3,14 @@
 </template>
 
 <script>
+import TaskPostForAsker from './TaskPostForAsker.vue';
+import TaskPostForOther from './TaskPostForOther.vue';
+
 export default({
+  components: {
+    TaskPostForAsker,
+    TaskPostForOther,
+  },
   data() {
     return {
       taskId: this.$route.params.id,
