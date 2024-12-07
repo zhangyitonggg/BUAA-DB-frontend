@@ -148,7 +148,7 @@
             this.loading = true;
             this.$store.dispatch("getNews", {page: 1})
               .then(res => {
-                this.news = res.announcements;
+                this.news = res.messages;
               })
               .catch(_ => {
                 this.news = [];
