@@ -18,8 +18,8 @@
                   :class="{ active: filters.sort_by === 4 }">悬赏金额</span>
                 <span @click="setFilter('sort_by', 2)"
                   :class="{ active: filters.sort_by === 2 }">最近创建</span>
-                <span @click="setFilter('sort_by', 3)"
-                  :class="{ active: filters.sort_by === 3 }">最近回答</span>
+                <!-- <span @click="setFilter('sort_by', 3)"
+                  :class="{ active: filters.sort_by === 3 }">最近回答</span> -->
               </v-col>
             </v-row>
             <v-row class="align-center">
@@ -170,40 +170,6 @@ export default {
           tags: ["计算机组成", "2024-2025", "复习资料"],
           commission: 20,
         },
-        {
-          mission_id:3,
-
-          title: "【任务发布】短期项目外包——数据分析",
-          tiny_content: "我们正在寻找一位熟悉Python和数据分析的开发者，负责处理并分析一组业务数据。项目周期为两周，具体细节可以私信商讨。",
-          created_at: "2021-09-01",
-          created_by: {
-            username: "张三",
-          },
-          tags: ["计算机组成", "2024-2025", "复习资料"],
-          commission: 1,
-        },
-        {
-          mission_id:3,
-          title: "【提问】如何设计任务优先级排序算法？",
-          tiny_content: "在任务管理系统中，需要根据用户需求动态调整任务的优先级排序。请问有哪些常用的排序算法或者设计思路适合这种场景？",
-          created_at: "2021-09-01",
-          created_by: {
-            username: "张三",
-          },
-          tags: ["计算机组成", "2024-2025", "复习资料"],
-          commission: 2,
-        },
-        {
-          mission_id:3,
-          title: "【求助】移动端页面适配问题",
-          tiny_content: "项目的移动端页面在不同分辨率设备上显示效果不一致。请问有什么最佳实践或者工具可以帮助解决适配问题？",
-          created_at: "2021-09-01",
-          created_by: {
-            username: "张三",
-          },
-          tags: ["计算机组成", "2024-2025", "复习资料"],
-          commission: 0,
-        },
       ],
     };
   },
@@ -246,12 +212,9 @@ export default {
         this.filters.tags.splice(index, 1);
       }
     },
-    goToPage(page) {
-      this.$router.push(page);
-    },
     tryOpenItem(item) {
       this.curItem = item;
-      this.$router.push("/tasks/" + item.mission_id);
+      window.open(`/task/${item.mission_id}`, '_blank');
     },
   },
   mounted() {

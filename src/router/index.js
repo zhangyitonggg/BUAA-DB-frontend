@@ -209,16 +209,15 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  store.commit("getUserName");
   store.commit("getToken");
+  store.commit("getUserName");
   const name = store.state._user_name_;
   const token = store.state._token_;
   const default_title = '航 U 邦';
   const title = to.meta == null ? "" : to.meta.title + " | ";
   if (name == null || token == null) {
-    localStorage.removeItem('__user_name__');
-    sessionStorage.removeItem('__user_name__');
-    store.commit("hidePlatformFrame");
+    store.commit("clearPersonalInfo")
+    store.commit("hidePlatformFrame")
     if (to.matched.some(record => record.meta.requiresAuth)) {
       next('/auth');
     } else {

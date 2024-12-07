@@ -15,13 +15,10 @@ export default {
   clearPersonalInfo(state) {
     state._user_name_ = null;
     state._token_ = null;
-    localStorage.removeItem('__user_name__');
-    sessionStorage.removeItem('__user_name__');
-    document.cookie = "";
-    localStorage.removeItem('_user_role_');
-    sessionStorage.removeItem('_user_role_');
-    localStorage.removeItem('_user_id_');
-    sessionStorage.removeItem('_user_id_');
+    localStorage.clear();
+    document.cookie.split(";").forEach((c) => {
+      document.cookie = c.trim().split("=")[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/";
+    });
   },
   // 设置是否查看我的收藏
   setMyFavorite(state, myFavorite) {
@@ -40,11 +37,6 @@ export default {
     let user_name = localStorage.getItem('__user_name__');
     let user_role = localStorage.getItem('_user_role_');
     let user_id = localStorage.getItem('_user_id_');
-    if (!user_name) {
-      user_name = sessionStorage.getItem('__user_name__');
-      user_role = sessionStorage.getItem('_user_role_');
-      user_id = sessionStorage.getItem('_user_id_');
-    }
     state._user_name_ = user_name;
     state._role_ = user_role;
     state._user_id_ = user_id;
@@ -74,16 +66,4 @@ export default {
   hidePlatformFrame(state) {
     state._show_platform_frame_ = false;
   },
-  // 设置页面标题
-  setAppTitle(state, title) {
-    state._app_title_ = title;
-  },
-  // 注销账户
-  clearPersonalInfo(state) {
-    state._user_name_ = null;
-    state._token_ = null;
-    localStorage.removeItem('__user_name__');
-    sessionStorage.removeItem('__user_name__');
-    document.cookie = "";
-  }
 };

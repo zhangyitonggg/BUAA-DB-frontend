@@ -4,15 +4,9 @@ export default {
   async login(context, { username, password, remember }) {
     return await api.login(username, password)
       .then(response => {
-        if (remember) {
-          localStorage.setItem('__user_name__', username);
-          localStorage.setItem('_user_role_', response.role);
-          localStorage.setItem('_user_id_', response.user_id);
-        } else {
-          sessionStorage.setItem('__user_name__', username);
-          sessionStorage.setItem('_user_role_', response.role);
-          sessionStorage.setItem('_user_id_', response.user_id);
-        }
+        localStorage.setItem('__user_name__', username);
+        localStorage.setItem('_user_role_', response.role);
+        localStorage.setItem('_user_id_', response.user_id);
         return response;
       })
       .catch(error => { throw error; });

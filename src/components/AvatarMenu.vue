@@ -127,4 +127,8 @@ export default {
 </script>
 
 <style scoped>
+.v-card {
+  backdrop-filter: blur(10px); /* 毛玻璃效果 */
+  border-radius: 8px;
+}
 </style>

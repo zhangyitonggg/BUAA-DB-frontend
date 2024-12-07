@@ -197,8 +197,9 @@ export default {
   min-height: 450px;
   position: relative;
   z-index: 2;
-  opacity: 0.90; /* 增加透明度 */
+  opacity: 0.87; /* 增加透明度 */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* 增大阴影效果 */
+  backdrop-filter: blur(10px);
   border-radius: 12px; /* 增加圆角效果 */
   overflow: hidden; /* 确保内容不溢出 */
 }
