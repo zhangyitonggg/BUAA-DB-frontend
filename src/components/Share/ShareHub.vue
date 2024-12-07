@@ -3,7 +3,7 @@
     <Loading v-if="loading" />
     <template v-else>
       <v-container>
-        <v-card outlined class="pa-4 top" @mouseleave="onCardMouseLeave()">
+        <v-card outlined class="pa-4 top">
           <div class="filters">
             <v-row class="align-center">
               <v-col cols="auto">
@@ -261,6 +261,11 @@ export default {
       });
     this.getPosts();
     this.loading = false;
+    this.interval = setInterval(this.onCardMouseLeave, 500);
+  },
+  beforeDestroy() {
+    // 在组件销毁前清除定时器
+    clearInterval(this.interval);
   },
 };
 </script>

@@ -25,7 +25,7 @@
       </template>
       <template v-else>
         <v-container>
-          <v-card outlined class="pa-4 top" @mouseleave="onCardMouseLeave()">
+          <v-card outlined class="pa-4 top"">
             <div class="filters">
               <v-row class="align-center">
                 <v-col cols="auto">
@@ -290,6 +290,11 @@ export default {
   mounted() {
     this.$store.commit("setAppTitle", "共享资源站");
     this.getTasks();
+    this.interval = setInterval(this.onCardMouseLeave, 500);
+  },
+  beforeDestroy() {
+    // 在组件销毁前清除定时器
+    clearInterval(this.interval);
   },
 };
 </script>

@@ -25,134 +25,134 @@
             </template>
             <template v-else>
                 <v-container>
-                    <v-card outlined class="pa-4 top" @mouseleave="onCardMouseLeave()">
-                        <div class="filters">
-                            <v-row class="align-center">
-                                <v-col cols="auto">
-                                    <span><strong>排序</strong>:</span>
-                                </v-col>
-                                <v-col>
-                                    <span @click="setFilter('sort_by', 0)"
-                                        :class="{ active: filters.sort_by === 0 }">综合</span>
-                                    <span @click="setFilter('sort_by', 1)"
-                                        :class="{ active: filters.sort_by === 1 }">最多点赞</span>
-                                    <span @click="setFilter('sort_by', 4)"
-                                        :class="{ active: filters.sort_by === 4 }">最多收藏</span>
-                                    <span @click="setFilter('sort_by', 2)"
-                                        :class="{ active: filters.sort_by === 2 }">最近创建</span>
-                                    <span @click="setFilter('sort_by', 3)"
-                                        :class="{ active: filters.sort_by === 3 }">最近评论</span>
-                                </v-col>
-                            </v-row>
-                            <v-row class="align-center">
-                                <v-col cols="auto">
-                                    <span><strong>收费</strong>:</span>
-                                </v-col>
-                                <v-col>
-                                    <v-radio-group v-model="filters.pay" row>
-                                        <v-radio label="不限" :value="0"></v-radio>
-                                        <v-radio label="收费" :value="1"></v-radio>
-                                        <v-radio label="免费" :value="2"></v-radio>
-                                    </v-radio-group>
-                                </v-col>
-                            </v-row>
-                            <v-row class="align-center">
-                                <v-col cols="auto">
-                                    <span><strong>标签筛选</strong>:</span>
-                                </v-col>
-                                <v-col>
-                                    <v-chip-group v-model="filters.tags" multiple column active-class="active-tag">
-                                        <v-chip v-for="(tag, index) in availableTags" :key="index"
-                                            :color="getTagColor(tag)"
-                                            outlined @click="toggleTag(tag)">
-                                            {{ tag }}
-                                        </v-chip>
-                                    </v-chip-group>
-                                </v-col>
-                            </v-row>
-                        </div>
-                        <!-- 底部的搜索栏 -->
-                        <v-divider></v-divider>
-                        <v-row class="mt-4">
+                    <v-card outlined class="pa-4 top"">
+                        <div class=" filters">
+                        <v-row class="align-center">
+                            <v-col cols="auto">
+                                <span><strong>排序</strong>:</span>
+                            </v-col>
                             <v-col>
-                                <v-text-field v-model="filters.search" label="请输入搜索内容" placeholder="" filled
-                                    append-icon="mdi-magnify" hide-details></v-text-field>
+                                <span @click="setFilter('sort_by', 0)"
+                                    :class="{ active: filters.sort_by === 0 }">综合</span>
+                                <span @click="setFilter('sort_by', 1)"
+                                    :class="{ active: filters.sort_by === 1 }">最多点赞</span>
+                                <span @click="setFilter('sort_by', 4)"
+                                    :class="{ active: filters.sort_by === 4 }">最多收藏</span>
+                                <span @click="setFilter('sort_by', 2)"
+                                    :class="{ active: filters.sort_by === 2 }">最近创建</span>
+                                <span @click="setFilter('sort_by', 3)"
+                                    :class="{ active: filters.sort_by === 3 }">最近评论</span>
+                            </v-col>
+                        </v-row>
+                        <v-row class="align-center">
+                            <v-col cols="auto">
+                                <span><strong>收费</strong>:</span>
+                            </v-col>
+                            <v-col>
+                                <v-radio-group v-model="filters.pay" row>
+                                    <v-radio label="不限" :value="0"></v-radio>
+                                    <v-radio label="收费" :value="1"></v-radio>
+                                    <v-radio label="免费" :value="2"></v-radio>
+                                </v-radio-group>
+                            </v-col>
+                        </v-row>
+                        <v-row class="align-center">
+                            <v-col cols="auto">
+                                <span><strong>标签筛选</strong>:</span>
+                            </v-col>
+                            <v-col>
+                                <v-chip-group v-model="filters.tags" multiple column active-class="active-tag">
+                                    <v-chip v-for="(tag, index) in availableTags" :key="index" :color="getTagColor(tag)"
+                                        outlined @click="toggleTag(tag)">
+                                        {{ tag }}
+                                    </v-chip>
+                                </v-chip-group>
+                            </v-col>
+                        </v-row>
+        </div>
+        <!-- 底部的搜索栏 -->
+        <v-divider></v-divider>
+        <v-row class="mt-4">
+            <v-col>
+                <v-text-field v-model="filters.search" label="请输入搜索内容" placeholder="" filled append-icon="mdi-magnify"
+                    hide-details></v-text-field>
+            </v-col>
+        </v-row>
+        </v-card>
+    </v-container>
+    <v-container>
+        <v-row v-for="(item) in post" :key="item.post_id">
+            <v-col>
+                <div class="card-container">
+                    <!-- 卡片主体 -->
+                    <v-card outlined class="card-content" style="cursor: pointer;">
+                        <v-row no-gutters class="picture">
+                            <v-col cols="auto" class="d-flex align-center">
+                                <!-- <v-img :src="item.image" aspect-ratio="1" height="110px" width="110px"
+                                                contain></v-img> -->
+                                <v-icon color="#FFB300"
+                                    style="font-size: 106px; margin-left: -10%; margin-right: -20px;">mdi-file-download-outline</v-icon>
+                            </v-col>
+                            <v-col>
+                                <v-card-title>
+                                    {{ item.title }}
+                                    <v-icon v-if="item.cost > 0" color="#F8CC00">mdi-bitcoin</v-icon>
+                                    <span v-if="item.cost > 0"
+                                        style="font-size: 13px; color: #666666; margin-left: 0.2%;">
+                                        {{ item.cost }} 菜币
+                                    </span>
+                                </v-card-title>
+                                <div style="margin-left: 1.8%;">
+                                    <v-chip v-for="(tag, tagIndex) in item.tags" :key="tagIndex" color="aqua" label
+                                        small class="me-3">
+                                        {{ tag }}
+                                    </v-chip>
+                                </div>
+                                <v-card-actions style="margin-left: 0.8%;">
+                                    <div>
+                                        <span>
+                                            <v-icon
+                                                style="display: inline-block; margin-top: -7px;">mdi-thumb-up</v-icon>
+                                            <span class="ml-2">{{ item.likes }}</span>
+                                        </span>
+                                        <span>
+                                            <v-icon>mdi-thumb-down</v-icon>
+                                            <span class="ml-2">{{ item.dislikes }}</span>
+                                        </span>
+                                        <span>
+                                            <v-icon>mdi-heart-box</v-icon>
+                                            <span class="ml-2">{{ item.favorites }}</span>
+                                        </span>
+                                        <span>
+                                            <v-icon>mdi-comment-multiple</v-icon>
+                                            <span class="ml-2">{{ item.comments }}</span>
+                                        </span>
+                                    </div>
+                                    <div class="ml-auto">
+                                        <span>{{ item.author }}</span>
+                                        <span>{{ item.date }}</span>
+                                    </div>
+                                </v-card-actions>
                             </v-col>
                         </v-row>
                     </v-card>
-                </v-container>
-                <v-container>
-                    <v-row v-for="(item) in post" :key="item.post_id">
-                        <v-col>
-                            <div class="card-container">
-                                <!-- 卡片主体 -->
-                                <v-card outlined class="card-content" style="cursor: pointer;">
-                                    <v-row no-gutters class="picture">
-                                        <v-col cols="auto" class="d-flex align-center">
-                                            <!-- <v-img :src="item.image" aspect-ratio="1" height="110px" width="110px"
-                                                contain></v-img> -->
-                                        <v-icon color="#FFB300" style="font-size: 106px; margin-left: -10%; margin-right: -20px;">mdi-file-download-outline</v-icon>
-                                        </v-col>
-                                        <v-col>
-                                            <v-card-title>
-                                                {{ item.title }}
-                                                <v-icon v-if="item.cost>0" color="#F8CC00">mdi-bitcoin</v-icon>
-                                                <span v-if="item.cost>0"
-                                                    style="font-size: 13px; color: #666666; margin-left: 0.2%;">
-                                                    {{ item.cost }} 菜币
-                                                </span>
-                                            </v-card-title>
-                                            <div style="margin-left: 1.8%;">
-                                                <v-chip v-for="(tag, tagIndex) in item.tags" :key="tagIndex"
-                                                    color="aqua" label small class="me-3">
-                                                    {{ tag }}
-                                                </v-chip>
-                                            </div>
-                                            <v-card-actions style="margin-left: 0.8%;">
-                                                <div>
-                                                    <span>
-                                                        <v-icon
-                                                            style="display: inline-block; margin-top: -7px;">mdi-thumb-up</v-icon>
-                                                        <span class="ml-2">{{ item.likes }}</span>
-                                                    </span>
-                                                    <span>
-                                                        <v-icon>mdi-thumb-down</v-icon>
-                                                        <span class="ml-2">{{ item.dislikes }}</span>
-                                                    </span>
-                                                    <span>
-                                                        <v-icon>mdi-heart-box</v-icon>
-                                                        <span class="ml-2">{{ item.favorites }}</span>
-                                                    </span>
-                                                    <span>
-                                                        <v-icon>mdi-comment-multiple</v-icon>
-                                                        <span class="ml-2">{{ item.comments }}</span>
-                                                    </span>
-                                                </div>
-                                                <div class="ml-auto">
-                                                    <span>{{ item.author }}</span>
-                                                    <span>{{ item.date }}</span>
-                                                </div>
-                                            </v-card-actions>
-                                        </v-col>
-                                    </v-row>
-                                </v-card>
-                                <!-- 操作按钮 -->
-                                <div class="action-buttons">
-                                    <v-btn color="primary" class="me-2" icon @click.stop="openItem(item.link)">
-                                        <v-icon style="font-size: 32px;">mdi-open-in-new</v-icon>
-                                    </v-btn>
-                                    <v-btn color="red" icon @click.stop="deleteItem(item)">
-                                        <v-icon style="font-size: 32px;">mdi-delete</v-icon>
-                                    </v-btn>
-                                </div>
-                            </div>
-                        </v-col>
-                    </v-row>
-                </v-container>
-
-            </template>
-        </div>
+                    <!-- 操作按钮 -->
+                    <div class="action-buttons">
+                        <v-btn color="primary" class="me-2" icon @click.stop="openItem(item.link)">
+                            <v-icon style="font-size: 32px;">mdi-open-in-new</v-icon>
+                        </v-btn>
+                        <v-btn color="red" icon @click.stop="deleteItem(item)">
+                            <v-icon style="font-size: 32px;">mdi-delete</v-icon>
+                        </v-btn>
+                    </div>
+                </div>
+            </v-col>
+        </v-row>
     </v-container>
+
+</template>
+</div>
+</v-container>
 </template>
 
 <script>
@@ -168,7 +168,7 @@ export default {
                 search: ''
             },
             availableTags: [
-              "计算机组成", "数据库", "面向对象", "测试", "考试题", "数据结构", "2023-2024", "2024-2025", "复习资料"
+                "计算机组成", "数据库", "面向对象", "测试", "考试题", "数据结构", "2023-2024", "2024-2025", "复习资料"
             ],
             filtersChanged: false, // 用来标记 filters 是否有变化
             post: [
@@ -202,7 +202,7 @@ export default {
                     dislikes: 143,
                     favorites: 305,
                     comments: 25, // 这里需要获取帖子的评论数量
-                    created_by:{
+                    created_by: {
                         user_id: 2,
                         username: "李四",
                         avatar: require("@/assets/images/blogDefault.png"),
@@ -246,7 +246,7 @@ export default {
                 });
         },
         getTagColor(tag) {
-          return this.filters.tags.includes(tag) ? 'brown' : 'blue accent-2';
+            return this.filters.tags.includes(tag) ? 'brown' : 'blue accent-2';
         },
         toggleTag(tag) {
             console.log(tag);
@@ -275,6 +275,11 @@ export default {
     mounted() {
         this.$store.commit("setAppTitle", "管理资源");
         this.getPosts();
+        this.interval = setInterval(this.onCardMouseLeave, 500);
+    },
+    beforeDestroy() {
+        // 在组件销毁前清除定时器
+        clearInterval(this.interval);
     },
 };
 </script>

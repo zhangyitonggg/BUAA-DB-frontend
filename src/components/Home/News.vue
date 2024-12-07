@@ -13,15 +13,14 @@
         <!-- todo 再建一个表格 -->
         <v-card max-width="600px" class="mt-10 chart-container">
           <div class="chart-title">
-            <v-icon left>mdi-certificate</v-icon> 平台最新帖子
+            <v-icon left>mdi-calendar-start</v-icon> 平台最新帖子
           </div>
-          <v-data-table
-          :headers="tableHeaders"
-          :items="tableData"
-          item-value="id"
-          hide-default-footer
-        >
-        </v-data-table>
+          <v-data-table :headers="tableHeaders" :items="tableData" item-value="id" hide-default-footer>
+            <!-- 自定义 category 列内容 -->
+            <template #item.category="{ item }">
+              <span>{{ item.category === 0 ? '资源分享' : '任务悬赏' }}</span>
+            </template>
+          </v-data-table>
         </v-card>
       </v-col>
 
@@ -86,11 +85,11 @@ export default {
         { text: '费用or报酬', value: 'cost' },
       ],
       tableData: [
-          { id: 1, title: '计算机组成课程往年考试', category: '资源分享', cost: '10', username: '张三'},
-          { id: 2, title: '资源2', category: '任务悬赏', cost: '0', username: 'zyt'  },
-          { id: 3, title: '资源3', category: '任务悬赏', cost: '12', username: 'wxf' },
-          { id: 4, title: '资源4', category: '资源分享', cost: '5', username: 'zlr' },
-          { id: 5, title: '资源5', category: '资源分享', cost: '0', username: 'zlr' }
+        { id: 1, title: '计算机组成课程往年考试', category: 0, cost: '10', username: '张三' },
+        { id: 2, title: '资源2', category: 0, cost: '0', username: 'zyt' },
+        { id: 3, title: '资源3', category: 1, cost: '12', username: 'wxf' },
+        { id: 4, title: '资源4', category: 0, cost: '5', username: 'zlr' },
+        { id: 5, title: '资源5', category: 1, cost: '0', username: 'zlr' }
       ],
 
       chartInstance: null,
@@ -271,7 +270,7 @@ export default {
 }
 
 .chart-container {
-  color: #000;
+  color: #2196f3;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 12.5px;
