@@ -39,4 +39,6 @@ export default {
   async unblockUser(context, {id}) { return await api.unblockUser(id); },
   async getFavorites(context, {id}) { return await api.getFavorites(id); },
   async getTaskDetail(context, {id}) { return await api.getTaskDetail(id); },
+  async getTaskSubmits(context, {id}) { return await api.getTaskSubmits(id); },
+  async submitTask(context, {id, profile, bhpan_url}) { return await api.submitTask(id, profile, bhpan_url); },
 };

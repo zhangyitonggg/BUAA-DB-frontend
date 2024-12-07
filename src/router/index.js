@@ -138,24 +138,6 @@ const routes = [
     }
   },
   {
-    path: '/tasksForAsker/testPostForAsker', // 测试用,后面换成/tasksForAsker/:id
-    name: 'get-task-test',
-    component: () => import('../components/Task/TaskPostForAsker.vue'),
-    meta: {
-      requiresAuth: true,
-      title: '悬赏详情'
-    }
-  },
-  {
-    path: '/tasks/testPostForOther', // 测试用,后面换成/tasksForOther/:id
-    name: 'get-task',
-    component: () => import('../components/Task/TaskPostForOther.vue'),
-    meta: {
-      requiresAuth: true,
-      title: '悬赏详情'
-    }
-  },
-  {
     path: '/center',
     name: 'center',
     component: () => import('../views/Center/CenterView.vue'),

@@ -1,14 +1,5 @@
 <template>
   <v-container class="center-container">
-    <!-- 返回按钮 -->
-    <v-btn
-      icon
-      @click="$router.go(-1)"
-      class="return-button elevation-2 hoverable"
-    >
-      <v-icon>mdi-arrow-left</v-icon>
-    </v-btn>
-
     <!-- 任务部分 -->
     <v-row justify="center">
       <v-col cols="12" md="8">
@@ -50,53 +41,52 @@
               dark
               big
             >
-              {{ "#" + tag }}
+              {{ tag }}
             </v-chip>
           </div>
           <v-divider class="my-3"></v-divider>
-          <v-md-preview :text="task.content"></v-md-preview>  
+          <v-md-preview :text="task.content"></v-md-preview>
         </v-card>
       </v-col>
     </v-row>
 
-        <!-- 上传资源弹框 -->
-        <v-dialog v-model="dialog" persistent max-width="500px">
-          <v-card>
-            <v-card-title>上传资源</v-card-title>
-            <v-card-text>
-              <v-form ref="form" v-model="valid">
-                <v-text-field
-                  v-model="resourceDescription"
-                  label="资源简介"
-                  :rules="[rules.required]"
-                  required
-                ></v-text-field>
-                <v-text-field
-                  v-model="resourceUrl"
-                  label="资源链接"
-                  :rules="[rules.required, rules.url]"
-                  required
-                ></v-text-field>
-              </v-form>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn text color="primary" @click="dialog = false">取消</v-btn>
-              <v-btn
-                text
-                color="primary"
-                :disabled="!valid"
-                @click="submitResource"
-              >
-                提交
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+    <!-- 上传资源弹框 -->
+    <v-dialog v-model="dialog" persistent max-width="500px">
+      <v-card>
+        <v-card-title>上传资源</v-card-title>
+        <v-card-text>
+          <v-form ref="form" v-model="valid">
+            <v-text-field
+              v-model="resourceDescription"
+              label="资源简介"
+              :rules="[rules.required]"
+              required
+            ></v-text-field>
+            <v-text-field
+              v-model="resourceUrl"
+              label="资源链接"
+              :rules="[rules.required, rules.url]"
+              required
+            ></v-text-field>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn text color="primary" @click="dialog = false">取消</v-btn>
+          <v-btn
+            text
+            color="primary"
+            :disabled="!valid"
+            @click="submitResource"
+          >
+            提交
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
-/* eslint-disable */
 import VMdPreview from '@kangc/v-md-editor/lib/preview';
 import '@kangc/v-md-editor/lib/style/preview.css';
 import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
@@ -108,9 +98,14 @@ VMdPreview.use(githubTheme, {
 });
 
 export default {
-  name: 'TaskPost',
   components: {
     VMdPreview
+  },
+  props: {
+    task: {
+      type: Object,
+      required: true,
+    },
   },
   data() {
     return {
@@ -120,54 +115,48 @@ export default {
       resourceUrl: '',
       rules: {
         required: (value) => !!value || '必填项',
-        url: (value) =>
-          /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-]*)*$/.test(value) ||
-          '请输入有效的 URL',
-      },
-      task: {
-        commission: 100, // 佣金保留不变
-        open: true, // 表示求助仍在进行中
-        tags: ["求助", "前端", "优化"], // 调整为更贴近求助性质的标签
-        title: "【紧急求助】优化前端页面显示问题", // 增强紧迫感和明确性
-        content: 
-          "### 求助说明\n" +
-          "大家好，我在处理一个前端项目时遇到了一些显示问题：\n" +
-          "- 页面在移动设备上显示不正常，布局错乱。\n" +
-          "- 部分按钮样式在不同浏览器中表现不一致。\n\n" +
-          "我已经尝试了一些 CSS 调整，但效果不理想。以下是代码示例，希望大家帮忙分析并优化：\n" +
-          "```css\n" +
-          ".container {\n" +
-          "  display: flex;\n" +
-          "  justify-content: space-between;\n" +
-          "  padding: 10px;\n" +
-          "}\n" +
-          "```\n" +
-          "如果有解决思路或建议，请分享！资源包可以在下方下载查看详细文件。\n\n" +
-          "#### 感谢大家的帮助！🙏", // 调整为更符合求助信息的描述
-        created_at: "2024-12-01T09:00:00", // 保留时间不变
+        url: (value) => {
+          const urlPattern = new RegExp(
+            "^(https?:\\/\\/)?" + // 支持 http 和 https
+            "((([a-zA-Z\\d]([a-zA-Z\\d-]*[a-zA-Z\\d])*)\\.)+[a-zA-Z]{2,}|" + // 域名
+            "((\\d{1,3}\\.){3}\\d{1,3}))" + // 或 IP 地址
+            "(\\:\\d+)?(\\/[-a-zA-Z\\d%_.~+&]*)*" + // 端口和路径
+            "(\\?[;&a-zA-Z\\d%_.~+=-]*)?" + // 查询参数
+            "(\\#[-a-zA-Z\\d%_.~+=&]*)?$", // 锚点
+            "i" // 忽略大小写
+          );
+          return urlPattern.test(value) || '链接格式不正确。';
+        }
       },
     };
   },
 
   methods: {
-    getTask() {
-    // todo 调用获取任务详情接口,不用获得答案
-    },  
     submitResource() {
       const resource = {
+        id: this.task.mission_id,
         profile: this.resourceDescription,
         bhpan_url: this.resourceUrl,
       };
-      // todo 调用提交任务接口
-      console.log('资源提交:', resource);
-      this.dialog = false;
-      // 清空表单
-      this.resourceDescription = '';
-      this.resourceUrl = '';
+      this.$store.dispatch('submitTask', resource)
+        .then(() => {
+          this.$store.commit('setAlert', {
+            type: 'success',
+            message: '资源提交成功！',
+          });
+          this.dialog = false;
+          this.resourceDescription = '';
+          this.resourceUrl = '';
+        })
+        .catch((err) => {
+          this.$store.commit('setAlert', {
+            type: 'error',
+            message: err,
+          });
+        });
     },
   },
   mounted() {
-    this.getTask();
   },
 };
 </script>

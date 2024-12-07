@@ -34,6 +34,8 @@ const api = {
     unblockUser: async(id) => { return await router.post(path.baseUrl + path.user.unblock, {user_id: id}); },
     getFavorites: async(id) => { return await router.get(path.baseUrl + path.user.root + id + path.user.favorites); },
     getTaskDetail: async(id) => { return await router.get(path.baseUrl + path.tasks.root + id + '/'); },
+    getTaskSubmits: async(id) => { return await router.get(path.baseUrl + path.tasks.root + id + path.tasks.submits); },
+    submitTask: async(id, profile, bhpan_url) => { return await router.post(path.baseUrl + path.tasks.root + id + path.tasks.submit, {profile: profile, bhpan_url: bhpan_url}); },
 }
 
 export default api;

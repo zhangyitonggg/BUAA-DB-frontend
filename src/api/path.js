@@ -43,6 +43,8 @@ const base = {
         comments: 'comments',
         creatComment: 'comments/create',
         favor: '/favor',
+        submits: '/submits',
+        submit: '/submit/',
     },
 }
 
