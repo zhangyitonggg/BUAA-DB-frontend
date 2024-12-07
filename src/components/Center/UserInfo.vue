@@ -1,6 +1,6 @@
 <template>
   <loading v-if="loading" />
-  <v-container style="max-width: 45%;" v-else>
+  <v-container style="max-width: 45%; margin-top: 40px;"  v-else>
     <v-card class="card pa-4">
       <v-row>
         <v-col cols="12">
