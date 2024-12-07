@@ -67,11 +67,12 @@
               <v-card outlined class="card-content" style="cursor: pointer;" @click.stop="tryOpenItem(item)">
                 <v-row no-gutters class="picture">
                   <v-col cols="auto" class="d-flex align-center">
-                    <!-- <v-img :src="item.image" aspect-ratio="1" height="110px" width="110px"
-                    contain></v-img> -->
-                    <!-- <v-icon color="#FFB300"
-                      style="font-size: 106px; margin-left: -10%; margin-right: -20px;">mdi-file-download-outline
-                    </v-icon> -->
+                    <v-icon v-if="item.cost>0" color="#FFB300"
+                      style="font-size: 106px; margin-left: -10px; margin-right: -20px;">mdi-file-download-outline
+                    </v-icon>
+                    <v-icon v-else color="gray"
+                      style="font-size: 106px; margin-left: -10px; margin-right: -20px;">mdi-file-document-outline
+                    </v-icon>
                   </v-col>
                   <v-col>
                     <v-card-title>
