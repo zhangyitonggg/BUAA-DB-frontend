@@ -14,50 +14,23 @@
             <v-icon>mdi-eye</v-icon>
           </v-btn>
         </template>
-        <template v-slot:item.edit="{ item }">
-          <v-btn icon color="green" @click="editItem(item)">
-            <v-icon>mdi-pencil</v-icon>
-          </v-btn>
-        </template>
-        <template v-slot:item.delete="{ item }">
-          <v-btn icon color="red" @click="deleteItem(item)">
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
-        </template>
       </v-data-table>
     </v-container>
-
-    <v-dialog v-model="dialog" max-width="800px" transition="dialog-bottom-transition">
-      <v-card class="elevation-12 rounded-lg">
-        <v-toolbar flat>
-          <v-toolbar-title class="text-h5">确认删除</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-btn icon @click="dialog = false" class="text-gray">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-toolbar>
-        <v-card-text class="text-body-1">
-          <v-icon color="red">mdi-alert-circle-outline</v-icon>
-          确定要删除 <strong>{{ curItem ? curItem.title : '' }}</strong> 吗？
-        </v-card-text>
-        <v-divider></v-divider>
-        <v-card-actions class="d-flex justify-end">
-          <v-btn text @click="dialog = false" class="mr-2">取消</v-btn>
-          <v-btn color="red" @click="confirmDelete" class="rounded-10" elevation="2">确认删除</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 
 <script>
+import { format } from 'date-fns';
 export default {
+  components: {
+    format,
+  },
   data() {
     return {
       dialog: false,
       curItem: null,
       headers: [
-        { text: "ID", value: "index" },
+        { text: "ID", value: "post_id" },
         { text: "标题", value: "title" },
         { text: "创建时间", value: "created_at" },
         { text: "费用", value: "cost" },
@@ -65,49 +38,35 @@ export default {
         { text: "点踩数", value: "dislikes" },
         { text: "收藏数", value: "favorites" },
         { text: "查看", value: "view", sortable: false }, // 添加操作列
-        { text: "编辑", value: "edit", sortable: false }, // 添加操作列
-        { text: "删除", value: "delete", sortable: false }, // 添加操作列
       ],
       ownShare: [],
     };
   },
   methods: {
+    format,
     // 获取所有用户数据
     getOwnShare() {
       this.$store.dispatch("ownPosts")
-        .then((res) => { this.ownShare = res.posts })
+        .then((res) => {
+          this.ownShare = res.posts.map((item, index) => {
+            return {
+              index: index + 1,
+              post_id: item.post_id,
+              title: item.title,
+              created_at: format(new Date(item.created_at), "yyyy-MM-dd HH:mm:ss"),
+              cost: item.cost,
+              likes: item.likes,
+              dislikes: item.dislikes,
+              favorites: item.favorites,
+              view: item,
+            };
+          });
+        })
         .catch((err) => { this.$store.commit("setAlert", { type: "error", message: err, }); });
-    },
-    back() {
-      this.$router.push("/resources");
     },
     // 查看操作
     viewItem(item) {
-      // 跳转到资源详情页面
-      this.$router.push(item.link);
-    },
-    editItem(item) {
-      // 跳转到编辑页面
-      // this.$router.push("/resources/edit/" + item.post_id);
-      /* todo wxf去写吧：
-        编辑页面就直接和发布页面一样，但是需要在发布页面中获取到当前资源的信息，即title，content，tags，cost等信息
-        点击取消按钮，认为不修改，直接返回。
-        点击确认按钮，发送修改请求，修改成功后，返回。
-      */
-    },
-    // 删除操作
-    deleteItem(item) {
-      this.curItem = item;
-      this.dialog = true;
-    },
-    confirmDelete() {
-      // todo 调用删除接口
-      this.dialog = false;  // 关闭对话框
-      this.$store.commit("setAlert", {
-        type: "success",
-        message: "删除成功",
-      });
-      this.getOwnShare(); // 刷新列表
+      window.open(`/resources/${item.post_id}`);
     },
   },
   mounted() {

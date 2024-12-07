@@ -22,21 +22,31 @@
               </v-chip>
             </div>
           </div>
-          <div class="task-tags mt-2">
-            <!-- 标签部分 -->
-            <v-chip
-              v-for="(tag, index) in task.tags"
-              :key="index"
-              class="ml-1"
-              color="green"
-              dark
-              big
-            >
-              {{ tag }}
-            </v-chip>
-          </div>
+          <v-row align="center">
+            <v-col cols="auto">
+              <div class="task-tags mt-2">
+                <!-- 标签部分 -->
+                <v-chip
+                  v-for="(tag, index) in task.tags"
+                  :key="index"
+                  class="ml-1"
+                  color="green"
+                  dark
+                  big
+                >
+                  {{ tag }}
+                </v-chip>
+              </div>
+            </v-col>
+            <v-col cols="auto">
+              <v-btn @click="modifyDialog = true">
+                <v-icon left>mdi-pencil</v-icon>
+                编辑任务
+              </v-btn>
+            </v-col>
+          </v-row>
           <v-divider class="my-3"></v-divider>
-            <v-md-preview :text="task.content"></v-md-preview>
+          <v-md-preview :text="task.content" />
         </v-card>
       </v-col>
     </v-row>
@@ -72,6 +82,105 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog fullscreen v-model="modifyDialog" hide-overlay transition="dialog-bottom-transition">
+      <v-toolbar
+        dark
+        color="primary"
+      >
+        <v-btn
+          icon
+          dark
+          @click="modifyDialog = false"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <v-toolbar-title>编辑任务</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+          <v-btn
+            dark
+            text
+            @click="saveTask"
+          >
+            保存
+          </v-btn>
+        </v-toolbar-items>
+      </v-toolbar>
+      <v-card>
+        <v-col>
+          <v-row>
+            <v-col>
+              <v-text-field
+                v-model="newTask.title"
+                label="标题"
+                :rules="[v => !!v || '标题不能为空']"
+                aria-required=""
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="6">
+              <v-text-field
+              v-model="newTask.coin"
+              label="报酬"
+              :rules="[
+                v => v !== null && v !== '' || '报酬不能为空',
+                v => /^\d+$/.test(v) || '报酬必须是非负整数'
+              ]"
+              required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-autocomplete
+                v-model="newTask.tags"
+                :items="tags_to_select"
+                color="blue-grey lighten-2"
+                label="标签"
+                item-text="name"
+                item-value="name"
+                multiple
+                hide-selected
+              >
+                <template v-slot:selection="data">
+                  <v-chip
+                    v-bind="data.attrs"
+                    :input-value="data.selected"
+                    close
+                    @click="data.select"
+                    @click:close="remove(data.item)"
+                  >
+                    {{ data.item.name }}
+                  </v-chip>
+                </template>
+                <template v-slot:item="data">
+                  <template v-if="typeof data?.item !== 'object'">
+                    <v-list-item-content> {{ data.item }} </v-list-item-content>
+                  </template>
+                  <template v-else>
+                    <v-list-item-content>
+                    <v-list-item-title>{{ data.item.name }}</v-list-item-title>
+                    </v-list-item-content>
+                  </template>
+                </template>
+              </v-autocomplete>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-textarea
+                v-model="newTask.content"
+                label="描述"
+                rows="18"
+              ></v-textarea>
+            </v-col>
+            <v-col>
+              <v-md-preview :text="newTask.content" default-show-toc="True"></v-md-preview>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -98,6 +207,13 @@ export default {
   },
   data() {
     return {
+      newTask: {
+        title: "",
+        content: "",
+        tags: [],
+      },
+      tags_to_select: [],
+      modifyDialog: false,
       dialog: false,
       selectedSubmit: null,
       submits: [
@@ -115,7 +231,35 @@ export default {
       ],
     };
   },
+  watch: {
+    modifyDialog: {
+      handler(newVal) {
+        if (newVal) {
+          this.newTask = {
+            title: this.task.title,
+            content: this.task.content,
+            tags: this.task.tags,
+          };
+          if (this.tags_to_select.length === 0) {
+            this.$store.dispatch("getTags", {key_word: ""})
+              .then((res) => {
+                this.tags_to_select = res.tags;
+              })
+              .catch((err) => {
+                this.$store.commit("setAlert", {
+                  type: "error",
+                  message: err,
+                });
+              });
+          }
+        }
+      },
+    },
+  },
   methods: {
+    saveTask() {
+      console.log("保存任务");
+    },
     openBhpan(submit) {
       window.open(submit.bhpan_url);
     },

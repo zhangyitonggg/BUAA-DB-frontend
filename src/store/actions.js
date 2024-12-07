@@ -41,4 +41,9 @@ export default {
   async getTaskDetail(context, {id}) { return await api.getTaskDetail(id); },
   async getTaskSubmits(context, {id}) { return await api.getTaskSubmits(id); },
   async submitTask(context, {id, profile, bhpan_url}) { return await api.submitTask(id, profile, bhpan_url); },
+  async payForPost(context, {id}) { return await api.payForPost(id); },
+  async deletePost(context, {id}) { return await api.deletePost(id); },
+  async modifyPost(context, {id, title, content, tags, cost, bhpan_url}) { return await api.modifyPost(id, title, content, tags, cost, bhpan_url); },
+  async ownTasks(context) { return await api.ownTasks(); },
+  async deleteTask(context, {id}) { return await api.deleteTask(id); }
 };

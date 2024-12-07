@@ -75,10 +75,26 @@
                 {{ item.commission }} 菜币
               </span>
             </div>
+            <div class="action-buttons" v-if="$store.state._role_ === 'Administrator'">
+              <v-btn color="red" icon @click.stop="tryDelete(item)">
+                <v-icon style="font-size: 32px;">mdi-delete</v-icon>
+              </v-btn>
+            </div>
           </div>
         </div>
       </div>
     </v-container>
+    <v-dialog v-model="deleteDialog" max-width="500">
+      <v-card>
+        <v-card-title class="headline">确认删除</v-card-title>
+        <v-card-text>你确定要删除这个任务吗？此操作无法撤销。</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" text @click="deleteDialog = false">取消</v-btn>
+          <v-btn color="red darken-1" text @click="confirmDelete">确认</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -92,6 +108,7 @@ export default {
   },
   data() {
     return {
+      deleteDialog: false,
       loading: true,
       filters: {
         sort_by: 0,
@@ -147,6 +164,20 @@ export default {
     tryOpenItem(item) {
       this.curItem = item;
       window.open(`/tasks/${item.mission_id}`, '_blank');
+    },
+    tryDelete(item) {
+      this.curItem = item;
+      this.deleteDialog = true;
+    },
+    confirmDelete() {
+      this.$store.dispatch("deleteTask", this.curItem.mission_id)
+        .then(() => {
+          this.$store.commit("setAlert", { type: "success", message: "删除成功", });
+          this.cards = this.cards.filter((card) => card.mission_id !== this.curItem.mission_id);
+        })
+        .catch((error) => {
+          this.$store.commit("setAlert", { type: "error", message: error, });
+        });
     },
   },
   mounted() {
@@ -235,17 +266,17 @@ span {
 
 .action-buttons {
   position: absolute;
-  top: 30px;
-  right: 20px;
+  bottom: 30px;
+  right: 14px;
   display: flex;
   align-items: center;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  z-index: 1111; /* 确保按钮位于其他元素之上 */
+  transition: opacity 0.2s ease-in-out;
 }
 
-.card-container:hover .action-buttons {
+.action-buttons:hover {
   opacity: 1;
-  /* 鼠标悬浮时显示按钮 */
 }
 
 .container {
@@ -259,6 +290,7 @@ span {
 }
 
 .card {
+  position: relative;
   flex: 0 0 48%;
   margin-bottom: 20px;
   padding: 15px;
@@ -268,6 +300,7 @@ span {
   cursor: pointer;
   transition: transform 0.3s ease;
 }
+
 
 .card-header {
   display: flex;

@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <div>
     <v-container>
       <!-- 帖子标题部分 -->
       <v-card class="mt-5 pa-5">
@@ -15,7 +15,7 @@
             color="green"
             dark
             small>
-            {{ "#" + tag }}
+            {{ tag }}
           </v-chip>
         </v-card-title>
         <v-card-subtitle class="grey--text text--darken-1" style="margin-left: 32px;">发表于 {{ post.created_at }}</v-card-subtitle>
@@ -37,23 +37,51 @@
             <v-btn text @click="togglefavorite">
               <v-icon :color="post.favorite ? 'red lighten-1' : 'gray'">mdi-heart-box</v-icon>
             </v-btn>
-            <v-btn text @click="openCommentDialog()">
-              <v-icon >mdi-comment-multiple</v-icon>
-            </v-btn>
           </div>
           <!-- 操作按钮 -->
           <div class="d-flex" style="gap: 16px;">
-            <v-btn color="red" outlined @click="openBhpan">下载资源</v-btn>
-            <v-btn color="blue" outlined @click="toggleFollow">{{ followed ? '取消关注' : '关注作者' }}</v-btn>
+            <v-btn
+              color="green"
+              outlined
+              @click="openModifyDialog"
+              v-if="$store.state._role_ == 'Administrator' || post.created_by.user_id == $store.state._user_id_"
+            >
+              编辑
+            </v-btn>
+            <v-btn color="red" outlined @click="openBhpan">
+              下载资源
+            </v-btn>
+            <v-btn color="blue" outlined @click="toggleFollow">
+              {{ followed ? '取消关注' : '关注作者' }}
+            </v-btn>
           </div>
         </v-card-actions>
       </v-card>
       <!-- 回答部分 -->
       <v-card class="mt-5 pa-5">
         <v-card-title>{{ comments.length }} 条评论</v-card-title>
+        <v-card flat>
+          <!-- 输入框 -->
+          <v-card-text class="pa-0">
+            <v-textarea
+              v-model="newComment"
+              outlined
+              rows="1"
+              label="写下您的评论..."
+              color="primary"
+              hide-details
+            />
+            <div class="d-flex justify-end pt-1 pb-1" v-if="newComment != ''">
+              <v-btn outlined color="green" @click="submitComment">
+                <v-icon left>mdi-send</v-icon>
+                提交
+              </v-btn>
+            </div>
+          </v-card-text>
+        </v-card>
         <v-divider></v-divider>
         <div v-for="(comment, index) in comments" :key="index">
-          <v-card class="pa-2 my-3" outlined>
+          <v-card class="pa-2 my-3"  flat>
             <!-- 用户信息 -->
             <v-card-title class="d-flex align-center">
               <v-avatar size="30" class="mr-2">
@@ -69,36 +97,122 @@
         </div>
       </v-card>
     </v-container>
-    <v-dialog v-model="dialog" persistent max-width="500">
-      <v-card class="pa-4 rounded elevation-3" color="#f5f5f5">
-        <!-- 标题 -->
-        <v-card-title class="d-flex justify-center text-center">
-          <span class="headline font-weight-bold" style="color: #1976d2;">请输入您的评论</span>
-        </v-card-title>
-        <!-- 输入框 -->
-        <v-card-text class="pa-0">
-          <v-textarea
-            v-model="newComment"
-            outlined
-            label="写下您的评论..."
-            rows="4"
-            clearable
-            class="mb-2"
-            color="primary"
-          ></v-textarea>
+    <v-dialog
+      v-model="modifyDialog"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <v-toolbar
+          dark
+          color="primary"
+        >
+          <v-btn
+            icon
+            dark
+            @click="modifyDialog = false"
+          >
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>编辑帖子</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn
+              dark
+              text
+              @click="savePost"
+            >
+              保存
+            </v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+        <v-card-text class="mt-4">
+          <v-col>
+            <v-row>
+              <v-col>
+                <v-text-field
+                  v-model="newPost.title"
+                  label="标题"
+                  :rules="[v => !!v || '标题不能为空']"
+                  aria-required=""
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="6">
+                <v-text-field
+                  v-model="newPost.cost"
+                  label="收费金额"
+                  :rules="[
+                    v => v !== null && v !== '' || '费用不能为空',
+                    v => /^\d+$/.test(v) || '费用必须是非负整数'
+                  ]"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-autocomplete
+                  v-model="newPost.tags"
+                  :items="tags_to_select"
+                  color="blue-grey lighten-2"
+                  label="标签"
+                  item-text="name"
+                  item-value="name"
+                  multiple
+                  hide-selected
+                >
+                  <template v-slot:selection="data">
+                    <v-chip
+                      v-bind="data.attrs"
+                      :input-value="data.selected"
+                      close
+                      @click="data.select"
+                      @click:close="removeTag(data.item)"
+                    >
+                      {{ data.item.name }}
+                    </v-chip>
+                  </template>
+                  <template v-slot:item="data">
+                    <template v-if="typeof data?.item !== 'object'">
+                      <v-list-item-content> {{ data.item }} </v-list-item-content>
+                    </template>
+                    <template v-else>
+                      <v-list-item-content>
+                      <v-list-item-title>{{ data.item.name }}</v-list-item-title>
+                      </v-list-item-content>
+                    </template>
+                  </template>
+                </v-autocomplete>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-text-field
+                  v-model="newPost.bhpan_url"
+                  :label="labelText"
+                  :rules="[rules.required, rules.isValidUrl]"
+                  aria-required=""
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-textarea
+                  v-model="newPost.content"
+                  label="描述"
+                  rows="16"
+                ></v-textarea>
+              </v-col>
+              <v-col>
+                <v-md-preview :text="newPost.content" default-show-toc="True"></v-md-preview>
+              </v-col>
+            </v-row>
+          </v-col>
         </v-card-text>
-        <!-- 动作按钮 -->
-        <v-card-actions class="d-flex justify-end">
-          <v-btn outlined color="red" class="mr-2" @click="dialog = false">
-            取消
-          </v-btn>
-          <v-btn outlined color="green" @click="submitComment">
-            提交
-          </v-btn>
-        </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-app>
+  </div>
 </template>
 <script>
 import VMdPreview from '@kangc/v-md-editor/lib/preview';
@@ -106,7 +220,6 @@ import '@kangc/v-md-editor/lib/style/preview.css';
 import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
 import '@kangc/v-md-editor/lib/theme/style/github.css';
 import hljs from 'highlight.js';
-
 VMdPreview.use(githubTheme, {
   Hljs: hljs,
 });
@@ -117,17 +230,91 @@ export default {
   },
   data() {
     return {
+      newPost: {
+        title: "",
+        cost: 0,
+        content: "",
+        bhpan_url: "",
+        tags: [],
+      },
       loading: true,
       post: {},
       followed: false,
       dialog: false, // 控制弹框显示
       newComment: "", // 用户输入的评论
-      comments: []
+      comments: [],
+      modifyDialog: false, // 控制修改弹框显示
+      tags_to_select: [],
+      rules: {
+        // 必填校验
+        required: v => !!v || '链接不能为空',
+        // 链接格式校验
+        isValidUrl: v => {
+          const urlPattern = new RegExp(
+            "^(https?:\\/\\/)?" + // 支持 http 和 https
+            "((([a-zA-Z\\d]([a-zA-Z\\d-]*[a-zA-Z\\d])*)\\.)+[a-zA-Z]{2,}|" + // 域名
+            "((\\d{1,3}\\.){3}\\d{1,3}))" + // 或 IP 地址
+            "(\\:\\d+)?(\\/[-a-zA-Z\\d%_.~+&]*)*" + // 端口和路径
+            "(\\?[;&a-zA-Z\\d%_.~+=-]*)?" + // 查询参数
+            "(\\#[-a-zA-Z\\d%_.~+=&]*)?$", // 锚点
+            "i" // 忽略大小写
+          );
+        return urlPattern.test(v) || '链接格式不正确';
+      },
+    },
     };
   },
+  computed: {
+    labelText() {
+      // 如果链接格式正确，则显示合法的提示
+      if (this.rules.isValidUrl(this.newPost.bhpan_url) === true) {
+        return '您上传的链接是合法的';
+      }
+      return '请上传资源的链接';
+    },
+    isDisabled() {
+      return this.loading ||
+        this.title === null ||
+        this.cost < 0 ||
+        this.content === null ||
+        this.newPost.bhpan_url === null ||
+        this.rules.isValidUrl(this.newPost.bhpan_url) !== true;
+    },
+  },
+  watch: {
+    modifyDialog: {
+      handler: function (val) {
+        if (val === true && this.tags_to_select.length === 0) {
+          this.$store.dispatch("getTags", {key_word: ""})
+            .then((res) => {
+              this.tags_to_select = res.tags.map((tag) => { return { name: tag }; });
+            })
+            .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
+        }
+      },
+    },
+  },
   methods: {
+    openModifyDialog() {
+      this.newPost = JSON.parse(JSON.stringify(this.post));
+      console.log(this.newPost);
+      this.modifyDialog = true;
+    },
+    savePost() {
+      this.newPost.id = this.$route.params.id;
+      this.$store.dispatch("modifyPost", this.newPost)
+        .then((res) => {
+          this.$store.commit("setAlert", { "type": "success", "message": "帖子已更新。" });
+          this.post = JSON.parse(JSON.stringify(this.newPost));
+          this.modifyDialog = false;
+        })
+        .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
+    },
+    removeTag (item) {
+      const index = this.newPost.tags.indexOf(item.name)
+      if (index >= 0) this.newPost.tags.splice(index, 1)
+    },
     getPost() {
-      // todo 调 2.获得评论的接口 以及 3.获得是否关注的接口
       this.loading = true;
       this.$store.dispatch("getPost", { id: this.$route.params.id })
         .then((res) => {
@@ -147,7 +334,6 @@ export default {
       this.loading = false;
     },
     openBhpan() {
-      console.log(this.post.bhpan_url)
       window.open(this.post.bhpan_url);
     },
     toggleLike() {

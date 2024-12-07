@@ -4,10 +4,10 @@
     <v-app-bar app v-if="$store.state._show_platform_frame_" class="px-5">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <img src="@/assets/images/logo.png" alt="our logo" class="logo" style="cursor: pointer;" @mouseover="showWelcome = true" @mouseleave="showWelcome = false">
-      <v-toolbar-title v-if="showWelcome" style="margin-left: 20px;" class="welcome-text">航U邦欢迎您！</v-toolbar-title>
+      <v-toolbar-title v-if="showWelcome" style="margin-left: 20px;" class="welcome-text">航 U 邦欢迎您！</v-toolbar-title>
       <v-toolbar-title v-if="!showWelcome" style="margin-left: 20px;">{{ $store.state._app_title_ }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <div class="pr-4">{{ getCurrentTimeGreetings() }}，{{ $store.getters.username }}</div>
+      <div class="pr-4">{{ getCurrentTimeGreetings() }}，{{ $store.state._user_name_ }}</div>
       <v-btn icon @click="toggleParticles" :color="$store.getters.hasParticles ? 'primary' : 'grey'">
         <v-icon>
           mdi-apache-kafka
@@ -76,8 +76,6 @@ export default {
         ['mdi-account', '个人中心', '/center'],
         ['mdi-newspaper-variant-multiple-outline', '管理公告', '/admin/newsManage'],
         ['mdi-account-cog', '管理用户', '/admin/userManage'],
-        ['mdi-notebook-remove-outline', '管理分享', '/admin/shareManage'],
-        ['mdi-calendar-multiple', '管理悬赏', '/admin/taskManage'],
       ],
     };
   },

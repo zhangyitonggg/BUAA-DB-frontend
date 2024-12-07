@@ -1,11 +1,6 @@
 <template>
   <v-container class="spacing-playground pa-16" fluid>
     <component :is="currentComponent" />
-    <v-btn class="fixed-button1" fab dark color="indigo" @click="add">
-      <v-icon dark>
-        mdi-invoice-plus
-      </v-icon>
-    </v-btn>
   </v-container>
 </template>
 

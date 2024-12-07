@@ -46,19 +46,27 @@
                 </v-btn>
               </v-col>
               <v-col class="text-center">
-                <v-btn depressed text @click="navigateTo('/center')">
+                <v-btn depressed text @click="navigateTo('/tasks/own')">
                   <div>
-                    <h2> {{ $store.state._follows_.length }} </h2>
+                    <h2> {{ this.tasksCount }} </h2>
                     任务
                   </div>
                 </v-btn>
               </v-col>
             </v-row>
             <v-divider class="my-3" />
+            <v-btn depressed rounded text @click="navigateTo('/resources/share')">
+              发布共享
+            </v-btn>
+            <v-divider class="my-3" />
+            <v-btn depressed rounded text @click="navigateTo('/tasks/add')">
+              发布任务
+            </v-btn>
+            <v-divider class="my-3" />
             <v-btn depressed rounded text @click="navigateTo('/center')">
               个人中心
             </v-btn>
-            <v-divider class="my-3"></v-divider>
+            <v-divider class="my-3" />
             <v-btn rounded text color="error" @click="logout">
               注销
             </v-btn>
@@ -76,6 +84,7 @@ export default {
       followCount: 0,
       postCount: 0,
       favoriteCount: 0,
+      tasksCount: 0,
     };
   },
   methods: {
@@ -122,6 +131,16 @@ export default {
           message: err,
         });
       });
+    this.$store.dispatch("ownTasks")
+      .then((res) => {
+        this.tasksCount = res.total
+      })
+      .catch((err) => {
+        this.$store.commit("setAlert", {
+          type: "error",
+          message: err,
+        });
+      });
   },
 };
 </script>
@@ -130,5 +149,6 @@ export default {
 .v-card {
   backdrop-filter: blur(10px); /* 毛玻璃效果 */
   border-radius: 8px;
+  min-width: auto;
 }
 </style>

@@ -1,10 +1,4 @@
 export default {
-  // 检查Token
-  checkToken(state) {
-    if (!state._user_name_ || state._user_name_ === "UnauthorizedUser") {
-      state._show_platform_frame_ = false;
-    }
-  },
   setAppTitle(state, title) {
     state._app_title_ = title;
   },

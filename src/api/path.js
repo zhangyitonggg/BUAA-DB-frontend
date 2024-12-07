@@ -32,6 +32,9 @@ const base = {
         dislike: '/dislike/',
         not_dislike: '/not_dislike/',
         own: '/post/own/',
+        pay: '/confirmPay/',
+        delete: '/post/delete/',
+        change: '/change/',
     },
     tags: {
         search: '/tags/search',
@@ -45,6 +48,8 @@ const base = {
         favor: '/favor',
         submits: '/submits',
         submit: '/submit/',
+        own: '/mission/own/',
+        delete: '/mission/delete/',
     },
 }
 

@@ -256,8 +256,6 @@ export default {
       this.filters[type] = value;
     },
     getTasks() {
-      // 获取数据 todo
-
       this.loading = false;
     },
     getTagColor(tag) {
@@ -273,14 +271,6 @@ export default {
         // 如果标签已被选中，则移除
         this.filters.tags.splice(index, 1);
       }
-    },
-    goToPage(page) {
-      this.$router.push(page);
-    },
-    openItem(item) {
-      // todo 打开操作逻辑
-      console.log("打开", item);
-      this.goToPage("/tasks/testPostForAsker");
     },
     deleteItem(item) {
       // todo 删除操作逻辑
@@ -361,8 +351,8 @@ span {
 
 .action-buttons {
   position: absolute;
-  bottom: 30px; 
-  right: 14px; 
+  bottom: 30px;
+  right: 14px;
   display: flex;
   align-items: center;
   z-index: 1111; /* 确保按钮位于其他元素之上 */

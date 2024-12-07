@@ -117,6 +117,11 @@
                   </v-col>
                 </v-row>
               </v-card>
+              <div class="action-buttons" v-if="$store.state._role_ == 'Administrator'">
+                <v-btn color="red" icon @click.stop="tryDeleteItem(item)">
+                  <v-icon style="font-size: 32px;">mdi-delete</v-icon>
+                </v-btn>
+              </div>
             </div>
           </v-col>
         </v-row>
@@ -138,6 +143,26 @@
           <v-card-actions class="justify-end">
             <v-btn text color="grey darken-2" class="font-weight-bold" @click="closeDialog">取消</v-btn>
             <v-btn text color="primary" class="font-weight-bold" @click="confirmPayment">确认</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!-- 删除确认对话框 -->
+      <v-dialog v-model="deleteDialog" max-width="400">
+        <v-card elevation="3" class="rounded-lg">
+          <v-card-title class="text-h6 text-center font-weight-bold pb-0">
+            <v-icon color="primary" size="32px" class="mr-2">mdi-alert-circle-outline</v-icon>
+            确认删除
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text class="py-4">
+            <div class="text-body-1">
+              确定要删除《{{ this.curItem.title }}》这篇帖子吗？
+            </div>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions class="justify-end">
+            <v-btn text color="grey darken-2" class="font-weight-bold" @click="deleteDialog = false">取消</v-btn>
+            <v-btn text color="error" class="font-weight-bold" @click="confirmDelete">确认</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -166,6 +191,7 @@ export default {
       },
       filtersChanged: false, // 用来标记 filters 是否有变化
       dialog: false, // 是否显示支付确认对话框
+      deleteDialog: false, // 是否显示删除确认对话框
       curItem: {
         cost: 0
       }, // 当前操作的 item
@@ -218,9 +244,7 @@ export default {
     },
     tryOpenItem(item) {
       this.curItem = item;
-      // todo 打开操作逻辑
       if (item.cost > 0) {
-        // 如果有价格，就弹出购买对话框
         this.dialog = true;
       } else {
         this.goToPage('/resources/' + item.post_id);
@@ -243,10 +267,30 @@ export default {
       this.dialog = false;
     },
     confirmPayment() {
-      // todo 这里需要触发实际支付逻辑，即调用支付 API
-      let s = `已支付 ${this.curItem.cost} 菜币`;
-      this.$store.commit("setAlert", { type: "info", message: s });
-      this.closeDialog(); // 关闭对话框
+      this.$store.dispatch("payForPost", { id: this.curItem.post_id })
+        .then(() => {
+          this.$store.commit("setAlert", { type: "info", message: "支付成功" });
+          this.dialog = false;
+          this.goToPage('/resources/' + this.curItem.post_id);
+        })
+        .catch(e => {
+          this.$store.commit("setAlert", { type: "error", message: e });
+        });
+    },
+    tryDeleteItem(item) {
+      this.curItem = item;
+      this.deleteDialog = true;
+    },
+    confirmDelete() {
+      this.$store.dispatch("deletePost", { id: this.curItem.post_id })
+        .then(() => {
+          this.$store.commit("setAlert", { type: "info", message: "删除成功" });
+          this.deleteDialog = false;
+          this.getPosts();
+        })
+        .catch(e => {
+          this.$store.commit("setAlert", { type: "error", message: e });
+        });
     },
   },
   mounted() {

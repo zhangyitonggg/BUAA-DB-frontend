@@ -1,7 +1,7 @@
 <template>
   <loading v-if="loading" />
   <div v-else>
-    <TaskPostForAsker v-if="this.task && this.task.created_by.user_id == this.$store.state._user_id_" :task="task" />
+    <TaskPostForAsker v-if="this.task.created_by.user_id == this.$store.state._user_id_ || this.$store.state._role_ === 'Administrator'" :task="task" />
     <TaskPostForOther :task="task" v-else/>
   </div>
 </template>

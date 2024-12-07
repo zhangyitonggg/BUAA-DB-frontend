@@ -1,11 +1,6 @@
 <template>
   <div class="table-container">
     <v-container fluid class="pa-6">
-      <v-btn class="fixed-button1" fab dark color="indigo" @click="back">
-        <v-icon dark>
-          mdi-arrow-u-left-top-bold
-        </v-icon>
-      </v-btn>
       <p class="text-h4 mt-6 mb-4">自己发布的悬赏</p>
       <p class="text-subtitle-2 mb-4">查看，关闭自己的悬赏任务</p>
       <v-data-table :headers="headers" :items="ownTasks" class="elevation-0" sticky>
@@ -50,16 +45,23 @@ export default {
     };
   },
   methods: {
-    // 获取所有用户数据
     getOwnTask() {
+      this.$store.dispatch("getOwnTask").then((res) => {
+        this.ownTasks = res.posts;
+      })
+        .catch((err) => {
+          this.$store.commit("setAlert", {
+            color: "error",
+            message: err
+          });
+        });
     },
     back() {
       this.$router.push("/tasks");
     },
     // 查看操作
     viewItem(item) {
-      // 跳转到任务详情页面
-      this.$router.push("/tasks/testPostForAsker");
+      window.open(`/tasks/${item.id}`);
     },
   },
   mounted() {

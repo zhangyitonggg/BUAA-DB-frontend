@@ -2,16 +2,16 @@
   <v-container style="max-width: 70%;">
     <div class="posts-list">
       <div v-for="(post, index) in posts" :key="index" class="card">
-        <div class="post-card">
+        <div :class="[$vuetify.theme.dark ? 'card-dark' : 'card-light']">
           <!-- Post Info Section -->
-          <div class="post-info" @click="viewPost(post.id)">
+          <div @click="viewPost(post.id)">
             <h3>{{ post.title }}</h3>
             <v-chip v-for="(tag, tagIndex) in post.tags" :key="tagIndex" color="light-green" label small class="me-3 tag">
               {{ tag }}
             </v-chip>
             <p class="info-text">
-              分享者: <span class="username">{{ post.created_by.username }}</span> &nbsp;&nbsp;&nbsp;
-              分享时间: <span class="timestamp">{{ post.created_at }}</span>
+              <span class="mr-3"> 分享者: <span class="username">{{ post.created_by?.username }}</span> </span>
+              <span> 分享时间: <span class="timestamp">{{ format(post.created_at, 'yyyy-MM-dd HH:mm:ss') }}</span> </span>
             </p>
           </div>
           <!-- Action Buttons on Top Right -->
@@ -26,11 +26,15 @@
   </v-container>
 </template>
 <script>
+import { format } from 'date-fns';
 export default {
   data() {
     return {
       posts: [],
     };
+  },
+  comments: {
+    format,
   },
   methods: {
     viewPost(postId) {
@@ -44,7 +48,8 @@ export default {
         .catch((err) => {
           console.error(err);
         });
-    }
+    },
+    format,
   },
   mounted() {
     this.$store.commit("setAppTitle", "我的收藏");
@@ -67,21 +72,36 @@ export default {
   border-radius: 10px;
 }
 
-.card {
+.card-dark {
   display: flex;
   align-items: flex-start;
   padding: 20px;
   border-radius: 12px;
-  background-color: #ffffff;
+  background-color: rgb(23, 23, 28);
   margin-bottom: 15px;
+  box-shadow: 0 8px 15px rgba(75, 75, 75, 0.1);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.card-dark:hover {
+  transform: translateY(-5px);
+}
+
+.card-light {
+  display: flex;
+  align-items: flex-start;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  background-color: aliceblue;
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
   position: relative;
   transition: all 0.3s ease;
 }
 
-.card:hover {
+.card-light:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
 }
 
 .post-card {
