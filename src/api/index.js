@@ -33,6 +33,7 @@ const api = {
     blockUser: async(id) => { return await router.post(path.baseUrl + path.user.block, {user_id: id}); },
     unblockUser: async(id) => { return await router.post(path.baseUrl + path.user.unblock, {user_id: id}); },
     getFavorites: async(id) => { return await router.get(path.baseUrl + path.user.root + id + path.user.favorites); },
+    getTaskDetail: async(id) => { return await router.get(path.baseUrl + path.tasks.root + id + '/'); },
 }
 
 export default api;

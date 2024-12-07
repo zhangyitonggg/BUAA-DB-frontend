@@ -129,6 +129,15 @@ const routes = [
     }
   },
   {
+    path: '/tasks/:id',
+    name: 'task-detail',
+    component: () => import('../components/Task/TaskDetail.vue'),
+    meta: {
+      requiresAuth: true,
+      title: '任务详情'
+    }
+  },
+  {
     path: '/tasksForAsker/testPostForAsker', // 测试用,后面换成/tasksForAsker/:id
     name: 'get-task-test',
     component: () => import('../components/Task/TaskPostForAsker.vue'),

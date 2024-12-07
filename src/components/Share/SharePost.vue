@@ -137,7 +137,7 @@ export default {
             .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
           this.$store.dispatch("getFollows", { id: this.$store.state._user_id_ })
             .then((res) => {
-              if (res.users.includes(this.post.created_by.user_id)) {
+              if (res.users.map((user) => user.id).includes(this.post.created_by.user_id)) {
                 this.followed = true;
               }
             })

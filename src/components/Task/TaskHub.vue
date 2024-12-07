@@ -102,75 +102,7 @@ export default {
       availableTags: [],
       filtersChanged: false, // 用来标记 filters 是否有变化
       curItem: null,
-      cards: [
-        {
-          mission_id:0,
-          title: "【任务发布】寻找全栈开发导师",
-          tiny_content: "希望能找到一位有丰富全栈开发经验的导师，每周进行一次线上指导，帮助我解决学习中的问题并提供项目实践建议。感兴趣的请联系！",
-          created_at: "2021-09-01",
-          created_by: {
-            username: "张三",
-          },
-          tags: ["2024-2025", "复习资料"],
-          commission: 12,
-        },
-        {
-          mission_id:1,
-          title: "【提问】如何优化后端接口性能？",
-          tiny_content: "最近在开发一个电商项目，发现部分接口响应时间过长。主要使用的技术栈是Node.js + Express。请问有哪些优化建议，或者有没有类似的案例分享？",
-          created_at: "2021-09-01",
-          created_by: {
-            username: "张三",
-          },
-          tags: ["计算机组成", "2024-2025", "复习资料"],
-          commission: 0,
-        },
-        {
-          mission_id:2,
-          title: "【求助】设计一个任务发布系统的数据库结构",
-          tiny_content: "正在设计一个任务发布系统，涉及到用户、任务、评论等功能。希望能得到关于数据库表结构设计的具体建议，尤其是如何设计关联关系更合理。",
-          created_at: "2021-09-01",
-          created_by: {
-            username: "张三",
-          },
-          tags: ["计算机组成", "2024-2025", "复习资料"],
-          commission: 1,
-        },
-        {
-          mission_id:3,
-          title: "【任务发布】前端设计优化需求",
-          tiny_content: "需要一名熟悉Vue.js和UI/UX设计的开发者，帮助优化现有项目的用户界面，包括交互设计和性能提升。有兴趣的可以提交报价。",
-          created_at: "2021-09-01",
-          created_by: {
-            username: "张三",
-          },
-          tags: ["计算机组成", "2024-2025", "复习资料"],
-          commission: 0,
-        },
-        {
-          mission_id:3,
-          title: "【提问】React和Vue如何选择？",
-          tiny_content: "在开发一个中型项目时，团队对选择React还是Vue存在争议。请问这两者在性能、生态和学习成本上的主要差异是什么？希望大家能分享自己的经验。",
-          created_at: "2021-09-01",
-          created_by: {
-            username: "张三",
-          },
-          tags: ["计算机组成", "2024-2025", "复习资料"],
-          commission: 10,
-        },
-        {
-          mission_id:3,
-
-          title: "【求助】后端服务高并发处理方案",
-          tiny_content: "项目上线后访问量激增，后端服务器偶尔会崩溃。使用的技术栈是Java Spring Boot。请问有哪些可行的高并发处理方案？",
-          created_at: "2021-09-01",
-          created_by: {
-            username: "张三",
-          },
-          tags: ["计算机组成", "2024-2025", "复习资料"],
-          commission: 20,
-        },
-      ],
+      cards: [],
     };
   },
   watch: {
@@ -214,7 +146,7 @@ export default {
     },
     tryOpenItem(item) {
       this.curItem = item;
-      window.open(`/task/${item.mission_id}`, '_blank');
+      window.open(`/tasks/${item.mission_id}`, '_blank');
     },
   },
   mounted() {
