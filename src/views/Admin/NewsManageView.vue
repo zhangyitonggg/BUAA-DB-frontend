@@ -99,131 +99,142 @@
 </template>
 
 <script>
-  import { format } from 'date-fns';
+import { format } from 'date-fns';
+import VMdPreview from '@kangc/v-md-editor/lib/preview';
+import '@kangc/v-md-editor/lib/style/preview.css';
+import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
+import '@kangc/v-md-editor/lib/theme/style/github.css';
+import hljs from 'highlight.js';
+VMdPreview.use(githubTheme, {
+  Hljs: hljs,
+});
 
-  export default {
-    name: "NewsList",
-    data() {
-      return {
-        news: [],
-        loading: true,
-        activePanel: 0, // 默认展开第一个面板，设置为数字
+export default {
+  name: "NewsList",
+  components: {
+    VMdPreview,
+  },
+  data() {
+    return {
+      news: [],
+      loading: true,
+      activePanel: 0, // 默认展开第一个面板，设置为数字
 
-        dialog_openannouncement: false,
-        dialog_modifyannouncement: false,
+      dialog_openannouncement: false,
+      dialog_modifyannouncement: false,
 
-        announcementTitle: "",
-        announcementContent: "",
-      }
+      announcementTitle: "",
+      announcementContent: "",
+    }
+  },
+  mounted() {
+    this.$store.commit("setAppTitle", "公告管理");
+    this.$store.dispatch("getNews", { page: 1 })
+      .then(res => {
+        this.news = res.messages;
+      })
+      .catch(_ => {
+        this.news = [];
+        this.$store.commit("setAlert", { type: "error", message: "无法获取公告。请检查你的网络设置。" })
+      })
+      .finally(() => {
+        this.loading = false;
+      });
+  },
+  methods: {
+    formatDate(dateString) {
+      return format(new Date(dateString), 'yyyy-MM-dd HH:mm:ss');
     },
-    mounted() {
-      this.$store.commit("setAppTitle", "公告管理");
-      this.$store.dispatch("getNews", { page: 1 })
-        .then(res => {
-          this.news = res.messages;
+    cancelPublishAnnouncement() {
+      this.dialog_openannouncement = false;
+    },
+    publishAnnouncement() {
+      this.loading = true;
+      this.$store.dispatch("publishAnnouncement", {
+        title: this.announcementTitle,
+        content: this.announcementContent,
+      })
+      .then(_ => {
+          this.$store.commit("setAlert", { type: "success", message: "公告发布成功。" });
+          this.loading = true;
+          this.$store.dispatch("getNews", {page: 1})
+            .then(res => {
+              this.news = res.messages;
+            })
+            .catch(_ => {
+              this.news = [];
+              this.$store.commit("setAlert", { type: "error", message: "无法获取公告。请检查你的网络设置。" })
+            });
         })
         .catch(_ => {
-          this.news = [];
-          this.$store.commit("setAlert", { type: "error", message: "无法获取公告。请检查你的网络设置。" })
+          this.$store.commit("setAlert", { type: "error", message: "无法发布公告。请检查你的网络设置。" });
         })
         .finally(() => {
+          this.dialog_openannouncement = false;
           this.loading = false;
         });
     },
-    methods: {
-      formatDate(dateString) {
-        return format(new Date(dateString), 'yyyy-MM-dd HH:mm:ss');
-      },
-      cancelPublishAnnouncement() {
-        this.dialog_openannouncement = false;
-      },
-      publishAnnouncement() {
-        this.loading = true;
-        this.$store.dispatch("publishAnnouncement", {
-          title: this.announcementTitle,
-          content: this.announcementContent,
-        })
-        .then(_ => {
-            this.$store.commit("setAlert", { type: "success", message: "公告发布成功。" });
-            this.loading = true;
-            this.$store.dispatch("getNews", {page: 1})
-              .then(res => {
-                this.news = res.messages;
-              })
-              .catch(_ => {
-                this.news = [];
-                this.$store.commit("setAlert", { type: "error", message: "无法获取公告。请检查你的网络设置。" })
-              });
-          })
-          .catch(_ => {
-            this.$store.commit("setAlert", { type: "error", message: "无法发布公告。请检查你的网络设置。" });
-          })
-          .finally(() => {
-            this.dialog_openannouncement = false;
-            this.loading = false;
-          });
-      },
-      initAnnouncementModifyDialog(item) {
-        this.announcementTitle = item.title;
-        this.announcementContent = item.content;
-        this.dialog_modifyannouncement = true;
-      },
-      modifyAnnouncement(item) {
-        this.loading = true;
-        // todo 需要写一下store的action
-        this.$store.dispatch("modifyAnnouncement", {
-          aid: item.aid,
-          title: this.announcementTitle,
-          content: this.announcementContent,
-        })
-          .then(_ => {
-            this.$store.commit("setAlert", { type: "success", message: "公告修改成功。" });
-            this.loading = true;
-            this.$store.dispatch("getNews")
-              .then(res => {
-                this.news = res.announcements;
-              })
-              .catch(_ => {
-                this.news = [];
-                this.$store.commit("setAlert", { type: "error", message: "无法获取公告。请检查你的网络设置。" })
-              });
-          })
-          .catch(_ => {
-            this.$store.commit("setAlert", { type: "error", message: "无法修改公告。请检查你的网络设置。" });
-          })
-          .finally(() => {
-            this.dialog_modifyannouncement = false;
-            this.loading = false;
-          });
-      }
+    initAnnouncementModifyDialog(item) {
+      this.announcementTitle = item.title;
+      this.announcementContent = item.content;
+      this.dialog_modifyannouncement = true;
     },
-    watch: {
-      dialog_openannouncement(val) {
+    modifyAnnouncement(item) {
+      this.loading = true;
+      // todo 需要写一下store的action
+      this.$store.dispatch("modifyAnnouncement", {
+        aid: item.aid,
+        title: this.announcementTitle,
+        content: this.announcementContent,
+      })
+        .then(_ => {
+          this.$store.commit("setAlert", { type: "success", message: "公告修改成功。" });
+          this.loading = true;
+          this.$store.dispatch("getNews")
+            .then(res => {
+              this.news = res.announcements;
+            })
+            .catch(_ => {
+              this.news = [];
+              this.$store.commit("setAlert", { type: "error", message: "无法获取公告。请检查你的网络设置。" })
+            });
+        })
+        .catch(_ => {
+          this.$store.commit("setAlert", { type: "error", message: "无法修改公告。请检查你的网络设置。" });
+        })
+        .finally(() => {
+          this.dialog_modifyannouncement = false;
+          this.loading = false;
+        });
+    }
+  },
+  watch: {
+    dialog_openannouncement(val) {
+      this.announcementContent = "";
+      this.announcementTitle = "";
+    },
+    dialog_modifyannouncement(val) {
+      if (!val) {
         this.announcementContent = "";
         this.announcementTitle = "";
-      },
-      dialog_modifyannouncement(val) {
-        if (!val) {
-          this.announcementContent = "";
-          this.announcementTitle = "";
-        }
-      },
-    }
+      }
+    },
   }
-  </script>
-  
-  <style scoped>
+}
+</script>
+
+<style scoped>
   .v-expansion-panel-header {
     font-size: large;
   }
-  
+
   .loading-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
   }
-  
+
   .panel-content {
     margin-top: 30px;
   }
@@ -234,5 +245,4 @@
     bottom: 16%;
     z-index: 5;
   }
-  </style>
-  
+</style>

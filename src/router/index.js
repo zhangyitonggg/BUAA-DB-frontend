@@ -9,15 +9,6 @@ const routes = [
     path: '/',
     redirect: '/home/'
   },
-  {
-    path: '/test',
-    name: 'test',
-    component: () => import('../views/TestView.vue'),
-    meta: {
-      requiresAuthed: true,
-      title: '测试'
-    }
-  },
   // 管理员
   {
     path: '/admin/userManage',
