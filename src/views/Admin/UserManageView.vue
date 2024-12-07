@@ -141,5 +141,5 @@
     this.setAppTitle("用户管理");
     this.getAllUser();
   },
-  };
+};
 </script>

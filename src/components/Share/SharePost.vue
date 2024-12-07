@@ -1,15 +1,6 @@
 <template>
   <v-app>
     <v-container>
-      <!-- 返回按钮 -->
-      <v-btn
-        icon
-        @click="$router.go(-1)"
-        style="position: fixed; left: 65px; top: 80px; background-color: #1976D2; color: white; border-radius: 50%; padding: 8px; z-index: 1000;"
-        class="elevation-2 hoverable"
-      >
-        <v-icon>mdi-arrow-left</v-icon>
-      </v-btn>
       <!-- 帖子标题部分 -->
       <v-card class="mt-5 pa-5">
         <v-card-title class="d-flex align-center">

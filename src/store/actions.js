@@ -43,4 +43,5 @@ export default {
   async getAllUsers(context) { return await api.getAllUsers(); },
   async blockUser(context, {id}) { return await api.blockUser(id); },
   async unblockUser(context, {id}) { return await api.unblockUser(id); },
+  async getFavorites(context, {id}) { return await api.getFavorites(id); },
 };

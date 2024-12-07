@@ -208,12 +208,12 @@ export default {
         tags: this.filters.tags
       })
         .then(res => {
-          this.post = res.posts;
-        })
-        .catch(e => { this.$store.commit("setAlert", { type: "error", message: e }) })
-    },
+            this.post = res.posts;
+          })
+          .catch(e => { this.$store.commit("setAlert", { type: "error", message: e }) })
+        },
     goToPage(page) {
-      this.$router.push(page);
+      window.open(page, '_blank');
     },
     tryOpenItem(item) {
       this.curItem = item;

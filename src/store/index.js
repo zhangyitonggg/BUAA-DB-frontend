@@ -22,6 +22,7 @@ export default new Vuex.Store({
     hasParticles: true,
     _user_id_: null,
     myFavorite: false,
+    _follows_: [],
   },
 
   mutations,

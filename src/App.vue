@@ -1,24 +1,7 @@
 <template>
   <v-app>
-    <vue-particles  v-if="$store.getters.hasParticles"
-      color="#575454"
-      :particleOpacity="0.5"
-      :particlesNumber="30"
-      shapeType="circle"
-      :particleSize="4"
-      linesColor="#575454"
-      :linesWidth="1"
-      :lineLinked="true"
-      :lineOpacity="0.7"
-      :linesDistance="150"
-      :moveSpeed="3"
-      :hoverEffect="true"
-      hoverMode="grab"
-      :clickEffect="false"
-      clickMode="push"
-    />
-
-    <v-app-bar app v-if="$store.state._show_platform_frame_">
+    <partice v-if="$store.getters.hasParticles" />
+    <v-app-bar app v-if="$store.state._show_platform_frame_" class="px-5">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <img src="@/assets/images/logo.png" alt="our logo" class="logo" style="cursor: pointer;" @mouseover="showWelcome = true" @mouseleave="showWelcome = false">
       <v-toolbar-title v-if="showWelcome" style="margin-left: 20px;" class="welcome-text">航U邦欢迎您！</v-toolbar-title>
@@ -35,28 +18,7 @@
           {{ this.$vuetify.theme.dark ? 'mdi-weather-night' : 'mdi-white-balance-sunny' }}
         </v-icon>
       </v-btn>
-      <v-menu bottom min-width="130px" rounded offset-y>
-        <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on">
-            <v-avatar size="36">
-              <img src="@/assets/images/zyt.png">
-            </v-avatar>
-          </v-btn>
-        </template>
-        <v-card>
-          <v-list-item-content class="justify-center">
-            <div class="mx-auto text-center">
-              <v-btn depressed rounded text @click="navigateTo('/center')">
-                个人中心
-              </v-btn>
-              <v-divider class="my-3"></v-divider>
-              <v-btn rounded text color="error" @click="logout">
-                注销
-              </v-btn>
-            </div>
-          </v-list-item-content>
-        </v-card>
-      </v-menu>
+      <avatar-menu />
     </v-app-bar>
 
 
@@ -88,28 +50,21 @@
     <v-main>
       <router-view />
     </v-main>
-
-    <v-alert
-      elevation="11"
-      v-show="$store.state._alert_.show != 0"
-      :type="['success', 'info', 'warning', 'error'].includes($store.state._alert_.type) ? $store.state._alert_.type : 'info'"
-      transition="scroll-y-transition"
-      dense
-      prominent
-    >
-      {{ $store.state._alert_.message }}
-    </v-alert>
+    <alert />
   </v-app>
 </template>
 
 <script>
-
+import Partice from './components/Partice.vue';
+import Alert from './components/Alert.vue';
+import AvatarMenu from './components/AvatarMenu.vue';
 export default {
   name: 'App',
-
   components: {
+    Partice,
+    Alert,
+    AvatarMenu,
   },
-
   data() {
     return {
       showWelcome: false, // 控制欢迎文字的显示
@@ -137,10 +92,6 @@ export default {
     },
     handleAboutClick() {
       this.navigateTo('/about');
-    },
-    logout() {
-      this.$store.commit("clearPersonalInfo");
-      this.$router.push('/auth');
     },
     changeMode() {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
@@ -187,15 +138,6 @@ export default {
     width: 100%;
     height: calc(100vh - 64px);
     position: absolute;
-  }
-
-  .v-alert {
-    z-index: 999;
-    position: fixed;
-    bottom: 0;
-    width: 105%;
-    margin-bottom: 0;
-    height: fit-content;
   }
 
   .slide-y-enter-active,

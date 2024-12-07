@@ -8,6 +8,9 @@ export default {
   setAppTitle(state, title) {
     state._app_title_ = title;
   },
+  setFollows(state, follows) {
+    state._follows_ = follows;
+  },
   // 注销账户
   clearPersonalInfo(state) {
     state._user_name_ = null;

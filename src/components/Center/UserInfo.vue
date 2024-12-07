@@ -1,5 +1,6 @@
 <template>
-  <v-container style="max-width: 45%;">
+  <loading v-if="loading" />
+  <v-container style="max-width: 45%;" v-else>
     <v-card class="card pa-4">
       <v-row>
         <v-col cols="12">
@@ -15,7 +16,9 @@
                 <v-icon left>mdi-card-account-details</v-icon>
                 用户名
               </v-list-item-title>
-              <v-list-item-subtitle style="margin-left:9.2%;">zhangyitong</v-list-item-subtitle>
+              <v-list-item-subtitle style="margin-left:9.2%;">
+                {{ this.$store.getters.username }}
+              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-list-item>
@@ -72,7 +75,7 @@
           <v-btn text color="red" @click="showPasswordDialog">修改密码</v-btn>
           <v-btn text color="red" @click="showEmailDialog">修改电子邮件地址</v-btn>
           <v-btn text color="red" @click="showTagDialog">修改个性标签</v-btn>
-          <v-btn text color="red">退出登录</v-btn>
+          <v-btn text color="red" @click="logout">退出登录</v-btn>
         </v-col>
       </v-row>
     </v-card>
@@ -206,10 +209,15 @@
 </template>
 
 <script>
+import Loading from '../Loading.vue';
 export default {
   name: "UserCenter",
+  components: {
+    Loading,
+  },
   data() {
     return {
+      loading: true,
       tagDialog: false,
       passwordDialog: false,
       emailDialog: false,
@@ -228,7 +236,7 @@ export default {
       avatarUrl: require("@/assets/images/zyt.png"), // 当前头像路径
     };
   },
-  mounted() {
+  created() {
       this.$store.commit("setAppTitle", "用户信息");
       this.$store.dispatch("getUserProfile", {id: this.$store.state._user_id_})
         .then((res) => {
@@ -242,6 +250,7 @@ export default {
           this.postNumber = res.posts;
           this.answerNumber = res.replies;
           // this.avatarUrl = res.avatarurl;
+          this.loading = false;
         })
         .catch((err) => { this.$store.commit("setAlert", {type: "error", message: err}); });
   },
@@ -300,6 +309,10 @@ export default {
     // 点击按钮，触发文件选择器打开
     onSelectNewAvatar() {
       this.$refs.fileInput.click();
+    },
+    logout() {
+      this.$store.commit("clearPersonalInfo");
+      this.$router.push("/auth");
     },
     // 文件选择完成后处理
     onFileSelected(event) {

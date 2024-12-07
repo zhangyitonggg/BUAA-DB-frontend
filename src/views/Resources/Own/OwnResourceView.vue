@@ -1,11 +1,6 @@
 <template>
   <div class="table-container">
     <v-container fluid class="pa-6">
-      <v-btn class="fixed-button1" fab dark color="indigo" @click="back">
-        <v-icon dark>
-          mdi-arrow-u-left-top-bold
-        </v-icon>
-      </v-btn>
       <p class="text-h4 mt-6 mb-4">自己分享的所有资源</p>
       <p class="text-subtitle-2 mb-4">查看，修改自己的资源分享贴</p>
       <v-data-table :headers="headers" :items="ownShare" class="elevation-0" sticky>
@@ -80,7 +75,7 @@ export default {
     // 获取所有用户数据
     getOwnShare() {
       this.$store.dispatch("ownPosts")
-        .then((res) => { this.ownShare = res })
+        .then((res) => { this.ownShare = res.posts })
         .catch((err) => { this.$store.commit("setAlert", { type: "error", message: err, }); });
     },
     back() {

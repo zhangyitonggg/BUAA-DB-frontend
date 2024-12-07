@@ -12,6 +12,7 @@ const base = {
         list: '/user/list/',
         block: '/user/block/',
         unblock: '/user/unblock/',
+        favorites: '/favorites/',
     },
     billboard: {
         getNews: '/billboard/index',

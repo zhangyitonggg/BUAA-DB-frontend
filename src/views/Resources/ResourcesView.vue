@@ -6,11 +6,6 @@
         mdi-invoice-plus
       </v-icon>
     </v-btn>
-    <v-btn class="fixed-button2" fab dark color="#8B4513" @click="own">
-      <v-icon dark>
-        mdi-home-edit
-      </v-icon>
-    </v-btn>
   </v-container>
 </template>
 

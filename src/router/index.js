@@ -89,7 +89,7 @@ const routes = [
     component: () => import('../views/Resources/Add/ShareResourceView.vue'),
     meta: {
       requiresAuth: true,
-      title: '共享资源'
+      title: '创建共享'
     }
   },
   {
@@ -98,7 +98,7 @@ const routes = [
     component: () => import('../views/Resources/Own/OwnResourceView.vue'),
     meta: {
       requiresAuth: true,
-      title: '共享资源'
+      title: '我发布的共享资源'
     }
   },
   {
@@ -162,6 +162,24 @@ const routes = [
     meta: {
       requiresAuth: true,
       title: '个人中心'
+    }
+  },
+  {
+    path: '/follows',
+    name: 'follows',
+    component: () => import('../components/Center/MyFollow.vue'),
+    meta: {
+      requiresAuth: true,
+      title: '正在关注'
+    }
+  },
+  {
+    path: '/favorites',
+    name: 'favorites',
+    component: () => import('../components/Center/MyFavorite.vue'),
+    meta: {
+      requiresAuth: true,
+      title: '我的收藏'
     }
   },
   {
