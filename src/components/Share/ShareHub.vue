@@ -18,8 +18,6 @@
                   :class="{ active: filters.sort_by === 4 }">最多收藏</span>
                 <span @click="setFilter('sort_by', 2)"
                   :class="{ active: filters.sort_by === 2 }">最近创建</span>
-                <span @click="setFilter('sort_by', 3)"
-                  :class="{ active: filters.sort_by === 3 }">最近评论</span>
               </v-col>
             </v-row>
             <v-row class="align-center my-0 py-0">
@@ -86,7 +84,7 @@
                         </span>
                       </h2>
                       <div style="margin-top: 1%;">
-                        {{ item.profile }}
+                        {{ filterString(item.profile) }}
                       </div>
                       <div style="margin-left: 1.8%; margin-top: 1%;" v-if="item.tags.length > 0">
                         <v-chip v-for="(tag, tagIndex) in item.tags" :key="tagIndex" color="aqua"
@@ -223,6 +221,10 @@ export default {
     },
   },
   methods: {
+    filterString(inputText) {
+      // 使用正则表达式替换掉所有的*和#符号
+      return inputText.replace(/[\*\#]/g, '');
+    },
     formatDate(dateString) {
       return format(new Date(dateString), 'yyyy-MM-dd HH:mm:ss');
     },

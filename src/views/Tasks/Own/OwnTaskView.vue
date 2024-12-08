@@ -71,7 +71,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.commit("setAppTitle", "我的资源");
+    this.$store.commit("setAppTitle", "我的任务");
     this.getOwnTask();
   },
 };

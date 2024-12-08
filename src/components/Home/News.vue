@@ -106,12 +106,13 @@ export default {
         this.news = res.messages;
       })
       .catch(_ => {
-        this.news = [];
+        this.news = []; 
         this.$store.commit("setAlert", { type: "error", message: "无法获取公告。请检查你的网络设置。" })
       })
       .finally(() => {
         this.loading = false;
       });
+    
   },
   methods: {
     viewDetails(item) {
