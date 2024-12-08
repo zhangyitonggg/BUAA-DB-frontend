@@ -3,7 +3,7 @@
     <v-container fluid class="pa-6">
       <p class="text-h4 mt-6 mb-4">自己分享的所有资源</p>
       <p class="text-subtitle-2 mb-4">查看，修改自己的资源分享贴</p>
-      <v-data-table :headers="headers" :items="ownShare" class="elevation-0" sticky>
+      <v-data-table :headers="headers" :items="ownShare" sticky>
         <template v-slot:item.index="{ index }">
           {{ index + 1 }}
         </template>
