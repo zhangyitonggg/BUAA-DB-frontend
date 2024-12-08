@@ -119,6 +119,14 @@ export default {
         message: "别来无恙，" + localStorage.getItem('__user_name__') + "。",
       });
     }
+    if (this.$store.state._role_ != 'Administrator') {
+      this.links = [
+        ['mdi-home', '首页', '/'],
+        ['mdi-book-open-variant-outline', '共享资源站', '/resources'],
+        ['mdi-account-group', '任务悬赏站', '/tasks'],
+        ['mdi-account', '个人中心', '/center'],
+      ]
+    }
   },
   beforeCreate() {
     if (localStorage.getItem('__dark_theme__')) {
