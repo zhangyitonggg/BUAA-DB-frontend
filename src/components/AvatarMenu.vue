@@ -149,6 +149,9 @@ export default {
 .v-card {
   backdrop-filter: blur(10px); /* 毛玻璃效果 */
   border-radius: 8px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 290px;
 }
 
 .v-list-item {

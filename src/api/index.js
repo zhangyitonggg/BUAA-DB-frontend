@@ -43,6 +43,7 @@ const api = {
   deleteTask: async(id) => { return await router.post(path.baseUrl + path.tasks.delete, {mission_id: id}); },
   modifyTask: async(id, title, content, tags, commission) => { return await router.post(path.baseUrl + path.tasks.root + id + path.tasks.modify, {title: title, content: content, tags: tags, commission: commission}); },
   confirmTask: async(task_id, submit_id) => { return await router.post(path.baseUrl + path.tasks.root + task_id + path.tasks.confirm, {accepted: submit_id}); },
+  uploadFile: async(file) => { return await router.post(path.baseUrl + path.user.upload, {file: file}); }
 }
 
 export default api;

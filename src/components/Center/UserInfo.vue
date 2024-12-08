@@ -17,7 +17,7 @@
                 用户名
               </v-list-item-title>
               <v-list-item-subtitle style="margin-left:9.2%;">
-                {{ this.$store.getters.username }}
+                {{ this.$store.state._user_name_ }}
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -27,7 +27,9 @@
                 <v-icon left>mdi-google-classroom</v-icon>
                 身份
               </v-list-item-title>
-              <v-list-item-subtitle style="margin-left:9.2%;">普通用户</v-list-item-subtitle>
+              <v-list-item-subtitle style="margin-left:9.2%;">
+                {{ this.$store.state._role_ === 'Administrator' ? '管理员' : '普通用户' }}
+              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-list-item>
@@ -51,12 +53,13 @@
         </v-col>
         <v-col cols="4" style="margin-top: 20px;">
           <v-img
-          :src="avatarUrl"
-          aspect-ratio="1"
-          height="130px"
-          width="130px"
-          contain
-          style="transform: translateX(-9%); border-radius: 50%; overflow: hidden;"
+            :key="avatarUrl"
+            :src="avatarUrl"
+            aspect-ratio="1"
+            height="130px"
+            width="130px"
+            contain
+            style="transform: translateX(-9%); border-radius: 50%; overflow: hidden;"
           ></v-img>
           <v-btn text color="primary" @click="onSelectNewAvatar">选择新头像</v-btn>
           <!-- 隐藏的文件输入框 -->
@@ -233,7 +236,7 @@ export default {
       fansNumber: 0,
       postNumber: 0,
       answerNumber: 0,
-      avatarUrl: require("@/assets/images/zyt.png"), // 当前头像路径
+      avatarUrl: "", // 当前头像路径
     };
   },
   created() {
@@ -249,7 +252,7 @@ export default {
           this.fansNumber = res.fans;
           this.postNumber = res.posts;
           this.answerNumber = res.replies;
-          // this.avatarUrl = res.avatarurl;
+          this.avatarUrl = res.avatarurl;
           this.loading = false;
         })
         .catch((err) => { this.$store.commit("setAlert", {type: "error", message: err}); });
@@ -318,41 +321,18 @@ export default {
     onFileSelected(event) {
       const file = event.target.files[0];
       if (!file) return;
-
-      // 检查文件是否为图片类型
       if (!file.type.startsWith("image/")) {
         this.$emit("error", "请选择图片文件");
         return;
       }
-
-      // todo 调用更新头像的接口
-      // 模拟文件上传功能
-      // this.uploadFile(file)
-      //   .then((uploadedUrl) => {
-      //     // 上传成功后更新头像
-      //     // this.avatarUrl = uploadedUrl;
-      //     this.$emit("success", "头像上传成功");
-      //   })
-      //   .catch(() => {
-      //     this.$emit("error", "头像上传失败");
-      //   });
+      this.$store.dispatch("uploadFile", {file: file})
+        .then((res) => {
+          console.log(res);
+          this.$store.commit("setAlert", {type: "success", message: "头像上传成功。"});
+          this.avatarUrl = res.file_url;
+        })
+        .catch((err) => { this.$store.commit("setAlert", {type: "error", message: err}); });
     },
-
-    // // 模拟文件上传请求
-    // uploadFile(file) {
-    //   // 使用 FormData 模拟表单上传
-    //   const formData = new FormData();
-    //   formData.append("avatar", file);
-
-    //   // 发起 POST 请求上传文件
-    //   return new Promise((resolve, reject) => {
-    //     setTimeout(() => {
-    //       // 模拟服务器返回的头像URL
-    //       const uploadedUrl = URL.createObjectURL(file);
-    //       resolve(uploadedUrl);
-    //     }, 1000); // 模拟延迟
-    //   });
-    // },
   },
 };
 </script>

@@ -13,6 +13,7 @@ const base = {
         block: '/user/block/',
         unblock: '/user/unblock/',
         favorites: '/favorites/',
+        upload: '/user/upload/',
     },
     billboard: {
         getNews: '/billboard/index',

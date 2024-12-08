@@ -95,8 +95,8 @@ router.interceptors.request.use(
     config.data = no_nil(config.data);
     config.params = no_nil(config.params);
     if (config.method === 'post') {
-      if (config.useQs) {
-        config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+      if (config.multipart) {
+        config.headers['Content-Type'] = 'application/x-www-form-multipart';
       } else if (!config.headers['Content-Type']) {
         config.headers['Content-Type'] = 'multipart/form-data';
       } else {

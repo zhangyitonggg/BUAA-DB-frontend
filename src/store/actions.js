@@ -48,4 +48,5 @@ export default {
   async deleteTask(context, {id}) { return await api.deleteTask(id); },
   async modifyTask(context, {id, title, content, tags, commission}) { return await api.modifyTask(id, title, content, tags, commission); },
   async confirmTask(context, {task_id, submit_id}) { return await api.confirmTask(task_id, submit_id); },
+  async uploadFile(context, {file}) { return await api.uploadFile(file); }
 };
