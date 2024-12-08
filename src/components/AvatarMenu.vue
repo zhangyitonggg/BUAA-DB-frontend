@@ -56,11 +56,11 @@
             </v-row>
             <v-divider class="my-3" />
             <v-btn depressed rounded text @click="navigateTo('/resources/share')">
-              发布共享
+              分享资源
             </v-btn>
             <v-divider class="my-3" />
             <v-btn depressed rounded text @click="navigateTo('/tasks/add')">
-              发布任务
+              发布悬赏
             </v-btn>
             <v-divider class="my-3" />
             <v-btn depressed rounded text @click="navigateTo('/center')">

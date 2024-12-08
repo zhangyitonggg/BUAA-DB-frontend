@@ -52,7 +52,7 @@
           <div class="card" v-for="(item, index) in cards" :key="index" @click="tryOpenItem(item)">
             <div class="card-body">
               <h3>{{ item.title }}</h3>
-              <p>{{ item.tiny_content }}</p>
+              <p>{{ filterString(item.tiny_content) }}</p>
             </div>
             <div class="card-tags">
               <v-chip-group column>
@@ -184,6 +184,10 @@ export default {
     tryDelete(item) {
       this.curItem = item;
       this.deleteDialog = true;
+    },
+    filterString(inputText) {
+      // 使用正则表达式替换掉所有的*和#符号
+      return inputText.replace(/[\*\#]/g, '');
     },
     confirmDelete() {
       this.$store.dispatch("deleteTask", this.curItem.mission_id)

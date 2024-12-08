@@ -27,7 +27,7 @@ import TaskHub from '../../components/Task/TaskHub.vue'
       },
       own() {
         this.$router.push('/tasks/own');
-      }
+      },
     },
     watch: {
     },
