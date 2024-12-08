@@ -149,6 +149,9 @@ export default {
 .v-card {
   backdrop-filter: blur(10px); /* 毛玻璃效果 */
   border-radius: 8px;
-  min-width: 30%;
+}
+
+.v-list-item {
+  width: 100%;
 }
 </style>
