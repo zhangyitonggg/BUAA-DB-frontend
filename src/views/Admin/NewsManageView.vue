@@ -41,7 +41,7 @@
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <v-md-preview :text="item.content"></v-md-preview>
-                  <v-btn block @click="initAnnouncementModifyDialog(item)"> 修改公告 </v-btn>
+                  <!-- <v-btn block @click="initAnnouncementModifyDialog(item)"> 修改公告 </v-btn> -->
 
                   <v-dialog v-model="dialog_modifyannouncement" width="50%">
                     <v-card>
