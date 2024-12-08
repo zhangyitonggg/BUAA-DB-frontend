@@ -19,7 +19,8 @@
             {{ tag }}
           </v-chip>
         </v-card-title>
-        <v-card-subtitle class="grey--text text--darken-1" style="margin-left: 32px;">{{ post.created_by.username }} 发表于 {{ format(post.created_at, 'yyyy-MM-dd HH:mm:ss') }}</v-card-subtitle>
+        <a :href="`/center/${post.created_by.user_id}`" @click.stop class="ml-2" style="font-size: 16px;" target="blank">{{ post.created_by.username }}</a>
+        <span class="grey--text text--darken-1" style="font-size:14px;"> 发表于 {{ format(post.created_at, 'yyyy-MM-dd HH:mm:ss') }}</span>
         <v-divider></v-divider>
         <!-- 帖子内容部分 -->
         <v-card-text>
@@ -29,10 +30,10 @@
         <v-card-actions class="d-flex justify-space-between flex-wrap">
           <!-- 点赞、点踩、收藏 -->
           <div class="d-flex">
-            <v-btn text @click="toggleLike">
+            <v-btn text @click="toggleLike" :disabled="post.dislike">
               <v-icon :color="post.like ? 'red lighten-1' : 'gray'">mdi-thumb-up</v-icon>
             </v-btn>
-            <v-btn text @click="toggleDisLike">
+            <v-btn text @click="toggleDisLike" :disabled="post.like">
               <v-icon :color="post.dislike ? 'red lighten-1' : 'gray'">mdi-thumb-down</v-icon>
             </v-btn>
             <v-btn text @click="togglefavorite">
@@ -88,7 +89,8 @@
               <v-avatar size="30" class="mr-2">
                 <img :src="comment.created_by.avatar" alt="User" />
               </v-avatar>
-              <span style="font-size: 1.2rem; font-weight: bold;">{{ comment.created_by.username }} 发表于 {{ format(comment.created_at, 'yyyy-MM-dd HH:mm:ss') }}</span>
+              <a :href="`/center/${comment.created_by.user_id}`" @click.stop class="mr-2" style="font-size: 16px;" target="blank">{{ comment.created_by.username }}</a>
+              <span class="grey--text" style="font-size: 12px;"> 发表于 {{ format(comment.created_at, 'yyyy-MM-dd HH:mm:ss') }} </span>
             </v-card-title>
             <!-- 评论内容 -->
             <v-card-text>
@@ -331,6 +333,7 @@ export default {
       this.$store.dispatch("getPost", { id: this.$route.params.id })
         .then((res) => {
           this.post = res;
+          console.log(this.post);
           this.$store.dispatch("getPostComments", { id: this.$route.params.id })
             .then((res) => {
               this.comments = res.comments;
@@ -392,12 +395,18 @@ export default {
       if (this.post.favorite == true) {
         this.post.favorite = false;
         this.$store.dispatch("notFavourPost", {id: this.$route.params.id })
-          .then((res) => { this.$store.commit("setAlert", { "type": "success", "message": "已取消收藏。" }); })
+          .then((res) => {
+            this.$store.commit("setAlert", { "type": "success", "message": "已取消收藏。" });
+            this.$store.commit("setFavorites", this.$store.state._favorites_ - 1);
+          })
           .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
       } else {
         this.post.favorite = true;
         this.$store.dispatch("favourPost", {id: this.$route.params.id })
-          .then((res) => { this.$store.commit("setAlert", { "type": "success", "message": "已收藏。" }); })
+          .then((res) => {
+            this.$store.commit("setAlert", { "type": "success", "message": "已收藏。" });
+            this.$store.commit("setFavorites", this.$store.state._favorites_ + 1);
+          })
           .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
       }
     },
@@ -405,12 +414,18 @@ export default {
       if (this.followed == false) {
         this.followed = true;
         this.$store.dispatch("followUser", {id: this.post.created_by.user_id })
-          .then((res) => { this.$store.commit("setAlert", { "type": "success", "message": "已关注。" }); })
+          .then((res) => {
+            this.$store.commit("setAlert", { "type": "success", "message": "已关注。" });
+            this.$store.commit("setFollows", this.$store.state._follows_ + 1);
+          })
           .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
       } else {
         this.followed = false;
         this.$store.dispatch("notFollowUser", {id: this.post.created_by.user_id })
-          .then((res) => { this.$store.commit("setAlert", { "type": "success", "message": "已取关。" }); })
+          .then((res) => {
+            this.$store.commit("setAlert", { "type": "success", "message": "已取关。" });
+            this.$store.commit("setFollows", this.$store.state._follows_ - 1);
+          })
           .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
       }
     },

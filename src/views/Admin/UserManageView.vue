@@ -13,8 +13,7 @@
       </template>
       <template v-slot:item.avatarurl="{ item }">
         <v-avatar size="32">
-          <!-- 使用头像图片URL -->
-          <img :src="item.avatarurl" alt="User Avatar" />
+          <img :src="item.avatar" alt="User Avatar" />
         </v-avatar>
       </template>
 

@@ -129,6 +129,13 @@ export default {
   beforeCreate() {
     if (localStorage.getItem('__dark_theme__')) {
       this.$vuetify.theme.dark = localStorage.getItem('__dark_theme__') === 'true';
+    } else {
+      this.$vuetify.theme.dark = false;
+    }
+    if (localStorage.getItem('__particles__')) {
+      this.$store.commit("setParticles", localStorage.getItem('__particles__') === 'true');
+    } else {
+      this.$store.commit("setParticles", true);
     }
   }
 };

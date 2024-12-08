@@ -5,6 +5,15 @@ export default {
   setFollows(state, follows) {
     state._follows_ = follows;
   },
+  setFavorites(state, favorites) {
+    state._favorites_ = favorites;
+  },
+  setShares(state, shares) {
+    state._shares_ = shares;
+  },
+  setMissions(state, missions) {
+    state._missions_ = missions;
+  },
   setAvatar(state, avatar) {
     state._avatar_url_ = avatar;
   },
@@ -12,10 +21,11 @@ export default {
   clearPersonalInfo(state) {
     state._user_name_ = null;
     state._token_ = null;
-    localStorage.clear();
-    document.cookie.split(";").forEach((c) => {
-      document.cookie = c.trim().split("=")[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/";
-    });
+    localStorage.removeItem('__user_name__');
+    localStorage.removeItem('_user_role_');
+    localStorage.removeItem('_user_id_');
+    localStorage.removeItem('_user_avatar_');
+    document.cookie = 'session=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
   },
   // 设置是否查看我的收藏
   setMyFavorite(state, myFavorite) {

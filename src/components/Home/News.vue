@@ -28,8 +28,8 @@
       <v-col cols="8">
         <v-expansion-panels accordion v-model="activePanel" class="mt-10">
           <!-- 标题部分 -->
-          <v-expansion-panel :disabled="true" class="announcement-header">
-            <v-expansion-panel-header>
+            <v-expansion-panel :disabled="true" :class="$vuetify.theme.dark ? 'announcement-header-dark' : 'announcement-header-light'">
+            <v-expansion-panel-header style="justify-content: center;">
               最新公告
             </v-expansion-panel-header>
           </v-expansion-panel>
@@ -215,7 +215,6 @@ export default {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 12.5px;
-  background: #fff;
   margin: 0 auto;
   /* 确保容器靠中 */
 }
@@ -231,7 +230,6 @@ export default {
 .icon {
   width: 16px;
   height: 16px;
-  background-color: #000;
   margin-right: 5px;
 }
 
@@ -246,8 +244,8 @@ export default {
   box-shadow: none;
 }
 
-.announcement-header {
-  background-color: #2196f3 !important;
+.announcement-header-light {
+  background-color: rgb(27, 152, 255) !important;
   /* 天蓝色背景，确保优先级 */
   color: white !important;
   /* 白色字体 */
@@ -257,9 +255,25 @@ export default {
   /* 放大字体 */
   font-weight: bold;
   /* 加粗字体 */
+  justify-content: center;
+  /* 水平居中内容 */
+  display: flex;
+  /* 保证水平居中对齐 */
+  padding: 0 !important;
+  /* 确保没有额外的内边距干扰 */
 }
 
-.announcement-header .v-expansion-panel-header {
+.announcement-header-dark {
+  background-color: rgb(17, 18, 87) !important;
+  /* 天蓝色背景，确保优先级 */
+  color: rgb(255, 255, 255) !important;
+  /* 白色字体 */
+  text-align: center;
+  /* 居中显示 */
+  font-size: 80px;
+  /* 放大字体 */
+  font-weight: bold;
+  /* 加粗字体 */
   justify-content: center;
   /* 水平居中内容 */
   display: flex;

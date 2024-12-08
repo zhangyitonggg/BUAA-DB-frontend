@@ -11,6 +11,14 @@ export default {
             localStorage.setItem('__user_name__', username);
             localStorage.setItem('_user_role_', response.role);
             localStorage.setItem('_user_id_', response.user_id);
+            if (remember) {
+              let sessionCookie = document.cookie.split('; ').find(row => row.startsWith('session='));
+              if (sessionCookie) {
+                let expireDate = new Date();
+                expireDate.setDate(expireDate.getDate() + 7); // Set cookie to expire in 7 days
+                document.cookie = `${sessionCookie}; expires=${expireDate.toUTCString()}; path=/`;
+              }
+            }
             return response;
           }).catch(error => { throw error; });
       }).catch(error => { throw error; });

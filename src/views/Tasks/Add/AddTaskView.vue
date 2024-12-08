@@ -143,6 +143,7 @@
               type: "success",
               message: "发布任务成功。",
             });
+            this.$store.commit("setMissions", this.$store.state._missions_ + 1);
             this.$router.push('/tasks');
           })
           .catch((error) => {

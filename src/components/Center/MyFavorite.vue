@@ -1,39 +1,51 @@
 <template>
-  <v-container style="max-width: 70%;">
-    <div class="posts-list">
-      <div v-for="(post, index) in posts" :key="index" class="card">
-        <div :class="[$vuetify.theme.dark ? 'card-dark' : 'card-light']">
-          <!-- Post Info Section -->
-          <div @click="viewPost(post.id)">
-            <h3>{{ post.title }}</h3>
-            <v-chip v-for="(tag, tagIndex) in post.tags" :key="tagIndex" color="light-green" label small class="me-3 tag">
-              {{ tag }}
-            </v-chip>
-            <p class="info-text">
-              <span class="mr-3"> 分享者: <span class="username">{{ post.created_by?.username }}</span> </span>
-              <span> 分享时间: <span class="timestamp">{{ format(post.created_at, 'yyyy-MM-dd HH:mm:ss') }}</span> </span>
-            </p>
-          </div>
-          <!-- Action Buttons on Top Right -->
-          <div class="action-buttons">
-            <v-btn icon @click="removeFavorite(post.id)" class="remove-btn">
-              <v-icon>mdi-heart-remove</v-icon>
-            </v-btn>
+  <div>
+    <Loading v-if="loading" />
+    <v-container style="max-width: 70%;" v-else>
+      <v-alert type="info" v-if="posts.length == 0">你还没有收藏任何资源哦。</v-alert>
+      <div class="posts-list" v-else>
+        <div v-for="(post, index) in posts" :key="index">
+          <div :class="[$vuetify.theme.dark ? 'card-dark' : 'card-light']">
+            <!-- Post Info Section -->
+            <div @click="viewPost(post.id)" class="ma-0 pa-0">
+              <h3>{{ post.title }}</h3>
+              <v-chip v-for="(tag, tagIndex) in post.tags" :key="tagIndex" color="light-green" label small class="mt-3 tag">
+                {{ tag }}
+              </v-chip>
+              <p class="info-text mt-3 pd-0">
+                <span class="mx-3">
+                  <v-icon>mdi-account</v-icon>
+                  <a :href="`/center/${post.created_by.user_id}`" @click.stop class="ml-2" style="font-size: 16px;" target="blank">
+                    {{post.created_by.username}}
+                  </a>
+                </span>
+                <span> 分享时间: <span class="timestamp">{{ format(post.created_at, 'yyyy-MM-dd HH:mm:ss') }}</span> </span>
+              </p>
+            </div>
+            <!-- Action Buttons on Top Right -->
+            <div class="action-buttons">
+              <v-btn icon @click="removeFavorite(post.id)" class="remove-btn">
+                <v-icon>mdi-heart-remove</v-icon>
+              </v-btn>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </v-container>
+    </v-container>
+  </div>
 </template>
 <script>
+import Loading from '../Loading.vue';
 import { format } from 'date-fns';
 export default {
   data() {
     return {
+      loading: true,
       posts: [],
     };
   },
-  comments: {
+  components: {
+    Loading,
     format,
   },
   methods: {
@@ -43,6 +55,7 @@ export default {
     removeFavorite(postId) {
       this.$store.dispatch("notFavourPost", {id: postId})
         .then((res) => {
+          this.$store.commit("setFavorites", this.$store.state._favorites_ - 1);
           this.posts = this.posts.filter((post) => post.id !== postId);
         })
         .catch((err) => {
@@ -56,6 +69,7 @@ export default {
     this.$store.dispatch("getFavorites", {id: this.$store.state._user_id_})
       .then((res) => {
         this.posts = res.favourites;
+        this.loading = false;
       })
       .catch((err) => {
         console.error(err);
@@ -122,7 +136,6 @@ export default {
 }
 
 .info-text {
-  margin: 10px 0;
   font-size: 14px;
   color: #666;
 }

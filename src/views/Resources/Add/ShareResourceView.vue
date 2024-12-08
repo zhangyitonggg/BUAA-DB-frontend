@@ -186,6 +186,7 @@ export default {
         link: this.link,
       })
         .then(() => {
+          this.$store.commit("setShares", this.$store.state._shares_ + 1);
           this.$store.commit("setAlert", {
             type: "success",
             message: "发布成功！",

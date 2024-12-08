@@ -13,7 +13,8 @@
                 <img :src="task.created_by.avatar" alt="avatar">
               </v-avatar>
               <div class="task-time text-grey text--small">
-                {{ task.created_by.username }} 发布于：{{ new Date(task.created_at).toLocaleString() }}
+                <a :href="`/center/${task.created_by.user_id}`" @click.stop class="ml-2" style="font-size: 16px;" target="blank">{{ task.created_by.username }}</a>
+                发布于：{{ new Date(task.created_at).toLocaleString() }}
               </div>
               <v-chip
                 :color="task.open ? 'green' : 'red'"
@@ -61,7 +62,7 @@
             <v-avatar size="32">
             <img :src="submit.created_by.avatar" alt="avatar">
             </v-avatar>
-              <div class="ml-2" style="font-size: 20px;">{{ submit.created_by.username }}</div>
+              <a :href="`/center/${submit.created_by.user_id}`" @click.stop class="ml-2" style="font-size: 20px;" target="blank">{{ submit.created_by.username }}</a>
             <div class="text-grey ml-auto">{{ formatDate(submit.created_at) }}</div>
           </div>
           <div class="mt-2" style="font-size: 18px;">{{ submit.profile }}</div>

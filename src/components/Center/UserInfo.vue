@@ -17,7 +17,7 @@
                 用户名
               </v-list-item-title>
               <v-list-item-subtitle style="margin-left:9.2%;">
-                {{ this.$store.state._user_name_ }}
+                {{ this.username }}
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -28,7 +28,7 @@
                 身份
               </v-list-item-title>
               <v-list-item-subtitle style="margin-left:9.2%;">
-                {{ this.$store.state._role_ === 'Administrator' ? '管理员' : '普通用户' }}
+                {{ this.userrole == 1 ? '管理员' : '普通用户' }}
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -52,29 +52,43 @@
           </v-list-item>
         </v-col>
         <v-col cols="4" style="margin-top: 20px;">
-          <v-img
-            :key="avatarUrl"
-            :src="avatarUrl"
-            aspect-ratio="1"
-            height="130px"
-            width="130px"
-            contain
-            style="transform: translateX(-9%); border-radius: 50%; overflow: hidden;"
-          ></v-img>
-          <v-btn text color="primary" @click="onSelectNewAvatar">选择新头像</v-btn>
-          <!-- 隐藏的文件输入框 -->
-          <input
-            ref="fileInput"
-            type="file"
-            accept="image/*"
-            style="display: none;"
-            @change="onFileSelected"
-          />
+          <div style="text-align: center;">
+            <v-avatar
+              size="150"
+              rounded="true"
+            >
+              <v-img
+                :key="avatarUrl"
+                :src="avatarUrl"
+              />
+            </v-avatar>
+            <div class="mt-2">
+              <v-btn text color="primary" @click="onSelectNewAvatar" v-if="this.user_id == $store.state._user_id_">
+                选择新头像
+              </v-btn>
+              <!-- 隐藏的文件输入框 -->
+              <input
+                ref="fileInput"
+                type="file"
+                accept="image/*"
+                style="display: none;"
+                @change="onFileSelected"
+              />
+            </div>
+            <div class="mt-2">
+              <v-btn text color="error" outlined @click="toggleFollow($route.params.id)" v-if="follow">
+                取消关注
+              </v-btn>
+              <v-btn text color="success" outlined @click="toggleFollow($route.params.id)" v-else>
+                关注用户
+              </v-btn>
+            </div>
+          </div>
         </v-col>
-        <v-col style="padding: 0;" cols="12">
+        <v-col style="padding: 0;" cols="12" v-if="this.user_id == $store.state._user_id_">
           <v-divider></v-divider>
         </v-col>
-        <v-col style="padding: 0.1px;" class="text-right">
+        <v-col style="padding: 0.1px;" class="text-right" v-if="this.user_id == $store.state._user_id_">
           <v-btn text color="red" @click="showPasswordDialog">修改密码</v-btn>
           <v-btn text color="red" @click="showEmailDialog">修改电子邮件地址</v-btn>
           <v-btn text color="red" @click="showTagDialog">修改个性标签</v-btn>
@@ -96,7 +110,9 @@
               <v-list-item-title>
                 <v-icon left>mdi-bootstrap</v-icon>
                 菜币数量 &nbsp;&nbsp; {{moneyNumber}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <v-chip color="yellow" label small class="me-1" @click="showGiveMeMoneyDialog = true">去充值</v-chip>
+                <v-chip color="yellow" label small class="me-1" @click="showGiveMeMoneyDialog = true" v-if="this.user_id == $store.state._user_id_">
+                  去充值
+                </v-chip>
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -128,7 +144,7 @@
             <v-list-item-content>
               <v-list-item-title>
                 <v-icon left>mdi-invoice-text-multiple-outline</v-icon>
-                发帖数量
+                分享数量
               </v-list-item-title>
               <v-list-item-title style="margin-left:13%;">{{postNumber}}</v-list-item-title>
             </v-list-item-content>
@@ -220,6 +236,7 @@ export default {
   },
   data() {
     return {
+      user_id: this.$route.params.id,
       loading: true,
       tagDialog: false,
       passwordDialog: false,
@@ -236,13 +253,18 @@ export default {
       fansNumber: 0,
       postNumber: 0,
       answerNumber: 0,
+      username:"",
+      userrole: 0,
       avatarUrl: "", // 当前头像路径
+      follow: false,
     };
   },
-  created() {
+  mounted() {
       this.$store.commit("setAppTitle", "用户信息");
-      this.$store.dispatch("getUserProfile", {id: this.$store.state._user_id_})
+      this.$store.dispatch("getUserProfile", {id: this.$route.params.id})
         .then((res) => {
+          this.username = res.username;
+          this.userrole = res.role;
           this.personalityTag = res.signature;
           if (!this.personalityTag) this.personalityTag = "这个人很懒，什么也没有写。";
           this.email = res.email;
@@ -256,8 +278,39 @@ export default {
           this.loading = false;
         })
         .catch((err) => { this.$store.commit("setAlert", {type: "error", message: err}); });
+      this.$store.dispatch("getFollows", { id: this.$store.state._user_id_ })
+        .then((res) => {
+          if (res.users.find((user) => user.id == this.$route.params.id)) {
+            this.follow = true;
+          }
+        })
+        .catch((err) => {
+          this.$store.commit("setAlert", {
+            type: "error",
+            message: err,
+          });
+        });
   },
   methods: {
+    toggleFollow(id) {
+      if (this.follow == false) {
+        this.follow = true;
+        this.$store.dispatch("followUser", {id: id })
+          .then((res) => {
+            this.$store.commit("setAlert", { "type": "success", "message": "已关注。" });
+            this.$store.commit("setFollows", this.$store.state._follows_ + 1);
+          })
+          .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
+      } else {
+        this.follow = false;
+        this.$store.dispatch("notFollowUser", {id: id })
+          .then((res) => {
+            this.$store.commit("setAlert", { "type": "success", "message": "已取关。" });
+            this.$store.commit("setFollows", this.$store.state._follows_ - 1);
+          })
+          .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
+      }
+    },
     showTagDialog() {
       this.newPersonalityTag = this.personalityTag;
       this.tagDialog = true;

@@ -1,5 +1,6 @@
 <template>
   <v-menu
+    v-model="menuStatus"
     bottom
     min-width="130px"
     rounded
@@ -24,7 +25,7 @@
               <v-col class="text-center">
                 <v-btn depressed text @click="navigateTo('/follows')">
                   <div>
-                    <h2> {{ this.followCount }} </h2>
+                    <h2> {{ $store.state._follows_ }} </h2>
                     关注
                   </div>
                 </v-btn>
@@ -32,7 +33,7 @@
               <v-col class="text-center">
                 <v-btn depressed text @click="navigateTo('/favorites')">
                   <div>
-                    <h2> {{ this.favoriteCount }} </h2>
+                    <h2> {{ $store.state._favorites_ }} </h2>
                     收藏
                   </div>
                 </v-btn>
@@ -40,7 +41,7 @@
               <v-col class="text-center">
                 <v-btn depressed text @click="navigateTo('/resources/own')">
                   <div>
-                    <h2> {{ this.postCount }} </h2>
+                    <h2> {{ $store.state._shares_ }} </h2>
                     分享
                   </div>
                 </v-btn>
@@ -48,7 +49,7 @@
               <v-col class="text-center">
                 <v-btn depressed text @click="navigateTo('/tasks/own')">
                   <div>
-                    <h2> {{ this.tasksCount }} </h2>
+                    <h2> {{ $store.state._missions_ }} </h2>
                     任务
                   </div>
                 </v-btn>
@@ -81,11 +82,15 @@
 export default {
   data() {
     return {
-      followCount: 0,
-      postCount: 0,
-      favoriteCount: 0,
-      tasksCount: 0,
+      menuStatus: false,
     };
+  },
+  watch: {
+    menuStatus(newStatus) {
+    if (newStatus) {
+      this.updateInfo();
+    }
+  }
   },
   methods: {
     navigateTo(route) {
@@ -99,48 +104,48 @@ export default {
       this.$store.commit("clearPersonalInfo");
       this.$router.push("/auth");
     },
-  },
-  mounted() {
-    this.$store.dispatch("getFollows", { id: this.$store.state._user_id_ })
-      .then((res) => {
-        this.followCount = res.total
-      })
-      .catch((err) => {
-        this.$store.commit("setAlert", {
-          type: "error",
-          message: err,
+    updateInfo() {
+      this.$store.dispatch("getFollows", { id: this.$store.state._user_id_ })
+        .then((res) => {
+          this.$store.commit("setFollows", res.total);
+        })
+        .catch((err) => {
+          this.$store.commit("setAlert", {
+            type: "error",
+            message: err,
+          });
         });
-      });
-    this.$store.dispatch("ownPosts",)
-      .then((res) => {
-        this.postCount = res.total
-      })
-      .catch((err) => {
-        this.$store.commit("setAlert", {
-          type: "error",
-          message: err,
+      this.$store.dispatch("ownPosts",)
+        .then((res) => {
+          this.$store.commit("setShares", res.total);
+        })
+        .catch((err) => {
+          this.$store.commit("setAlert", {
+            type: "error",
+            message: err,
+          });
         });
-      });
-    this.$store.dispatch("getFavorites", { id: this.$store.state._user_id_ })
-      .then((res) => {
-        this.favoriteCount = res.total
-      })
-      .catch((err) => {
-        this.$store.commit("setAlert", {
-          type: "error",
-          message: err,
+      this.$store.dispatch("getFavorites", { id: this.$store.state._user_id_ })
+        .then((res) => {
+          this.$store.commit("setFavorites", res.total);
+        })
+        .catch((err) => {
+          this.$store.commit("setAlert", {
+            type: "error",
+            message: err,
+          });
         });
-      });
-    this.$store.dispatch("ownTasks")
-      .then((res) => {
-        this.tasksCount = res.total
-      })
-      .catch((err) => {
-        this.$store.commit("setAlert", {
-          type: "error",
-          message: err,
+      this.$store.dispatch("ownTasks")
+        .then((res) => {
+          this.$store.commit("setMissions", res.total);
+        })
+        .catch((err) => {
+          this.$store.commit("setAlert", {
+            type: "error",
+            message: err,
+          });
         });
-      });
+    }
   },
 };
 </script>
@@ -151,10 +156,16 @@ export default {
   border-radius: 8px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  width: fix-content;
+  width: fit-content;
+  min-width: 290px;
 }
 
 .v-list-item {
   width: 100%;
+}
+
+.v-btn {
+  width: 100%;
+  height: fit-content;
 }
 </style>

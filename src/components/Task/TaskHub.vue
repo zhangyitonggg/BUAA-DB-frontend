@@ -72,12 +72,12 @@
                 </v-chip>
               </v-chip-group>
             </div>
-            <div class="card-middle pa-0 ma-0">
-              <span class="author">发布于: {{ format(item.created_at, 'yyyy-MM-dd HH:mm:ss') }}</span>
+            <div class="pa-0 ma-0">
+              <span style="font-size: 14px;">发布于: {{ format(item.created_at, 'yyyy-MM-dd HH:mm:ss') }}</span>
               <v-avatar size="20" class="mr-2">
                 <img :src="item.created_by.avatar" alt="avatar">
               </v-avatar>
-              <span class="author">{{ item.created_by.username }}</span>
+              <a :href="`/center/${item.created_by.user_id}`" @click.stop style="font-size: 16px;" target="blank">{{ item.created_by.username }}</a>
             </div>
             <div class="action-buttons" v-if="$store.state._role_ === 'Administrator'">
               <v-btn color="red" icon @click.stop="tryDelete(item)">
@@ -371,11 +371,6 @@ span {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-}
-
-.author {
-  font-size: 14px;
-  color: #333;
 }
 
 button {

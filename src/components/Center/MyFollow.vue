@@ -1,16 +1,16 @@
 <template>
     <v-container style="max-width: 70%;">
       <div class="follow-list" v-if="users.length != 0">
-        <div v-for="(user, index) in users" :key="index" class="user-card">
+        <div v-for="(user, index) in users" :key="index" class="user-card" @click="openUserCenter(user.id)">
           <img :src="user.avatar" class="avatar" />
           <div class="user-info">
-            <div class="user-name">
+            <div class="user-name ml-2">
               {{ user.username }}
-              <span v-if="user.isAdmin" class="verified-badge">✔</span>
+              <span v-if="user.role" class="verified-badge">✔</span>
             </div>
-            <div class="user-description">{{ user.description }}</div>
+            <div class="user-description">{{ user.description == null ? "这个人很懒，什么也没有写。" : user.description }}</div>
           </div>
-          <button class="follow-btn" :class="{ followed: user.followed }" @click="unFollow(user)">
+            <button class="follow-btn" :class="{ followed: user.followed }" @click.stop="unFollow(user)">
             取消关注
           </button>
         </div>
@@ -34,12 +34,16 @@ export default {
       this.$store.dispatch("notFollowUser", { id: user.id }).then(() => {
         user.followed = false;
         this.users = this.users.filter(u => u !== user);
+        this.$store.commit("setFollows", this.$store.state._follows_ - 1);
       }).catch((err) => {
         this.$store.commit("setAlert", {
           type: "error",
           message: err,
         });
       });
+    },
+    openUserCenter(id) {
+      window.open(`/center/${id}`, "_blank");
     },
   },
   mounted() {
@@ -85,7 +89,7 @@ export default {
   }
 
   .user-name {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: bold;
   }
 

@@ -115,7 +115,7 @@
                           <v-avatar size="20" class="mr-1">
                             <img :src="item.created_by.avatar" alt="User" />
                           </v-avatar>
-                          <span> {{ item.created_by.username }}</span>
+                          <a :href="`/center/${item.created_by.user_id}`" @click.stop class="mr-2" style="font-size: 16px;" target="blank">{{ item.created_by.username }}</a>
                           <span>{{ formatDate(item.created_at) }}</span>
                         </div>
                       </div>

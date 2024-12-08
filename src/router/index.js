@@ -139,7 +139,11 @@ const routes = [
   },
   {
     path: '/center',
-    name: 'center',
+    redirect: () => `/center/${store.state._user_id_}`
+  },
+  {
+    path: '/center/:id',
+    name: 'center-detail',
     component: () => import('../views/Center/CenterView.vue'),
     meta: {
       requiresAuth: true,

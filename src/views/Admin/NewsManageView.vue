@@ -1,82 +1,60 @@
 <template>
   <v-container class="spacing-playground pa-16" fluid style="width: 85%;">
     <div>
-        <template v-if="loading">
-          <v-container fluid class="d-flex align-center justify-center">
-            <v-row class="text-center">
-              <v-col>
-                <v-progress-circular indeterminate color="primary" size="64"></v-progress-circular>
-              </v-col>
-            </v-row>
-          </v-container>
-          <v-container fluid class="d-flex align-center justify-center">
-            <v-row class="text-center">
-              <v-col>
-                <h3>
-                  潮平两岸阔，风正一帆悬。
-                </h3>
-                <h4>
-                  欢迎回到 ASEPT。
-                </h4>
-                <span>正在获取公告。</span>
-              </v-col>
-            </v-row>
-          </v-container>
-        </template>
-
-        <template v-else>
-          <v-row justify="center">
-            <v-expansion-panels inset v-model="activePanel">
-              <v-expansion-panel
-                v-for="(item, i) in news"
-                :key="i"
-              >
-                <v-expansion-panel-header>
-                  <div style="display: flex; justify-content: space-between; width: 100%;">
-                    <div>{{ item.title }}</div>
-                    <div style="color: grey; text-align: right; margin-right: 16px;">
-                      <span>{{ formatDate(item.notified_at) }}</span>
-                    </div>
+      <loading v-if="loading"></loading>
+      <template v-else>
+        <v-row justify="center">
+          <v-expansion-panels inset v-model="activePanel">
+            <v-expansion-panel
+              v-for="(item, i) in news"
+              :key="i"
+            >
+              <v-expansion-panel-header>
+                <div style="display: flex; justify-content: space-between; width: 100%;">
+                  <div>{{ item.title }}</div>
+                  <div style="color: grey; text-align: right; margin-right: 16px;">
+                    <span>{{ formatDate(item.notified_at) }}</span>
                   </div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <v-md-preview :text="item.content"></v-md-preview>
-                  <!-- <v-btn block @click="initAnnouncementModifyDialog(item)"> 修改公告 </v-btn> -->
+                </div>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <v-md-preview :text="item.content"></v-md-preview>
+                <!-- <v-btn block @click="initAnnouncementModifyDialog(item)"> 修改公告 </v-btn> -->
 
-                  <v-dialog v-model="dialog_modifyannouncement" width="50%">
-                    <v-card>
-                      <v-card-title>
-                        修改公告
-                      </v-card-title>
-                      <v-card-text>
-                        <v-text-field label="公告标题" filled outlined v-model="announcementTitle"></v-text-field>
-                        <v-textarea label="公告内容" filled outlined rows="20" v-model="announcementContent"></v-textarea>
-                      </v-card-text>
-                      <v-divider></v-divider>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="primary" text @click="modifyAnnouncement(item)" :disabled="loading"
-                          :loading="loading"> 修改
-                        </v-btn>
-                        <v-btn color="error" text @click="dialog_modifyannouncement = false" :disabled="loading"> 取消
-                        </v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
+                <v-dialog v-model="dialog_modifyannouncement" width="50%">
+                  <v-card>
+                    <v-card-title>
+                      修改公告
+                    </v-card-title>
+                    <v-card-text>
+                      <v-text-field label="公告标题" filled outlined v-model="announcementTitle"></v-text-field>
+                      <v-textarea label="公告内容" filled outlined rows="20" v-model="announcementContent"></v-textarea>
+                    </v-card-text>
+                    <v-divider></v-divider>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="primary" text @click="modifyAnnouncement(item)" :disabled="loading"
+                        :loading="loading"> 修改
+                      </v-btn>
+                      <v-btn color="error" text @click="dialog_modifyannouncement = false" :disabled="loading"> 取消
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
 
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-            </v-expansion-panels>
-          </v-row>
-        </template>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </v-row>
         <v-banner v-if="news.length === 0">
           好吧，看起来现在还没有公告。
         </v-banner>
+      </template>
     </div>
     <v-btn class="fixed-button1" fab dark color="indigo" @click="dialog_openannouncement = true">
-        <v-icon dark>
-          mdi-invoice-plus
-        </v-icon>
+      <v-icon dark>
+        mdi-invoice-plus
+      </v-icon>
     </v-btn>
     <v-dialog v-model="dialog_openannouncement" width="50%">
       <v-card>
@@ -108,11 +86,12 @@ import hljs from 'highlight.js';
 VMdPreview.use(githubTheme, {
   Hljs: hljs,
 });
-
+import Loading from '@/components/Loading.vue';
 export default {
   name: "NewsList",
   components: {
     VMdPreview,
+    Loading,
   },
   data() {
     return {
