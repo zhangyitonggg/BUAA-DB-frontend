@@ -82,7 +82,7 @@ export default {
       tableHeaders: [
         { text: '资源名称', value: 'title' },
         { text: '帖子类别', value: 'category' },
-        { text: '费用or报酬', value: 'cost' },
+        { text: '菜币', value: 'cost' },
       ],
       tableData: [
         { id: 1, title: '计算机组成课程往年考试', category: 0, cost: '10', username: '张三' },
