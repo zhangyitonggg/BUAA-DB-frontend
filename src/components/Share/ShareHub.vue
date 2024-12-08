@@ -253,7 +253,7 @@ export default {
     },
     tryOpenItem(item) {
       this.curItem = item;
-      if (item.cost > 0 && this.$store.state._role_ !== 'Administrator' && !item.created_by.user_id === this.$store.state._user_id_) {
+      if (item.cost > 0 && this.$store.state._role_ != 'Administrator' && item.created_by.user_id != this.$store.state._user_id_) {
         this.$store.dispatch("getPost", { id: item.post_id })
           .then(res => {
             if (res.paid) {
