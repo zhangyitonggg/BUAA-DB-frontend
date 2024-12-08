@@ -68,10 +68,10 @@
                 <v-row no-gutters class="picture">
                   <v-col cols="auto" class="d-flex align-center">
                     <v-icon v-if="item.cost>0" color="#FFB300"
-                      style="font-size: 106px; margin-left: -10px; margin-right: -20px;">mdi-file-download-outline
+                      style="font-size: 126px; margin-left: -10px; margin-right: -20px;">mdi-file-download-outline
                     </v-icon>
                     <v-icon v-else color="gray"
-                      style="font-size: 106px; margin-left: -10px; margin-right: -20px;">mdi-file-document-outline
+                      style="font-size: 126px; margin-left: -10px; margin-right: -20px;">mdi-file-document-outline
                     </v-icon>
                   </v-col>
                   <v-col>
