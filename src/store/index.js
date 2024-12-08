@@ -23,6 +23,7 @@ export default new Vuex.Store({
     _user_id_: null,
     myFavorite: false,
     _follows_: [],
+    _avatar_url_: "https://s2.loli.net/2024/12/08/MeOiLyYdNt7wK5E.png",
   },
 
   mutations,

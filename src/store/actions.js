@@ -3,13 +3,17 @@ import api from "../api";
 export default {
   async login(context, { username, password, remember }) {
     return await api.login(username, password)
-      .then(response => {
-        localStorage.setItem('__user_name__', username);
-        localStorage.setItem('_user_role_', response.role);
-        localStorage.setItem('_user_id_', response.user_id);
-        return response;
-      })
-      .catch(error => { throw error; });
+      .then(async response => {
+        return await api.getUserProfile(response.user_id)
+          .then((profile) => {
+            let avatar = profile.avatarurl;
+            localStorage.setItem('_user_avatar_', avatar);
+            localStorage.setItem('__user_name__', username);
+            localStorage.setItem('_user_role_', response.role);
+            localStorage.setItem('_user_id_', response.user_id);
+            return response;
+          }).catch(error => { throw error; });
+      }).catch(error => { throw error; });
   },
   async register(context, { username, password }) { return await api.register(username, password) },
   async getNews(context, { page }) { return await api.getnews(page); },

@@ -1,11 +1,12 @@
 <template>
   <div>
-    <v-container>
+    <loading v-if="loading" />
+    <v-container v-else>
       <!-- 帖子标题部分 -->
       <v-card class="mt-5 pa-5">
         <v-card-title class="d-flex align-center">
           <v-avatar size="40" style="margin-left:-20px;">
-              <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="Author" />
+              <img :src="post.created_by.avatar" alt="Author" />
           </v-avatar>
           <span class="title font-weight-bold">{{ post.title }}</span>
           <v-chip
@@ -18,11 +19,11 @@
             {{ tag }}
           </v-chip>
         </v-card-title>
-        <v-card-subtitle class="grey--text text--darken-1" style="margin-left: 32px;">{{post.created_by.username}} 发表于 {{ post.created_at }}</v-card-subtitle>
+        <v-card-subtitle class="grey--text text--darken-1" style="margin-left: 32px;">{{ post.created_by.username }} 发表于 {{ format(post.created_at, 'yyyy-MM-dd HH:mm:ss') }}</v-card-subtitle>
         <v-divider></v-divider>
         <!-- 帖子内容部分 -->
         <v-card-text>
-          <v-md-preview :text="post.content"></v-md-preview>
+          <v-md-preview :text="post.content == null ? '' : post.content"></v-md-preview>
         </v-card-text>
         <!-- 按钮操作 -->
         <v-card-actions class="d-flex justify-space-between flex-wrap">
@@ -59,7 +60,7 @@
       </v-card>
       <!-- 回答部分 -->
       <v-card class="mt-5 pa-5">
-        <v-card-title>{{ comments.length }} 条评论</v-card-title>
+        <v-card-title>{{ comments && comments.length ? comments.length : 0 }} 条评论</v-card-title>
         <v-card flat>
           <!-- 输入框 -->
           <v-card-text class="pa-0">
@@ -85,9 +86,9 @@
             <!-- 用户信息 -->
             <v-card-title class="d-flex align-center">
               <v-avatar size="30" class="mr-2">
-                <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="User" />
+                <img :src="comment.created_by.avatar" alt="User" />
               </v-avatar>
-              <span style="font-size: 1.2rem; font-weight: bold;">{{ comment.created_by.username }} - 发表于 {{ comment.created_at }}</span>
+              <span style="font-size: 1.2rem; font-weight: bold;">{{ comment.created_by.username }} 发表于 {{ format(comment.created_at, 'yyyy-MM-dd HH:mm:ss') }}</span>
             </v-card-title>
             <!-- 评论内容 -->
             <v-card-text>
@@ -215,18 +216,22 @@
   </div>
 </template>
 <script>
+import Loading from '../Loading.vue';
 import VMdPreview from '@kangc/v-md-editor/lib/preview';
 import '@kangc/v-md-editor/lib/style/preview.css';
 import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
 import '@kangc/v-md-editor/lib/theme/style/github.css';
 import hljs from 'highlight.js';
+import { format } from 'date-fns';
 VMdPreview.use(githubTheme, {
   Hljs: hljs,
 });
 export default {
   name: "PostPage",
   components: {
-    VMdPreview
+    VMdPreview,
+    format,
+    Loading,
   },
   data() {
     return {
@@ -238,7 +243,13 @@ export default {
         tags: [],
       },
       loading: true,
-      post: {},
+      post: {
+        title: "",
+        cost: 0,
+        content: "",
+        bhpan_url: "",
+        tags: [],
+      },
       followed: false,
       dialog: false, // 控制弹框显示
       newComment: "", // 用户输入的评论
@@ -295,6 +306,7 @@ export default {
     },
   },
   methods: {
+    format,
     openModifyDialog() {
       this.newPost = JSON.parse(JSON.stringify(this.post));
       console.log(this.newPost);
@@ -320,7 +332,10 @@ export default {
         .then((res) => {
           this.post = res;
           this.$store.dispatch("getPostComments", { id: this.$route.params.id })
-            .then((res) => { this.comments = res.comments; })
+            .then((res) => {
+              this.comments = res.comments;
+              this.loading = false;
+            })
             .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
           this.$store.dispatch("getFollows", { id: this.$store.state._user_id_ })
             .then((res) => {
@@ -331,7 +346,6 @@ export default {
             .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
         })
         .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
-      this.loading = false;
     },
     openBhpan() {
       window.open(this.post.bhpan_url);

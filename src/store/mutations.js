@@ -5,6 +5,9 @@ export default {
   setFollows(state, follows) {
     state._follows_ = follows;
   },
+  setAvatar(state, avatar) {
+    state._avatar_url_ = avatar;
+  },
   // 注销账户
   clearPersonalInfo(state) {
     state._user_name_ = null;
@@ -31,9 +34,13 @@ export default {
     let user_name = localStorage.getItem('__user_name__');
     let user_role = localStorage.getItem('_user_role_');
     let user_id = localStorage.getItem('_user_id_');
+    let avatar = localStorage.getItem('_user_avatar_');
     state._user_name_ = user_name;
     state._role_ = user_role;
     state._user_id_ = user_id;
+    if (avatar) {
+      state._avatar_url_ = avatar;
+    }
   },
   // 设置是否显示颗粒
   setParticles(state, payload) {
