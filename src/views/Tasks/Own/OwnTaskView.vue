@@ -28,13 +28,17 @@
 </template>
 
 <script>
+import { format } from 'date-fns';
 export default {
+  comments: {
+    format,
+  },
   data() {
     return {
       dialog: false,
       curItem: null,
       headers: [
-        { text: "ID", value: "index" },
+        { text: "ID", value: "mission" },
         { text: "标题", value: "title" },
         { text: "创建时间", value: "created_at" },
         { text: "费用", value: "commission" },
@@ -45,9 +49,14 @@ export default {
     };
   },
   methods: {
+    format,
     getOwnTask() {
-      this.$store.dispatch("getOwnTask").then((res) => {
+      this.$store.dispatch("ownTasks").then((res) => {
         this.ownTasks = res.posts;
+        res.posts.forEach((item, index) => {
+          item.index = index + 1;
+          item.created_at = format(new Date(item.created_at), "yyyy-MM-dd HH:mm:ss");
+        });
       })
         .catch((err) => {
           this.$store.commit("setAlert", {
@@ -56,12 +65,9 @@ export default {
           });
         });
     },
-    back() {
-      this.$router.push("/tasks");
-    },
     // 查看操作
     viewItem(item) {
-      window.open(`/tasks/${item.id}`);
+      window.open(`/tasks/${item.mission}`);
     },
   },
   mounted() {

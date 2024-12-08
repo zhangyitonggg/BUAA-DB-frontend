@@ -244,8 +244,18 @@ export default {
     },
     tryOpenItem(item) {
       this.curItem = item;
-      if (item.cost > 0) {
-        this.dialog = true;
+      if (item.cost > 0 && this.$store.state._role_ !== 'Administrator' && !item.created_by.user_id === this.$store.state._user_id_) {
+        this.$store.dispatch("getPost", { id: item.post_id })
+          .then(res => {
+            if (res.paid) {
+              this.goToPage('/resources/' + item.post_id);
+            } else {
+              this.dialog = true;
+            }
+          })
+          .catch(e => {
+            this.$store.commit("setAlert", { type: "error", message: e });
+          });
       } else {
         this.goToPage('/resources/' + item.post_id);
       }
