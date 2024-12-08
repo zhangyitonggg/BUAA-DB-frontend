@@ -161,6 +161,7 @@ export default {
           this.$store.dispatch("getNews", {page: 1})
             .then(res => {
               this.news = res.messages;
+              this.news.sort((a, b) => new Date(b.notified_at) - new Date(a.notified_at));
             })
             .catch(_ => {
               this.news = [];
