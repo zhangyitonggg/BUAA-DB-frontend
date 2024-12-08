@@ -112,7 +112,13 @@ export default {
       .finally(() => {
         this.loading = false;
       });
-    
+    this.$store.dispatch("getChart")
+      .then(res => {
+        console.log('获取到的统计图数据：', res);
+      })
+      .catch(_ => {
+        this.$store.commit("setAlert", { type: "error", message: "无法获取统计图数据。请检查你的网络设置。" })
+      });
   },
   methods: {
     viewDetails(item) {
