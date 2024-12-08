@@ -3,10 +3,10 @@
     <Loading v-if="loading" />
     <template v-else>
       <v-container>
-        <v-card outlined class="pa-4 top">
+        <v-card outlined class="pa-2 top">
           <div class="filters">
-            <v-row class="align-center">
-              <v-col cols="auto">
+            <v-row class="align-center" no-gutters>
+              <v-col cols="auto" style="margin-bottom: 0px;">
                 <span><strong>排序</strong>:</span>
               </v-col>
               <v-col>
@@ -22,11 +22,11 @@
                   :class="{ active: filters.sort_by === 3 }">最近评论</span>
               </v-col>
             </v-row>
-            <v-row class="align-center">
-              <v-col cols="auto">
+            <v-row class="align-center my-0 py-0">
+              <v-col cols="auto" class="my-0 py-0">
                 <span><strong>收费</strong>:</span>
               </v-col>
-              <v-col>
+              <v-col class="my-0 py-0">
                 <v-radio-group v-model="filters.pay" row>
                   <v-radio label="不限" :value="0"></v-radio>
                   <v-radio label="收费" :value="1"></v-radio>
@@ -34,14 +34,15 @@
                 </v-radio-group>
               </v-col>
             </v-row>
-            <v-row class="align-center">
-              <v-col cols="auto">
+            <v-row class="align-center my-0 py-0">
+              <v-col cols="auto" class="my-0 py-0">
                 <span><strong>标签筛选</strong>:</span>
               </v-col>
-              <v-col>
-                <v-chip-group multiple column active-class="active-tag">
+              <v-col class="my-0 py-0">
+                <v-chip-group multiple column active-class="active-tag" class="my-0 py-0">
                   <v-chip v-for="(tag, index) in availableTags" :key="index"
                     :color="getTagColor(tag)"
+                    class="my-0 py-0"
                     outlined @click="toggleTag(tag)">
                     {{ tag }}
                   </v-chip>
@@ -51,7 +52,7 @@
           </div>
           <!-- 底部的搜索栏 -->
           <v-divider></v-divider>
-          <v-row class="mt-4">
+          <v-row class="mt-0">
             <v-col>
               <v-text-field v-model="filters.search" label="请输入搜索内容" placeholder="" filled
                 append-icon="mdi-magnify" hide-details></v-text-field>
@@ -64,59 +65,63 @@
           <v-col>
             <div class="card-container">
               <!-- 卡片主体 -->
-              <v-card outlined class="card-content" style="cursor: pointer;" @click.stop="tryOpenItem(item)">
+              <v-card outlined class="card-content" style="cursor: pointer; padding: 0; margin: 0;" @click.stop="tryOpenItem(item)">
                 <v-row no-gutters class="picture">
-                  <v-col cols="auto" class="d-flex align-center">
+                  <v-col cols="auto" class="d-flex align-center" no-gutters>
                     <v-icon v-if="item.cost>0" color="#FFB300"
-                      style="font-size: 126px; margin-left: -10px; margin-right: -20px;">mdi-file-download-outline
+                      style="font-size: 100px; margin-left: -10px; margin-right: -20px;">mdi-file-download-outline
                     </v-icon>
                     <v-icon v-else color="gray"
-                      style="font-size: 126px; margin-left: -10px; margin-right: -20px;">mdi-file-document-outline
+                      style="font-size: 100px; margin-left: -10px; margin-right: -20px;">mdi-file-document-outline
                     </v-icon>
                   </v-col>
                   <v-col>
-                    <v-card-title>
-                      {{ item.title }}
-                      <v-icon v-if="item.cost > 0" color="#F8CC00">mdi-bitcoin</v-icon>
-                      <span v-if="item.cost > 0"
-                        style="font-size: 13px; color: #666666; margin-left: 0.2%;">
-                        {{ item.cost }} 菜币
-                      </span>
-                    </v-card-title>
                     <v-card-text>
-                      {{ item.profile }}
+                      <h2>
+                        {{ item.title }}
+                        <v-icon v-if="item.cost > 0" color="#F8CC00">mdi-bitcoin</v-icon>
+                        <span v-if="item.cost > 0"
+                          style="font-size: 13px; color: #666666; margin-left: 0.2%;">
+                          {{ item.cost }} 菜币
+                        </span>
+                      </h2>
+                      <div style="margin-top: 1%;">
+                        {{ item.profile }}
+                      </div>
+                      <div style="margin-left: 1.8%; margin-top: 1%;" v-if="item.tags.length > 0">
+                        <v-chip v-for="(tag, tagIndex) in item.tags" :key="tagIndex" color="aqua"
+                          label small class="me-3">
+                          {{ tag }}
+                        </v-chip>
+                      </div>
+                      <div style="display: flex; justify-content: space-between; margin-top: 2%;">
+                        <div style="display: flex;">
+                          <span>
+                            <v-icon style="display: inline-block; margin-top: -7px;">mdi-thumb-up</v-icon>
+                            <span class="ml-2">{{ item.likes }}</span>
+                          </span>
+                          <span>
+                            <v-icon>mdi-thumb-down</v-icon>
+                            <span class="ml-2">{{ item.dislikes }}</span>
+                          </span>
+                          <span>
+                            <v-icon>mdi-heart-box</v-icon>
+                            <span class="ml-2">{{ item.favorites }}</span>
+                          </span>
+                          <span>
+                            <v-icon>mdi-comment-multiple</v-icon>
+                            <span class="ml-2">{{ item.comment }}</span>
+                          </span>
+                        </div>
+                        <div style="text-align: right;">
+                          <v-avatar size="20" class="mr-1">
+                            <img :src="item.created_by.avatar" alt="User" />
+                          </v-avatar>
+                          <span> {{ item.created_by.username }}</span>
+                          <span>{{ formatDate(item.created_at) }}</span>
+                        </div>
+                      </div>
                     </v-card-text>
-                    <div style="margin-left: 1.8%;">
-                      <v-chip v-for="(tag, tagIndex) in item.tags" :key="tagIndex" color="aqua"
-                        label small class="me-3">
-                        {{ tag }}
-                      </v-chip>
-                    </div>
-                    <v-card-actions style="margin-left: 0.8%;">
-                      <div>
-                        <span>
-                          <v-icon
-                            style="display: inline-block; margin-top: -7px;">mdi-thumb-up</v-icon>
-                          <span class="ml-2">{{ item.likes }}</span>
-                        </span>
-                        <span>
-                          <v-icon>mdi-thumb-down</v-icon>
-                          <span class="ml-2">{{ item.dislikes }}</span>
-                        </span>
-                        <span>
-                          <v-icon>mdi-heart-box</v-icon>
-                          <span class="ml-2">{{ item.favorites }}</span>
-                        </span>
-                        <span>
-                          <v-icon>mdi-comment-multiple</v-icon>
-                          <span class="ml-2">{{ item.comment }}</span>
-                        </span>
-                      </div>
-                      <div class="ml-auto">
-                        <span>{{ item.created_by.username }}</span>
-                        <span>{{ formatDate(item.created_at) }}</span>
-                      </div>
-                    </v-card-actions>
                   </v-col>
                 </v-row>
               </v-card>
@@ -317,7 +322,7 @@ export default {
   },
   mounted() {
     this.loading = true;
-    this.$store.commit("setAppTitle", "共享资源");
+    this.$store.commit("setAppTitle", "共享资源站");
     this.$store.dispatch("getTags", { key_word: null })
       .then(res => {
         this.availableTags = res.tags;

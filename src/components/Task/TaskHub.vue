@@ -3,13 +3,13 @@
     <loading v-if="loading"/>
     <v-container v-else>
       <v-container>
-        <v-card outlined class="pa-4 top"">
+        <v-card outlined class="pa-2 top">
           <div class="filters">
-            <v-row class="align-center">
-              <v-col cols="auto">
+            <v-row class="align-center my-0 py-0">
+              <v-col cols="auto" class="my-0 py-0">
                 <span><strong>排序</strong>:</span>
               </v-col>
-              <v-col>
+              <v-col class="my-0 py-0">
                 <span @click="setFilter('sort_by', 0)"
                   :class="{ active: filters.sort_by === 0 }">综合</span>
                 <!-- <span @click="setFilter('sort_by', 1)"
@@ -22,14 +22,15 @@
                   :class="{ active: filters.sort_by === 3 }">最近回答</span> -->
               </v-col>
             </v-row>
-            <v-row class="align-center">
-              <v-col cols="auto">
+            <v-row class="align-center my-0 py-0">
+              <v-col cols="auto" class="my-0 py-0 mr-0 pr-0">
                 <span><strong>标签筛选</strong>:</span>
               </v-col>
-              <v-col>
-                <v-chip-group multiple column active-class="active-tag">
+              <v-col class="my-0 py-0 ml-0 pl-0">
+                <v-chip-group multiple column active-class="active-tag" class="my-0 py-0">
                   <v-chip v-for="(tag, index) in availableTags" :key="index"
                     :color="getTagColor(tag)"
+                    class="my-1 py-0"
                     outlined @click="toggleTag(tag)">
                     {{ tag }}
                   </v-chip>
@@ -39,7 +40,7 @@
           </div>
           <!-- 底部的搜索栏 -->
           <v-divider></v-divider>
-          <v-row class="mt-4">
+          <v-row class="mt-0">
             <v-col>
               <v-text-field v-model="filters.key_word" label="请输入搜索内容" placeholder="" filled
                 append-icon="mdi-magnify" hide-details></v-text-field>
@@ -47,8 +48,8 @@
           </v-row>
         </v-card>
       </v-container>
-      <div class="container">
-        <div class="row">
+      <v-container>
+        <v-row>
           <div class="card" v-for="(item, index) in cards" :key="index" @click="tryOpenItem(item)">
             <div class="card-body">
               <h3>{{ item.title }}</h3>
@@ -67,7 +68,7 @@
               </v-chip-group>
             </div>
             <div class="card-middle">
-              <span class="author">发布于: {{ item.created_at }}</span>
+              <span class="author">发布于: {{ format(item.created_at, 'yyyy-MM-dd HH:mm:ss') }}</span>
               <span class="author">发布者: {{ item.created_by.username }}</span>
               <v-icon v-if="item.commission > 0" color="#F8CC00">mdi-bitcoin</v-icon>
               <span v-if="item.commission > 0"
@@ -81,8 +82,8 @@
               </v-btn>
             </div>
           </div>
-        </div>
-      </div>
+        </v-row>
+      </v-container>
       <v-pagination
         v-if="totalPages >= 1"
         v-model="currentPage"
@@ -106,11 +107,12 @@
 
 <script>
 import loading from "../Loading.vue";
-
+import { format } from "date-fns";
 export default {
   name: 'ShareHub',
   components: {
     loading,
+    format,
   },
   data() {
     return {
@@ -139,6 +141,7 @@ export default {
     },
   },
   methods: {
+    format,
     onCardMouseLeave() {
       if (this.filtersChanged) {
         // 如果 filters 有变化，就重新获取数据
@@ -293,10 +296,6 @@ span {
 
 .action-buttons:hover {
   opacity: 1;
-}
-
-.container {
-  padding: 20px;
 }
 
 .row {

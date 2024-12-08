@@ -330,6 +330,7 @@ export default {
           console.log(res);
           this.$store.commit("setAlert", {type: "success", message: "头像上传成功。"});
           this.avatarUrl = res.file_url;
+          this.$store.commit("setAvatar", res.file_url);
         })
         .catch((err) => { this.$store.commit("setAlert", {type: "error", message: err}); });
     },

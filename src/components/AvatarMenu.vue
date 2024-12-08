@@ -12,7 +12,7 @@
         v-bind="attrs"
       >
         <v-avatar size="36" >
-          <img src="@/assets/images/zyt.png">
+          <img :src="$store.state._avatar_url_">
         </v-avatar>
       </v-btn>
     </template>
