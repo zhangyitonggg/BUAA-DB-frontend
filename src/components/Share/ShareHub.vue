@@ -83,6 +83,9 @@
                         {{ item.cost }} 菜币
                       </span>
                     </v-card-title>
+                    <v-card-text>
+                      {{ item.profile }}
+                    </v-card-text>
                     <div style="margin-left: 1.8%;">
                       <v-chip v-for="(tag, tagIndex) in item.tags" :key="tagIndex" color="aqua"
                         label small class="me-3">
@@ -106,7 +109,7 @@
                         </span>
                         <span>
                           <v-icon>mdi-comment-multiple</v-icon>
-                          <span class="ml-2">{{ item.comments }}</span>
+                          <span class="ml-2">{{ item.comment }}</span>
                         </span>
                       </div>
                       <div class="ml-auto">
