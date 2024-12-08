@@ -112,16 +112,9 @@ export default {
       .finally(() => {
         this.loading = false;
       });
-    this.$store.dispatch("getChart")
-      .then(res => {
-        console.log('获取到的统计图数据：', res);
-      })
-      .catch(_ => {
-        this.$store.commit("setAlert", { type: "error", message: "无法获取统计图数据。请检查你的网络设置。" })
-      });
     this.$store.dispatch("getNew")
       .then(res => {
-        console.log('获取到的最新帖子数据：', res);
+        this.tableData = res;
       })
       .catch(_ => {
         this.$store.commit("setAlert", { type: "error", message: "无法获取最新帖子数据。请检查你的网络设置。" })
@@ -135,7 +128,14 @@ export default {
       return format(new Date(dateString), 'yyyy-MM-dd HH:mm:ss');
     },
     initChart() {
-      const chartDom = this.$refs.chart;
+      let resDays = []
+      let resNums = []
+      this.$store.dispatch("getChart")
+      .then(res => {
+        resDays = res.days
+        resNums = res.nums
+        console.log('获取到的统计图数据：', res);
+        const chartDom = this.$refs.chart;
       this.chartInstance = echarts.init(chartDom);
 
       const options = {
@@ -147,7 +147,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: ['12-01', '12-02', '12-03', '12-04', '12-05', '12-06', '12-07'],
+          data: resDays,
           axisLabel: {
             rotate: 0,
           },
@@ -164,7 +164,7 @@ export default {
           {
             name: '柱状图',
             type: 'bar',
-            data: [60, 40, 80, 60, 70, 80, 90],
+            data: resNums,
             barWidth: 20,
             itemStyle: {
               color: '#90EE90',
@@ -173,7 +173,7 @@ export default {
           {
             name: '折线图',
             type: 'line',
-            data: [60, 40, 100, 70, 70, 80, 90],
+            data: resNums,
             itemStyle: {
               color: '#6495ED',
             },
@@ -184,6 +184,10 @@ export default {
         ],
       };
       this.chartInstance.setOption(options);
+      })
+      .catch(_ => {
+        this.$store.commit("setAlert", { type: "error", message: "无法获取统计图数据。请检查你的网络设置。" })
+      });
     },
   },
 };
