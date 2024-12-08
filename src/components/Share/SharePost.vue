@@ -18,7 +18,7 @@
             {{ tag }}
           </v-chip>
         </v-card-title>
-        <v-card-subtitle class="grey--text text--darken-1" style="margin-left: 32px;">发表于 {{ post.created_at }}</v-card-subtitle>
+        <v-card-subtitle class="grey--text text--darken-1" style="margin-left: 32px;">{{post.created_by.username}} 发表于 {{ post.created_at }}</v-card-subtitle>
         <v-divider></v-divider>
         <!-- 帖子内容部分 -->
         <v-card-text>
