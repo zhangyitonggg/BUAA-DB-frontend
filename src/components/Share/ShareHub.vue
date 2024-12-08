@@ -18,8 +18,6 @@
                   :class="{ active: filters.sort_by === 4 }">最多收藏</span>
                 <span @click="setFilter('sort_by', 2)"
                   :class="{ active: filters.sort_by === 2 }">最近创建</span>
-                <span @click="setFilter('sort_by', 3)"
-                  :class="{ active: filters.sort_by === 3 }">最近评论</span>
               </v-col>
             </v-row>
             <v-row class="align-center">
@@ -84,7 +82,7 @@
                       </span>
                     </v-card-title>
                     <v-card-text>
-                      {{ item.profile }}
+                      {{ filterString(item.profile) }}
                     </v-card-text>
                     <div style="margin-left: 1.8%;">
                       <v-chip v-for="(tag, tagIndex) in item.tags" :key="tagIndex" color="aqua"
@@ -218,6 +216,10 @@ export default {
     },
   },
   methods: {
+    filterString(inputText) {
+      // 使用正则表达式替换掉所有的*和#符号
+      return inputText.replace(/[\*\#]/g, '');
+    },
     formatDate(dateString) {
       return format(new Date(dateString), 'yyyy-MM-dd HH:mm:ss');
     },
@@ -317,7 +319,7 @@ export default {
   },
   mounted() {
     this.loading = true;
-    this.$store.commit("setAppTitle", "共享资源");
+    this.$store.commit("setAppTitle", "共享资源站");
     this.$store.dispatch("getTags", { key_word: null })
       .then(res => {
         this.availableTags = res.tags;
