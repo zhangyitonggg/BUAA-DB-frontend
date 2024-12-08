@@ -56,7 +56,7 @@
         <v-card v-for="(submit, index) in submits" :key="index" class="mb-3">
           <v-card-title class="d-flex justify-space-between">
             <span class="font-weight-bold">{{ submit.created_by.username }}</span>
-            <span class="text-grey">{{ submit.created_at }}</span>
+            <span class="text-grey">{{ formatDate(submit.created_at) }}</span>
           </v-card-title>
           <v-card-text>
             <p>{{ submit.profile }}</p>
@@ -64,7 +64,7 @@
           <v-card-actions>
             <div class="answer-actions">
               <button @click="openBhpan(submit)">下载资源</button>
-              <button v-if="task.open=true" @click="confirmAnswer(submit)">认同答案</button>
+              <button v-if="task.open==true" @click="confirmAnswer(submit)">认同答案</button>
             </div>
           </v-card-actions>
         </v-card>
@@ -185,6 +185,7 @@
 </template>
 
 <script>
+import { format } from 'date-fns';
 import VMdPreview from '@kangc/v-md-editor/lib/preview';
 import '@kangc/v-md-editor/lib/style/preview.css';
 import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
@@ -197,7 +198,8 @@ VMdPreview.use(githubTheme, {
 export default {
   name: 'TaskPost',
   components: {
-    VMdPreview
+    VMdPreview,
+    format
   },
   props: {
     task: {
@@ -217,19 +219,7 @@ export default {
       modifyDialog: false,
       dialog: false,
       selectedSubmit: null,
-      submits: [
-        // {
-        //   "submit_id": "6f3c8b96-1234-4a2b-bf3f-9a7b8b7bcfd9",
-        //   "profile": "用户提交的文件内容简介，例如代码分析报告",
-        //   "bhpan_url": "http://oo.buaa.edu.cn/assignment/520/discussion/1557",
-        //   "created_at": "2024-12-01T10:15:30",
-        //   "created_by": {
-        //     "username": "user_01",
-        //     "user_url": "https://example.com/users/user_01",
-        //     "user_id": "a1d2c3b4-5678-9ef0-1234-567890abcdef"
-        //   }
-        // },
-      ],
+      submits: [],
     };
   },
   watch: {
@@ -258,6 +248,9 @@ export default {
     },
   },
   methods: {
+    formatDate(date) {
+      return format(new Date(date), 'yyyy-MM-dd');
+    },
     saveTask() {
       this.$store.dispatch("modifyTask", {
         id: this.task.mission_id,
@@ -289,8 +282,21 @@ export default {
       this.dialog = true;
     },
     approveAnswer() {
-      console.log("认同答案：", this.selectedSubmit);
-      this.dialog = false;
+      this.$store.dispatch("confirmTask", {task_id: this.task.mission_id, submit_id: this.selectedSubmit.submit_id})
+        .then(() => {
+          this.$store.commit("setAlert", {
+            type: "success",
+            message: "任务已关闭，悬赏菜币已分发。",
+          });
+          this.dialog = false;
+          this.$router.push({ name: "/tasks" });
+        })
+        .catch((err) => {
+          this.$store.commit("setAlert", {
+            type: "error",
+            message: err,
+          });
+        });
     },
     removeTag(item) {
       const index = this.newTask.tags.indexOf(item.name);

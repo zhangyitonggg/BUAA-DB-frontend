@@ -51,6 +51,7 @@ const base = {
         own: '/mission/own/',
         delete: '/mission/delete/',
         modify: '/change/',
+        confirm: '/close/',
     },
 }
 

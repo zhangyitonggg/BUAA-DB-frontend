@@ -83,6 +83,12 @@
           </div>
         </div>
       </div>
+      <v-pagination
+        v-if="totalPages >= 1"
+        v-model="currentPage"
+        :length="totalPages"
+        @input="getTasks"
+      />
     </v-container>
     <v-dialog v-model="deleteDialog" max-width="500">
       <v-card>
@@ -108,6 +114,8 @@ export default {
   },
   data() {
     return {
+      totalPages: 0,
+      currentPage: 1,
       deleteDialog: false,
       loading: true,
       filters: {
@@ -142,8 +150,16 @@ export default {
       this.filters[type] = value;
     },
     getTasks() {
-      this.$store.dispatch("getTasks", this.filters)
+      const p = {
+        key_word: this.filters.key_word,
+        tags: this.filters.tags,
+        sort_by: this.filters.sort_by,
+        pay: this.filters.pay,
+        page: this.currentPage,
+      }
+      this.$store.dispatch("getTasks", p)
         .then((res) => {
+          this.totalPages = res.total_page;
           this.cards = res.posts;
         })
         .catch((error) => { this.$store.commit("setAlert", { type: "error", message: error, }); })

@@ -125,6 +125,12 @@
             </div>
           </v-col>
         </v-row>
+        <v-pagination
+          v-if="totalPages >= 1"
+          v-model="currentPage"
+          :length="totalPages"
+          @input="getPosts"
+        />
       </v-container>
       <!-- 支付确认对话框 -->
       <v-dialog v-model="dialog" max-width="400">
@@ -169,7 +175,6 @@
     </template>
   </div>
 </template>
-
 <script>
 import Loading from '../Loading.vue';
 import { format } from 'date-fns';
@@ -182,6 +187,8 @@ export default {
   },
   data() {
     return {
+      totalPages: 0,
+      currentPage: 1,
       loading: true,
       filters: {
         sort_by: 0,
@@ -232,13 +239,15 @@ export default {
         pay: pay,
         sort_by: this.filters.sort_by,
         key_word: this.filters.search,
-        tags: this.filters.tags
+        tags: this.filters.tags,
+        page: this.currentPage
       })
         .then(res => {
+            this.totalPages = res.total_page;
             this.post = res.posts;
           })
           .catch(e => { this.$store.commit("setAlert", { type: "error", message: e }) })
-        },
+    },
     goToPage(page) {
       window.open(page, '_blank');
     },
