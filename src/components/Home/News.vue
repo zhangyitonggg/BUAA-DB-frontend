@@ -82,7 +82,7 @@ export default {
       tableHeaders: [
         { text: '资源名称', value: 'title' },
         { text: '帖子类别', value: 'category' },
-        { text: '费用or报酬', value: 'cost' },
+        { text: '菜币', value: 'cost' },
       ],
       tableData: [
         { id: 1, title: '计算机组成课程往年考试', category: 0, cost: '10', username: '张三' },
@@ -104,6 +104,7 @@ export default {
     this.$store.dispatch("getNews", { page: 1 })
       .then(res => {
         this.news = res.messages;
+        this.news.sort((a, b) => new Date(b.notified_at) - new Date(a.notified_at));
       })
       .catch(_ => {
         this.news = []; 
@@ -112,7 +113,13 @@ export default {
       .finally(() => {
         this.loading = false;
       });
-    
+    this.$store.dispatch("getNew")
+      .then(res => {
+        this.tableData = res;
+      })
+      .catch(_ => {
+        this.$store.commit("setAlert", { type: "error", message: "无法获取最新帖子数据。请检查你的网络设置。" })
+      });
   },
   methods: {
     viewDetails(item) {
@@ -122,7 +129,14 @@ export default {
       return format(new Date(dateString), 'yyyy-MM-dd HH:mm:ss');
     },
     initChart() {
-      const chartDom = this.$refs.chart;
+      let resDays = []
+      let resNums = []
+      this.$store.dispatch("getChart")
+      .then(res => {
+        resDays = res.days
+        resNums = res.nums
+        console.log('获取到的统计图数据：', res);
+        const chartDom = this.$refs.chart;
       this.chartInstance = echarts.init(chartDom);
 
       const options = {
@@ -134,7 +148,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: ['12-01', '12-02', '12-03', '12-04', '12-05', '12-06', '12-07'],
+          data: resDays,
           axisLabel: {
             rotate: 0,
           },
@@ -151,7 +165,7 @@ export default {
           {
             name: '柱状图',
             type: 'bar',
-            data: [60, 40, 80, 60, 70, 80, 90],
+            data: resNums,
             barWidth: 20,
             itemStyle: {
               color: '#90EE90',
@@ -160,7 +174,7 @@ export default {
           {
             name: '折线图',
             type: 'line',
-            data: [60, 40, 100, 70, 70, 80, 90],
+            data: resNums,
             itemStyle: {
               color: '#6495ED',
             },
@@ -171,6 +185,10 @@ export default {
         ],
       };
       this.chartInstance.setOption(options);
+      })
+      .catch(_ => {
+        this.$store.commit("setAlert", { type: "error", message: "无法获取统计图数据。请检查你的网络设置。" })
+      });
     },
   },
 };

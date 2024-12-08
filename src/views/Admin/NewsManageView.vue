@@ -41,7 +41,7 @@
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <v-md-preview :text="item.content"></v-md-preview>
-                  <v-btn block @click="initAnnouncementModifyDialog(item)"> 修改公告 </v-btn>
+                  <!-- <v-btn block @click="initAnnouncementModifyDialog(item)"> 修改公告 </v-btn> -->
 
                   <v-dialog v-model="dialog_modifyannouncement" width="50%">
                     <v-card>
@@ -132,6 +132,7 @@ export default {
     this.$store.dispatch("getNews", { page: 1 })
       .then(res => {
         this.news = res.messages;
+        this.news.sort((a, b) => new Date(b.notified_at) - new Date(a.notified_at));
       })
       .catch(_ => {
         this.news = [];
@@ -160,6 +161,7 @@ export default {
           this.$store.dispatch("getNews", {page: 1})
             .then(res => {
               this.news = res.messages;
+              this.news.sort((a, b) => new Date(b.notified_at) - new Date(a.notified_at));
             })
             .catch(_ => {
               this.news = [];

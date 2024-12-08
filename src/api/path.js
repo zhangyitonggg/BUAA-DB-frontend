@@ -14,6 +14,7 @@ const base = {
         unblock: '/user/unblock/',
         favorites: '/favorites/',
         upload: '/user/upload/',
+        chart: '/user/chart/',
     },
     billboard: {
         getNews: '/billboard/index',
@@ -36,6 +37,7 @@ const base = {
         pay: '/confirmPay/',
         delete: '/post/delete/',
         change: '/change/',
+        new: '/post/new/'
     },
     tags: {
         search: '/tags/search',
