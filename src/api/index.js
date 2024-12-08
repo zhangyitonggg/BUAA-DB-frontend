@@ -41,6 +41,7 @@ const api = {
   modifyPost: async(id, title, content, tags, cost, bhpan_url) => { return await router.post(path.baseUrl + path.post.root + id + path.post.change, {title: title, content: content, tags: tags, cost: cost, bhpan_url: bhpan_url}); },
   ownTasks: async() => { return await router.get(path.baseUrl + path.tasks.own); },
   deleteTask: async(id) => { return await router.post(path.baseUrl + path.tasks.delete, {mission_id: id}); },
+  modifyTask: async(id, title, content, tags, commission) => { return await router.post(path.baseUrl + path.tasks.root + id + path.tasks.modify, {title: title, content: content, tags: tags, commission: commission}); },
 }
 
 export default api;

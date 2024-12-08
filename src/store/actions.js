@@ -45,5 +45,6 @@ export default {
   async deletePost(context, {id}) { return await api.deletePost(id); },
   async modifyPost(context, {id, title, content, tags, cost, bhpan_url}) { return await api.modifyPost(id, title, content, tags, cost, bhpan_url); },
   async ownTasks(context) { return await api.ownTasks(); },
-  async deleteTask(context, {id}) { return await api.deleteTask(id); }
+  async deleteTask(context, {id}) { return await api.deleteTask(id); },
+  async modifyTask(context, {id, title, content, tags, commission}) { return await api.modifyTask(id, title, content, tags, commission); },
 };

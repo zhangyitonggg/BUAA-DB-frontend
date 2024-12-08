@@ -50,6 +50,7 @@ const base = {
         submit: '/submit/',
         own: '/mission/own/',
         delete: '/mission/delete/',
+        modify: '/change/',
     },
 }
 

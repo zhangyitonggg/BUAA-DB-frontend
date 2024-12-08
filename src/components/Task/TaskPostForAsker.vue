@@ -122,7 +122,7 @@
           <v-row>
             <v-col cols="6">
               <v-text-field
-              v-model="newTask.coin"
+              v-model="newTask.commission"
               label="报酬"
               :rules="[
                 v => v !== null && v !== '' || '报酬不能为空',
@@ -148,7 +148,7 @@
                     :input-value="data.selected"
                     close
                     @click="data.select"
-                    @click:close="remove(data.item)"
+                    @click:close="removeTag(data.item)"
                   >
                     {{ data.item.name }}
                   </v-chip>
@@ -211,6 +211,7 @@ export default {
         title: "",
         content: "",
         tags: [],
+        commission: 0,
       },
       tags_to_select: [],
       modifyDialog: false,
@@ -235,15 +236,15 @@ export default {
     modifyDialog: {
       handler(newVal) {
         if (newVal) {
-          this.newTask = {
-            title: this.task.title,
-            content: this.task.content,
-            tags: this.task.tags,
-          };
+          this.newTask = JSON.parse(JSON.stringify(this.task));
           if (this.tags_to_select.length === 0) {
             this.$store.dispatch("getTags", {key_word: ""})
               .then((res) => {
-                this.tags_to_select = res.tags;
+                this.tags_to_select = res.tags.map((tag) => {
+                  return {
+                    name: tag,
+                  };
+                });
               })
               .catch((err) => {
                 this.$store.commit("setAlert", {
@@ -258,7 +259,27 @@ export default {
   },
   methods: {
     saveTask() {
-      console.log("保存任务");
+      this.$store.dispatch("modifyTask", {
+        id: this.task.mission_id,
+        title: this.newTask.title,
+        commission: this.newTask.commission,
+        tags: this.newTask.tags,
+        content: this.newTask.content,
+      })
+        .then(() => {
+          this.$store.commit("setAlert", {
+            type: "success",
+            message: "任务修改成功。",
+          });
+          this.modifyDialog = false;
+          this.task = JSON.parse(JSON.stringify(this.newTask));
+        })
+        .catch((err) => {
+          this.$store.commit("setAlert", {
+            type: "error",
+            message: err,
+          });
+        });
     },
     openBhpan(submit) {
       window.open(submit.bhpan_url);
@@ -270,6 +291,10 @@ export default {
     approveAnswer() {
       console.log("认同答案：", this.selectedSubmit);
       this.dialog = false;
+    },
+    removeTag(item) {
+      const index = this.newTask.tags.indexOf(item.name);
+      if (index >= 0) this.newTask.tags.splice(index, 1);
     },
   },
   mounted() {
