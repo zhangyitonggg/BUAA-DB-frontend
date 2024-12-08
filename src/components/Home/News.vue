@@ -119,6 +119,13 @@ export default {
       .catch(_ => {
         this.$store.commit("setAlert", { type: "error", message: "无法获取统计图数据。请检查你的网络设置。" })
       });
+    this.$store.dispatch("getNew")
+      .then(res => {
+        console.log('获取到的最新帖子数据：', res);
+      })
+      .catch(_ => {
+        this.$store.commit("setAlert", { type: "error", message: "无法获取最新帖子数据。请检查你的网络设置。" })
+      });
   },
   methods: {
     viewDetails(item) {
