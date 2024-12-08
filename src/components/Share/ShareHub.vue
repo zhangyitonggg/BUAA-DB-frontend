@@ -67,10 +67,10 @@
                 <v-row no-gutters class="picture">
                   <v-col cols="auto" class="d-flex align-center" no-gutters>
                     <v-icon v-if="item.cost>0" color="#FFB300"
-                      style="font-size: 100px; margin-left: -10px; margin-right: -20px;">mdi-file-download-outline
+                      style="font-size: 120px; margin-left: -10px; margin-right: -20px;">mdi-file-download-outline
                     </v-icon>
                     <v-icon v-else color="gray"
-                      style="font-size: 100px; margin-left: -10px; margin-right: -20px;">mdi-file-document-outline
+                      style="font-size: 120px; margin-left: -10px; margin-right: -20px;">mdi-file-document-outline
                     </v-icon>
                   </v-col>
                   <v-col>
@@ -86,7 +86,7 @@
                       <div style="margin-top: 1%;">
                         {{ filterString(item.profile) }}
                       </div>
-                      <div style="margin-left: 1.8%; margin-top: 1%;" v-if="item.tags.length > 0">
+                      <div style="margin-left: 0%; margin-top: 1%;" v-if="item.tags.length > 0">
                         <v-chip v-for="(tag, tagIndex) in item.tags" :key="tagIndex" color="aqua"
                           label small class="me-3">
                           {{ tag }}

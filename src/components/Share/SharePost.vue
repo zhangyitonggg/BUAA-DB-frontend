@@ -423,7 +423,11 @@ export default {
       if (this.newComment.trim() !== "") {
         this.dialog = false;
         this.$store.dispatch("createComment", { id: this.$route.params.id, content: this.newComment, parent_id: 0 })
-          .then((res) => { this.$store.commit("setAlert", { "type": "success", "message": "评论成功。" }); })
+          .then((res) => { 
+            this.$store.commit("setAlert", { "type": "success", "message": "评论成功。" }); 
+            this.newComment = ""; // 清空评论输入框
+            this.getPost();
+          })
           .catch((err) => { this.$store.commit("setAlert", { "type": "error", "message": err }); })
         this.$store.dispatch("getPostComments", { id: this.$route.params.id })
           .then((res) => { this.comments = res.comments; })
