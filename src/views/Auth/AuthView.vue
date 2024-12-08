@@ -193,8 +193,10 @@ export default {
 .white-card {
   width: 17%; /* 确保与外层卡片同宽 */
   min-width: 300px;
+  max-height: fit-content;
   height: 50%;
   min-height: 450px;
+  max-width: fit-content;
   position: relative;
   z-index: 2;
   opacity: 0.87; /* 增加透明度 */

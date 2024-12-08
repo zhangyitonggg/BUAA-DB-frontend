@@ -9,6 +9,9 @@
             <span class="title font-weight-bold">{{ task.title }}</span>
             <!-- 时间和状态部分 -->
             <div class="d-flex align-center mt-1">
+              <v-avatar size="32">
+                <img :src="task.created_by.avatar" alt="avatar">
+              </v-avatar>
               <div class="task-time text-grey text--small">
                 {{ task.created_by.username }} 发布于：{{ new Date(task.created_at).toLocaleString() }}
               </div>
@@ -54,19 +57,18 @@
     <v-row justify="center" class="mt-4">
       <v-col cols="12" md="8">
         <v-card v-for="(submit, index) in submits" :key="index" class="mb-3">
-          <v-card-title class="d-flex justify-space-between">
-            <span class="font-weight-bold">{{ submit.created_by.username }}</span>
-            <span class="text-grey">{{ formatDate(submit.created_at) }}</span>
-          </v-card-title>
-          <v-card-text>
-            <p>{{ submit.profile }}</p>
-          </v-card-text>
-          <v-card-actions>
-            <div class="answer-actions">
-              <button @click="openBhpan(submit)">下载资源</button>
-              <button v-if="task.open==true" @click="confirmAnswer(submit)">认同答案</button>
-            </div>
-          </v-card-actions>
+          <div class="d-flex align-center">
+            <v-avatar size="32">
+            <img :src="submit.created_by.avatar" alt="avatar">
+            </v-avatar>
+              <div class="ml-2" style="font-size: 20px;">{{ submit.created_by.username }}</div>
+            <div class="text-grey ml-auto">{{ formatDate(submit.created_at) }}</div>
+          </div>
+          <div class="mt-2" style="font-size: 18px;">{{ submit.profile }}</div>
+          <div class="mt-3">
+            <v-btn @click="openBhpan(submit)" color="primary" outlined class="mr-3">下载资源</v-btn>
+            <v-btn v-if="task.open==true" @click="confirmAnswer(submit)">认同答案</v-btn>
+          </div>
         </v-card>
       </v-col>
     </v-row>
@@ -249,7 +251,7 @@ export default {
   },
   methods: {
     formatDate(date) {
-      return format(new Date(date), 'yyyy-MM-dd');
+      return format(new Date(date), 'yyyy-MM-dd HH:mm:ss');
     },
     saveTask() {
       this.$store.dispatch("modifyTask", {

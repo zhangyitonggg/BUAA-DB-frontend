@@ -49,32 +49,35 @@
         </v-card>
       </v-container>
       <v-container>
-        <v-row>
+        <v-row no-gutters>
           <div class="card" v-for="(item, index) in cards" :key="index" @click="tryOpenItem(item)">
-            <div class="card-body">
-              <h3>{{ item.title }}</h3>
-              <p>{{ filterString(item.tiny_content) }}</p>
-            </div>
-            <div class="card-tags">
-              <v-chip-group column>
+            <div class="ma-0 pa-0">
+              <div style="display: flex; align-items: center;">
+                <h3 style="margin: 0; padding: 0;">{{ item.title }}</h3>
+                <v-icon v-if="item.commission > 0" color="#F8CC00" style="margin-left: 8px;">mdi-bitcoin</v-icon>
+                <span v-if="item.commission > 0" style="font-size: 13px; color: #666666; margin-left: 0.2%;">
+                  {{ item.commission }} 菜币
+                </span>
+              </div>
+              <span>{{ filterString(item.tiny_content) }}</span>
+              <v-chip-group column class="ma-0 pa-0">
                 <v-chip
                   v-for="(tag, idx) in item.tags"
                   :key="idx"
                   :color="getTagColor(tag)"
                   outlined
+                  class="ma-1 py-0"
                 >
                   {{ tag }}
                 </v-chip>
               </v-chip-group>
             </div>
-            <div class="card-middle">
+            <div class="card-middle pa-0 ma-0">
               <span class="author">发布于: {{ format(item.created_at, 'yyyy-MM-dd HH:mm:ss') }}</span>
-              <span class="author">发布者: {{ item.created_by.username }}</span>
-              <v-icon v-if="item.commission > 0" color="#F8CC00">mdi-bitcoin</v-icon>
-              <span v-if="item.commission > 0"
-                style="font-size: 13px; color: #666666; margin-left: 0.2%;">
-                {{ item.commission }} 菜币
-              </span>
+              <v-avatar size="20" class="mr-2">
+                <img :src="item.created_by.avatar" alt="avatar">
+              </v-avatar>
+              <span class="author">{{ item.created_by.username }}</span>
             </div>
             <div class="action-buttons" v-if="$store.state._role_ === 'Administrator'">
               <v-btn color="red" icon @click.stop="tryDelete(item)">
@@ -352,10 +355,6 @@ span {
   color: #999;
 }
 
-.card-body {
-  margin-bottom: 10px;
-}
-
 .card-middle {
   margin: 10px 0;
   font-size: 14px;
@@ -369,7 +368,6 @@ span {
 }
 
 .card-tags {
-  margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;

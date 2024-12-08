@@ -25,7 +25,7 @@
     <v-navigation-drawer v-model="drawer" fixed temporary>
       <div class="d-flex flex-column" style="height: 100%;">
         <v-list class="flex-grow-1">
-          <v-list-item v-for="[icon, text, route] in links" :key="icon" link @click="navigateTo(route)">
+          <v-list-item v-for="[icon, text, route] in ($store.state._role_ == 'Administrator' ? admin_links : links)" :key="icon" link @click="navigateTo(route)">
             <v-list-item-icon>
               <v-icon>{{ icon }}</v-icon>
             </v-list-item-icon>
@@ -69,7 +69,7 @@ export default {
     return {
       showWelcome: false, // 控制欢迎文字的显示
       drawer: false,
-      links: [
+      admin_links: [
         ['mdi-home', '首页', '/'],
         ['mdi-book-open-variant-outline', '共享资源站', '/resources'],
         ['mdi-account-group', '任务悬赏站', '/tasks'],
@@ -77,6 +77,12 @@ export default {
         ['mdi-newspaper-variant-multiple-outline', '管理公告', '/admin/newsManage'],
         ['mdi-account-cog', '管理用户', '/admin/userManage'],
       ],
+      links: [
+        ['mdi-home', '首页', '/'],
+        ['mdi-book-open-variant-outline', '共享资源站', '/resources'],
+        ['mdi-account-group', '任务悬赏站', '/tasks'],
+        ['mdi-account', '个人中心', '/center'],
+      ]
     };
   },
 
@@ -118,14 +124,6 @@ export default {
         type: "success",
         message: "别来无恙，" + localStorage.getItem('__user_name__') + "。",
       });
-    }
-    if (this.$store.state._role_ != 'Administrator') {
-      this.links = [
-        ['mdi-home', '首页', '/'],
-        ['mdi-book-open-variant-outline', '共享资源站', '/resources'],
-        ['mdi-account-group', '任务悬赏站', '/tasks'],
-        ['mdi-account', '个人中心', '/center'],
-      ]
     }
   },
   beforeCreate() {
