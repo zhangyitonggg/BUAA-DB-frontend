@@ -28,7 +28,7 @@
                 <v-radio-group v-model="filters.pay" row>
                   <v-radio label="不限" :value="0"></v-radio>
                   <v-radio label="收费" :value="1"></v-radio>
-                  <v-radio label="免费" :value="2"></v-radio>
+                  <v-radio label="免费" :value="2"></v-radio> 
                 </v-radio-group>
               </v-col>
             </v-row>
@@ -53,17 +53,17 @@
           <v-row class="mt-0">
             <v-col>
               <v-text-field v-model="filters.search" label="请输入搜索内容" placeholder="" filled
-                append-icon="mdi-magnify" hide-details></v-text-field>
+                append-icon="mdi-magnify" hide-details :loading="silentLoading"></v-text-field>
             </v-col>
           </v-row>
         </v-card>
       </v-container>
-      <v-container>
+      <v-container v-if="post.length > 0">
         <v-row v-for="(item) in post" :key="item.post_id">
           <v-col>
             <div class="card-container">
               <!-- 卡片主体 -->
-              <v-card outlined class="card-content" style="cursor: pointer; padding: 0; margin: 0;" @click.stop="tryOpenItem(item)">
+              <v-card outlined class="card-content" style="cursor: pointer; padding: 0; margin: 0;" @click.stop="tryOpenItem(item)" :disabled="silentLoading">
                 <v-row no-gutters class="picture">
                   <v-col cols="auto" class="d-flex align-center" no-gutters>
                     <v-icon v-if="item.cost>0" color="#FFB300"
@@ -138,6 +138,17 @@
           @input="getPosts"
         />
       </v-container>
+      <v-container v-else>
+        <v-row>
+          <v-col>
+            <v-card outlined class="ma-4 text-center">
+              <v-card-text>
+                没有找到相关资源
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
       <!-- 支付确认对话框 -->
       <v-dialog v-model="dialog" max-width="400">
         <v-card elevation="3" class="rounded-lg">
@@ -193,6 +204,7 @@ export default {
   },
   data() {
     return {
+      silentLoading: false,
       totalPages: 0,
       currentPage: 1,
       loading: true,
@@ -231,6 +243,7 @@ export default {
     onCardMouseLeave() {
       if (this.filtersChanged) {
         // 如果 filters 有变化，就重新获取数据
+        this.silentLoading = true;
         this.getPosts();
         this.filtersChanged = false; // 重置变化标记
       }
@@ -253,10 +266,12 @@ export default {
         page: this.currentPage
       })
         .then(res => {
-            this.totalPages = res.total_page;
-            this.post = res.posts;
-          })
-          .catch(e => { this.$store.commit("setAlert", { type: "error", message: e }) })
+          this.totalPages = res.total_page;
+          this.post = res.posts;
+          this.silentLoading = false;
+          this.loading = false;
+        })
+        .catch(e => { this.$store.commit("setAlert", { type: "error", message: e }) })
     },
     goToPage(page) {
       window.open(page, '_blank');
@@ -333,7 +348,6 @@ export default {
         this.$store.commit("setAlert", { type: "error", message: e })
       });
     this.getPosts();
-    this.loading = false;
     this.interval = setInterval(this.onCardMouseLeave, 500);
   },
   beforeDestroy() {
@@ -416,5 +430,10 @@ export default {
   .card-container:hover .action-buttons {
     opacity: 1;
     /* 鼠标悬浮时显示按钮 */
+  }
+
+  .card-container:hover .card-content {
+    transform: scale(1.05);
+    /* 鼠标悬浮时放大 */
   }
 </style>

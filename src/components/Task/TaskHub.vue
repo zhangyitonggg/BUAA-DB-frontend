@@ -43,14 +43,14 @@
           <v-row class="mt-0">
             <v-col>
               <v-text-field v-model="filters.key_word" label="请输入搜索内容" placeholder="" filled
-                append-icon="mdi-magnify" hide-details></v-text-field>
+                append-icon="mdi-magnify" hide-details :loading="silentLoading"></v-text-field>
             </v-col>
           </v-row>
         </v-card>
       </v-container>
       <v-container>
         <v-row no-gutters>
-          <div class="card" v-for="(item, index) in cards" :key="index" @click="tryOpenItem(item)">
+          <v-card class="card" v-for="(item, index) in cards" :key="index" @click="tryOpenItem(item)" :disabled="silentLoading">
             <div class="ma-0 pa-0">
               <div style="display: flex; align-items: center;">
                 <h3 style="margin: 0; padding: 0;">{{ item.title }}</h3>
@@ -59,7 +59,7 @@
                   {{ item.commission }} 菜币
                 </span>
               </div>
-              <span>{{ filterString(item.tiny_content) }}</span>
+              <span class="ml-2">{{ filterString(item.tiny_content) }}</span>
               <v-chip-group column class="ma-0 pa-0">
                 <v-chip
                   v-for="(tag, idx) in item.tags"
@@ -84,7 +84,7 @@
                 <v-icon style="font-size: 32px;">mdi-delete</v-icon>
               </v-btn>
             </div>
-          </div>
+          </v-card>
         </v-row>
       </v-container>
       <v-pagination
@@ -119,6 +119,7 @@ export default {
   },
   data() {
     return {
+      silentLoading: false,
       totalPages: 0,
       currentPage: 1,
       deleteDialog: false,
@@ -148,6 +149,7 @@ export default {
     onCardMouseLeave() {
       if (this.filtersChanged) {
         // 如果 filters 有变化，就重新获取数据
+        this.silentLoading = true;
         this.getTasks();
         this.filtersChanged = false; // 重置变化标记
       }
@@ -167,6 +169,8 @@ export default {
         .then((res) => {
           this.totalPages = res.total_page;
           this.cards = res.posts;
+          this.loading = false;
+          this.silentLoading = false;
         })
         .catch((error) => { this.$store.commit("setAlert", { type: "error", message: error, }); })
     },
@@ -220,7 +224,6 @@ export default {
         });
       });
     this.getTasks();
-    this.loading = false;
     this.interval = setInterval(this.onCardMouseLeave, 500);
   },
   beforeDestroy() {
@@ -321,6 +324,10 @@ span {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
 }
 
 
