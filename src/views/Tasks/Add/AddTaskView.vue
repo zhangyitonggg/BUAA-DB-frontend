@@ -130,7 +130,6 @@
         if (index >= 0) this.tags.splice(index, 1)
       },
       publish() {
-        console.log(this.title, this.coin, this.tags, this.description);
         this.loading = true;
         this.$store.dispatch("createTask", {
           title: this.title,

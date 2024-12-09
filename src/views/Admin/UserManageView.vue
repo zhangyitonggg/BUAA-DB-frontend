@@ -97,7 +97,6 @@
     // 提交封禁/解封操作
     onBlockUnblockClick() {
       this.submitLoading = true;
-      console.log(this.dialogUserID)
       if (this.dialogType) {
         // 解封用户
         this.$store.dispatch("unblockUser", {id: this.dialogUserID})

@@ -262,7 +262,6 @@ export default {
       return this.filters.tags.includes(tag) ? 'brown' : 'blue accent-2';
     },
     toggleTag(tag) {
-      console.log(tag);
       const index = this.filters.tags.indexOf(tag);
       if (index === -1) {
         // 如果标签未被选中，则添加到 filters.tags
@@ -274,7 +273,6 @@ export default {
     },
     deleteItem(item) {
       // todo 删除操作逻辑
-      console.log("删除", item);
     },
   },
   mounted() {

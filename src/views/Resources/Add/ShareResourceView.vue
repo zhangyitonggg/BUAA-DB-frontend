@@ -169,14 +169,12 @@ export default {
         });
         return;
       } else if (this.rules.isValidUrl(this.link) !== true) {
-        console.log(this.rules.isValidUrl(this.link))
         this.$store.commit("setAlert", {
           type: "error",
           message: "请填写正确的链接！",
         });
         return;
       }
-      console.log(this.title, this.cost, this.tags, this.content);
       this.loading = true;
       this.$store.dispatch("createPost", {
         title: this.title,

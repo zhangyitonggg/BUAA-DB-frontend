@@ -82,7 +82,7 @@ export default {
     };
   },
   methods: {
-    async handleLogin() {
+    handleLogin() {
       this.loading = true;
       if (!this.username || !this.password) {
         this.$store.commit("setAlert", {
@@ -91,24 +91,26 @@ export default {
         });
         return;
       }
-      try {
-        let res = await this.$store.dispatch("login", {
-          username: this.username,
-          password: this.password,
-          remember: this.remember,
-        });
-        this.$store.commit("getUserName");
-        this.$store.commit('setAlert', {
-          type: "success",
-          message: "欢迎回来，" + this.$store.getters.username + "。",
-        });
-        this.$router.push("/");
-      } catch (e) {
-        this.$store.commit("setAlert", {
-          type: "error",
-          message: e,
-        });
-      } finally { this.loading = false; }
+      this.$store.dispatch("login", {
+        username: this.username,
+        password: this.password,
+        remember: this.remember,
+      })
+        .then(() => {
+          this.$store.commit("getUserName");
+          this.$store.commit("setAlert", {
+            type: "success",
+            message: "欢迎回来，" + this.$store.getters.username + "。",
+          });
+          this.$router.push("/");
+        })
+        .catch((e) => {
+          this.$store.commit("setAlert", {
+            type: "error",
+            message: e,
+          });
+        })
+        .finally(() => { this.loading = false; });
     },
     async handleRegister() {
       if (!this.username || !this.password) {

@@ -311,7 +311,6 @@ export default {
     format,
     openModifyDialog() {
       this.newPost = JSON.parse(JSON.stringify(this.post));
-      console.log(this.newPost);
       this.modifyDialog = true;
     },
     savePost() {
@@ -333,7 +332,6 @@ export default {
       this.$store.dispatch("getPost", { id: this.$route.params.id })
         .then((res) => {
           this.post = res;
-          console.log(this.post);
           this.$store.dispatch("getPostComments", { id: this.$route.params.id })
             .then((res) => {
               this.comments = res.comments;

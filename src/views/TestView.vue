@@ -194,7 +194,6 @@ export default {
   },
   methods: {
     viewDetails(item) {
-      console.log('查看详情：', item);
     },
     formatDate(dateString) {
       return format(new Date(dateString), 'yyyy-MM-dd HH:mm:ss');

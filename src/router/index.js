@@ -198,10 +198,9 @@ router.beforeEach((to, from, next) => {
   store.commit("getToken");
   store.commit("getUserName");
   const name = store.state._user_name_;
-  const token = store.state._token_;
   const default_title = '航 U 邦';
   const title = to.meta == null ? "" : to.meta.title + " | ";
-  if (name == null || token == null) {
+  if (name == null) {
     store.commit("clearPersonalInfo")
     store.commit("hidePlatformFrame")
     if (to.matched.some(record => record.meta.requiresAuth)) {

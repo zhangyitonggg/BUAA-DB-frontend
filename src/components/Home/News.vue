@@ -123,7 +123,6 @@ export default {
   },
   methods: {
     viewDetails(item) {
-      console.log('查看详情：', item);
     },
     formatDate(dateString) {
       return format(new Date(dateString), 'yyyy-MM-dd HH:mm:ss');
@@ -135,7 +134,6 @@ export default {
       .then(res => {
         resDays = res.days
         resNums = res.nums
-        console.log('获取到的统计图数据：', res);
         const chartDom = this.$refs.chart;
       this.chartInstance = echarts.init(chartDom);
 
