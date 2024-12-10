@@ -243,7 +243,7 @@ export default {
     onCardMouseLeave() {
       if (this.filtersChanged) {
         // 如果 filters 有变化，就重新获取数据
-        this.silentLoading = true;
+        this.currentPage = 1;
         this.getPosts();
         this.filtersChanged = false; // 重置变化标记
       }
@@ -253,6 +253,7 @@ export default {
     },
     getPosts() {
       let pay = null
+      this.silentLoading = true;
       if (this.filters.pay === 1) {
         pay = true;
       } else if (this.filters.pay === 2) {

@@ -3,12 +3,6 @@ module.exports = defineConfig({
   transpileDependencies: [
     'vuetify'
   ],
-  configureWebpack: {
-    devtool: 'source-map',
-    optimization: {
-      minimize: true,
-    },
-  },
   productionSourceMap: false,
   pwa: {
     iconPaths: {

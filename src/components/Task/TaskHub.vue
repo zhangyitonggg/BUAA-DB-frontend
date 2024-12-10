@@ -149,7 +149,7 @@ export default {
     onCardMouseLeave() {
       if (this.filtersChanged) {
         // 如果 filters 有变化，就重新获取数据
-        this.silentLoading = true;
+        this.currentPage = 1;
         this.getTasks();
         this.filtersChanged = false; // 重置变化标记
       }
@@ -158,6 +158,7 @@ export default {
       this.filters[type] = value;
     },
     getTasks() {
+      this.silentLoading = true;
       const p = {
         key_word: this.filters.key_word,
         tags: this.filters.tags,
