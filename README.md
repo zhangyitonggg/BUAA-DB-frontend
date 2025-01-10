@@ -2,4 +2,4 @@
 
 前端基于Vue2完成，后端基于Django完成。
 
-大作业名称为“航U邦”，您可以点击查看本项目的[文档部分](https://github.com/zhangyitonggg/DB-docs)和[后端部分](https://github.com/fysszlr/Shared-Resource-Platform)。
+大作业名称为“航U邦”，您可以点击查看本项目的[文档部分](https://github.com/zhangyitonggg/DB-docs)和[后端部分](https://github.com/fysszlr/Shared_Exercise_Platform/tree/main)。
